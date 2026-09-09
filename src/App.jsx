@@ -169,11 +169,11 @@ export default function App() {
           ========================================================================= */}
       <header className={`mu-header ${isScrolled ? 'mu-header-scrolled' : ''}`}>
         <div className="mu-container mu-header-content">
-          {/* Official University Bilingual Logo */}
-          <a href="#" className="mu-brand">
+          {/* Exact Official Mangalore University Bilingual Logo */}
+          <a href="#" className="mu-brand" aria-label="Mangalore University Home">
             <img
-              src={isScrolled ? "/mu-logo-white.svg" : "/mu-logo.svg"}
-              alt="Mangalore University Official Logo"
+              src="/mu-logo.png"
+              alt="Mangalore University — ಮಂಗಳೂರು ವಿಶ್ವವಿದ್ಯಾನಿಲಯ"
               className="mu-brand-logo-img"
             />
           </a>
@@ -835,8 +835,8 @@ export default function App() {
             <div className="mu-footer-col">
               <div className="mu-footer-brand-wrapper">
                 <img
-                  src="/mu-logo-white.svg"
-                  alt="Mangalore University"
+                  src="/mu-logo.png"
+                  alt="Mangalore University — ಮಂಗಳೂರು ವಿಶ್ವವಿದ್ಯಾನಿಲಯ"
                   className="mu-footer-logo-img"
                 />
               </div>
@@ -959,15 +959,16 @@ export default function App() {
           position: sticky;
           top: 0;
           z-index: 1000;
-          background-color: transparent;
+          background-color: var(--teal);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
           transition: all 0.3s ease;
-          padding: 16px 0;
+          padding: 12px 0;
         }
         .mu-header-scrolled {
-          background-color: rgba(11, 42, 74, 0.96);
-          backdrop-filter: blur(8px);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-          padding: 12px 0;
+          background-color: rgba(7, 29, 51, 0.98);
+          backdrop-filter: blur(10px);
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+          padding: 10px 0;
         }
         .mu-header-content {
           display: flex;
@@ -980,23 +981,25 @@ export default function App() {
           text-decoration: none;
         }
         .mu-brand-logo-img {
-          height: 52px;
+          height: 60px;
           width: auto;
-          max-width: 320px;
+          max-width: 380px;
           object-fit: contain;
+          display: block;
           transition: height 0.3s ease;
         }
         .mu-header-scrolled .mu-brand-logo-img {
-          height: 46px;
+          height: 52px;
         }
         .mu-footer-brand-wrapper {
           margin-bottom: 20px;
         }
         .mu-footer-logo-img {
-          height: 60px;
+          height: 68px;
           width: auto;
-          max-width: 320px;
+          max-width: 380px;
           object-fit: contain;
+          display: block;
         }
 
         /* Nav Links */
@@ -1008,13 +1011,13 @@ export default function App() {
         .mu-nav-link {
           font-size: 14.5px;
           font-weight: 500;
-          color: var(--teal);
+          color: rgba(255, 255, 255, 0.88);
           text-decoration: none;
           position: relative;
           padding: 4px 0;
           transition: color 0.2s;
         }
-        .mu-header-scrolled .mu-nav-link {
+        .mu-nav-link:hover {
           color: #FFFFFF;
         }
         .mu-nav-link::after {
@@ -1034,11 +1037,8 @@ export default function App() {
           display: none;
           background: none;
           border: none;
-          color: var(--teal);
-          cursor: pointer;
-        }
-        .mu-header-scrolled .mu-mobile-toggle {
           color: #FFFFFF;
+          cursor: pointer;
         }
 
         /* Mobile Drawer */

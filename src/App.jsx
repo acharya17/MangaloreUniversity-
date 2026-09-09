@@ -169,15 +169,13 @@ export default function App() {
           ========================================================================= */}
       <header className={`mu-header ${isScrolled ? 'mu-header-scrolled' : ''}`}>
         <div className="mu-container mu-header-content">
-          {/* Brand Crest & Wordmark */}
+          {/* Official University Bilingual Logo */}
           <a href="#" className="mu-brand">
-            <div className="mu-brand-crest">
-              <GraduationCap size={24} className="mu-crest-icon" />
-            </div>
-            <div className="mu-brand-text">
-              <span className="mu-brand-title">Mangalore University</span>
-              <span className="mu-brand-sub">Mangalagangothri, Karnataka</span>
-            </div>
+            <img
+              src={isScrolled ? "/mu-logo-white.svg" : "/mu-logo.svg"}
+              alt="Mangalore University Official Logo"
+              className="mu-brand-logo-img"
+            />
           </a>
 
           {/* Desktop Nav Links */}
@@ -835,17 +833,15 @@ export default function App() {
           <div className="mu-footer-grid">
             {/* Column 1: Identity & Address */}
             <div className="mu-footer-col">
-              <div className="mu-brand mu-footer-brand">
-                <div className="mu-brand-crest">
-                  <GraduationCap size={24} className="mu-crest-icon" />
-                </div>
-                <div className="mu-brand-text">
-                  <span className="mu-brand-title" style={{ color: '#FFFFFF' }}>Mangalore University</span>
-                  <span className="mu-brand-sub" style={{ color: 'rgba(255,255,255,0.7)' }}>Mangalagangothri - 574 199</span>
-                </div>
+              <div className="mu-footer-brand-wrapper">
+                <img
+                  src="/mu-logo-white.svg"
+                  alt="Mangalore University"
+                  className="mu-footer-logo-img"
+                />
               </div>
               <p className="mu-footer-address">
-                Dakshina Kannada District, Karnataka State, India.
+                Mangalagangothri - 574 199, Dakshina Kannada District, Karnataka State, India.
               </p>
               <div className="mu-footer-contact">
                 <p><Phone size={14} /> +91 824 2287276 / 2287347</p>
@@ -981,45 +977,26 @@ export default function App() {
         .mu-brand {
           display: flex;
           align-items: center;
-          gap: 12px;
           text-decoration: none;
         }
-        .mu-brand-crest {
-          width: 42px;
-          height: 42px;
-          background-color: var(--teal);
-          border: 1px solid var(--gold);
-          border-radius: var(--radius);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--gold);
+        .mu-brand-logo-img {
+          height: 52px;
+          width: auto;
+          max-width: 320px;
+          object-fit: contain;
+          transition: height 0.3s ease;
         }
-        .mu-brand-text {
-          display: flex;
-          flex-direction: column;
+        .mu-header-scrolled .mu-brand-logo-img {
+          height: 46px;
         }
-        .mu-brand-title {
-          font-family: var(--font-serif);
-          font-size: 20px;
-          font-weight: 600;
-          color: var(--teal);
-          line-height: 1.1;
-          transition: color 0.3s;
+        .mu-footer-brand-wrapper {
+          margin-bottom: 20px;
         }
-        .mu-header-scrolled .mu-brand-title {
-          color: #FFFFFF;
-        }
-        .mu-brand-sub {
-          font-size: 11px;
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          color: var(--blue);
-          transition: color 0.3s;
-        }
-        .mu-header-scrolled .mu-brand-sub {
-          color: rgba(255, 255, 255, 0.7);
+        .mu-footer-logo-img {
+          height: 60px;
+          width: auto;
+          max-width: 320px;
+          object-fit: contain;
         }
 
         /* Nav Links */

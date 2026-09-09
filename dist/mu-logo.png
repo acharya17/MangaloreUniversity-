@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Page Not Found | Mangalore University</title>
+<link rel="icon" href="sites/default/files/mangalore-logo_0_0.jpg" type="image/jpeg">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+:root {
+  --mu-primary: #0d3b7a;
+  --mu-primary-light: #1a5bb5;
+  --mu-accent: #e8b84b;
+  --mu-bg: #f4f6f9;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--mu-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #2d3748;
+}
+.page-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+.error-card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(13, 59, 122, 0.08), 0 8px 24px rgba(0,0,0,0.04);
+  max-width: 720px;
+  width: 100%;
+  padding: 3.5rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.error-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--mu-primary), var(--mu-accent));
+}
+.status-code {
+  font-size: 8rem;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--mu-primary), var(--mu-primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.25rem;
+  letter-spacing: -4px;
+}
+.status-icon {
+  font-size: 3rem;
+  color: var(--mu-primary);
+  opacity: 0.15;
+  position: absolute;
+  top: 1.5rem; right: 2rem;
+}
+.error-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--mu-primary);
+  margin-bottom: 0.75rem;
+}
+.error-desc {
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0 auto 2rem;
+}
+.search-box {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 420px;
+  margin: 0 auto 2rem;
+}
+.search-box input {
+  flex: 1;
+  padding: 0.75rem 1.25rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-box input:focus { border-color: var(--mu-primary-light); box-shadow: 0 0 0 3px rgba(26, 91, 181, 0.1); }
+.search-box button {
+  padding: 0.75rem 1.5rem;
+  background: var(--mu-primary);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.search-box button:hover { background: var(--mu-primary-light); }
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: 1.5px solid #e2e8f0;
+  color: #475569;
+  background: #fff;
+}
+.action-btn:hover {
+  border-color: var(--mu-primary-light);
+  color: var(--mu-primary);
+  background: #f8fafc;
+  transform: translateY(-1px);
+}
+.action-btn.primary {
+  background: var(--mu-primary);
+  color: #fff;
+  border-color: var(--mu-primary);
+}
+.action-btn.primary:hover {
+  background: var(--mu-primary-light);
+  border-color: var(--mu-primary-light);
+  color: #fff;
+}
+.error-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eef2f6;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+.error-footer a {
+  color: var(--mu-primary-light);
+  text-decoration: none;
+}
+.error-footer a:hover { text-decoration: underline; }
+@media (max-width: 576px) {
+  .error-card { padding: 2.5rem 1.5rem; }
+  .status-code { font-size: 5.5rem; }
+  .error-title { font-size: 1.35rem; }
+  .search-box { flex-direction: column; }
+  .action-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+  <link rel="stylesheet" href="/assets/css/whats-new.css?v=3">
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="error-card">
+    <i class="bi bi-question-circle status-icon"></i>
+
+    <div class="status-code">404</div>
+    <div class="error-title">Page Not Found</div>
+    <p class="error-desc">
+      The page you are looking for might have been removed, had its name changed,
+      or is temporarily unavailable. Let us help you find what you need.
+    </p>
+
+    <form class="search-box" action="https://mangaloreuniversity.ac.in/" method="get" onsubmit="window.location.href='https://mangaloreuniversity.ac.in/' + document.getElementById('404-query').value.split(' ').join('-'); return false;">
+      <input type="text" id="404-query" placeholder="Search the site..." aria-label="Search">
+      <button type="submit"><i class="bi bi-search me-1"></i> Search</button>
+    </form>
+
+    <div class="action-grid">
+      <a href="/" class="action-btn primary">
+        <i class="bi bi-house-door-fill"></i> Home
+      </a>
+      <a href="/latest-home-news.html" class="action-btn">
+        <i class="bi bi-diagram-3"></i> News
+      </a>
+      <a href="/contact-us-3.html" class="action-btn">
+        <i class="bi bi-envelope"></i> Contact
+      </a>
+      <a href="#" class="action-btn" onclick="history.back(); return false;">
+    <i class="bi bi-arrow-left"></i> Go Back
+</a>
+    </div>
+
+    <div class="error-footer">
+      <i class="bi bi-info-circle me-1"></i>
+      Report broken links at
+      <a href="/cdn-cgi/l/email-protection#d0a7b5b2bdb1a3a4b5a290bdb1beb7b1bcbfa2b5a5beb9a6b5a2a3b9a4a9feb1b3feb9be"><span class="__cf_email__" data-cfemail="0b7c6e69666a787f6e794b666a656c6a6764796e7e65627d6e7978627f72256a68256265">[email&#160;protected]</span></a>
+      &middot; <a href="./">Mangalore University</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== What's New Widget ===== -->
+<!-- ===== <div id="whats-new-container" class="whats-new-container">
+  <div class="whats-new-header">
+    <h2>What's New</h2>
+    <button id="whats-new-close" class="whats-new-close" aria-label="Close">&times;</button>
+  </div>
+  <div id="whats-new-list" class="whats-new-list">
+    <div class="whats-new-empty">Loading&hellip;</div>
+  </div>
+  <div id="whats-new-footer" class="whats-new-footer"></div>
+</div>
+<button id="whats-new-fab" class="whats-new-fab" aria-label="What's New">
+  📢
+  <span id="whats-new-fab-badge" class="whats-new-fab-badge">0</span>
+</button>
+<script src="/assets/js/whats-new.js"></script> ===== -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"2bcaac200b2243399ea76883e643e76d","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

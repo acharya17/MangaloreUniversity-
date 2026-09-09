@@ -25,13 +25,31 @@ import {
   Instagram,
   FileText,
   Building2,
-  CheckCircle2
+  CheckCircle2,
+  Atom,
+  Radiation,
+  Dna,
+  Library,
+  Trophy,
+  Home,
+  HeartPulse,
+  Laptop,
+  Briefcase,
+  Users,
+  Target,
+  Sparkles,
+  Search,
+  Globe2,
+  Quote
 } from 'lucide-react';
 
 export default function App() {
   // Navigation & Scroll State
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Active Tab for Academics / Faculties
+  const [activeFacultyTab, setActiveFacultyTab] = useState('science');
 
   // Testimonial Carousel State
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -40,7 +58,7 @@ export default function App() {
   const [statsCounted, setStatsCounted] = useState(false);
   const statsRef = useRef(null);
 
-  // Scroll effect for sticky navbar
+  // Scroll listener for sticky navbar
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 24);
@@ -65,7 +83,7 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
-  // Testimonials data
+  // Testimonials Data
   const testimonials = [
     {
       quote:
@@ -90,41 +108,39 @@ export default function App() {
     }
   ];
 
-  // News data
+  // Official News & Circulars Data
   const newsItems = [
     {
       date: "SEP 15, 2026",
       category: "Admissions",
-      title: "Ph.D Entrance Examination 2026 Notification & Guidelines",
-      desc: "Detailed schedule, eligibility criteria, syllabus, and examination center guidelines for doctoral admissions."
+      title: "Ph.D Entrance Examination 2026 Notification & Syllabus Guidelines",
+      desc: "Detailed schedule, eligibility criteria, vacancy matrix across 26 PG departments, and examination centre guidelines."
     },
     {
       date: "SEP 08, 2026",
       category: "Examinations",
-      title: "Postgraduate Common Entrance Test (PGCET) Calendar",
-      desc: "Revised schedule for centralized counseling, seat allocation, and mandatory document verification."
+      title: "Postgraduate Common Entrance Test (PGCET) Calendar & Verification",
+      desc: "Revised schedule for centralized university counseling, merit list publication, and mandatory document verification."
     },
     {
       date: "AUG 28, 2026",
       category: "Results",
-      title: "Revaluation & Result Scrutiny Applications — Even Semester",
-      desc: "Last date for submission of revaluation forms extended for undergraduate and postgraduate courses."
+      title: "Revaluation & Result Scrutiny Applications — Even Semester 2026",
+      desc: "Last date for online submission of revaluation requests extended for undergraduate and postgraduate courses."
     },
     {
       date: "AUG 14, 2026",
       category: "General",
       title: "Official Release of University Prospectus & Academic Calendar 2026–2027",
-      desc: "Comprehensive handbook detailing CBCS curriculum, academic terms, institutional calendar, and student regulations."
+      desc: "Comprehensive handbook detailing CBCS curriculum regulations, term dates, fee structures, and campus statutes."
     }
   ];
 
   return (
     <div className="mu-page">
       {/* =========================================================================
-          PHASE 01: Top Utility Bar & Main Header Navigation
+          SECTION 01: Top Utility Bar
           ========================================================================= */}
-      
-      {/* Top Utility Bar */}
       <div className="mu-utility-bar">
         <div className="mu-container mu-utility-content">
           <div className="mu-utility-links">
@@ -135,18 +151,22 @@ export default function App() {
             <a href="#alumni" className="mu-utility-link">Alumni Network</a>
             <span className="mu-utility-divider">|</span>
             <a href="#mail" className="mu-utility-link">Webmail Server</a>
+            <span className="mu-utility-divider">|</span>
+            <span className="mu-utility-lang">ಕನ್ನಡ</span>
           </div>
           <div className="mu-utility-socials">
-            <a href="https://facebook.com" aria-label="Facebook" className="mu-social-icon"><Facebook size={14} /></a>
-            <a href="https://twitter.com" aria-label="X Twitter" className="mu-social-icon"><Twitter size={14} /></a>
-            <a href="https://linkedin.com" aria-label="LinkedIn" className="mu-social-icon"><Linkedin size={14} /></a>
-            <a href="https://youtube.com" aria-label="YouTube" className="mu-social-icon"><Youtube size={14} /></a>
-            <a href="https://instagram.com" aria-label="Instagram" className="mu-social-icon"><Instagram size={14} /></a>
+            <a href="https://facebook.com" aria-label="Facebook" className="mu-social-icon"><Facebook size={13} /></a>
+            <a href="https://twitter.com" aria-label="Twitter/X" className="mu-social-icon"><Twitter size={13} /></a>
+            <a href="https://linkedin.com" aria-label="LinkedIn" className="mu-social-icon"><Linkedin size={13} /></a>
+            <a href="https://youtube.com" aria-label="YouTube" className="mu-social-icon"><Youtube size={13} /></a>
+            <a href="https://instagram.com" aria-label="Instagram" className="mu-social-icon"><Instagram size={13} /></a>
           </div>
         </div>
       </div>
 
-      {/* Main Sticky Header */}
+      {/* =========================================================================
+          SECTION 02: Main Header & Sticky Navigation
+          ========================================================================= */}
       <header className={`mu-header ${isScrolled ? 'mu-header-scrolled' : ''}`}>
         <div className="mu-container mu-header-content">
           {/* Brand Crest & Wordmark */}
@@ -164,9 +184,9 @@ export default function App() {
           <nav className="mu-nav-desktop" aria-label="Main Navigation">
             <a href="#about" className="mu-nav-link">About</a>
             <a href="#academics" className="mu-nav-link">Academics</a>
-            <a href="#research" className="mu-nav-link">Research</a>
-            <a href="#campus" className="mu-nav-link">Campus</a>
-            <a href="#careers" className="mu-nav-link">Careers</a>
+            <a href="#infrastructure" className="mu-nav-link">Campus</a>
+            <a href="#research" className="mu-nav-link">Research Centres</a>
+            <a href="#placement" className="mu-nav-link">Placements</a>
             <a href="#news" className="mu-nav-link">Notices</a>
             <a href="#admissions" className="mu-btn mu-btn-nav">Apply Now</a>
           </nav>
@@ -186,12 +206,13 @@ export default function App() {
         {mobileMenuOpen && (
           <div className="mu-mobile-drawer">
             <div className="mu-container mu-mobile-drawer-content">
-              <a href="#about" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>About the University</a>
-              <a href="#academics" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>Faculties & Programmes</a>
-              <a href="#research" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>Research & Innovation</a>
-              <a href="#campus" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>Campus Sanctuary</a>
-              <a href="#careers" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>Careers & Guidance</a>
-              <a href="#news" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>Latest Announcements</a>
+              <a href="#about" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>About & VC Message</a>
+              <a href="#academics" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>Academics & Degrees</a>
+              <a href="#infrastructure" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>Campus & Infrastructure</a>
+              <a href="#research" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>National Research Centres</a>
+              <a href="#coastal" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>Coastal Identity</a>
+              <a href="#placement" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>Placement & Career Ecosystem</a>
+              <a href="#news" className="mu-mobile-link" onClick={() => setMobileMenuOpen(false)}>News & Circulars</a>
               <div className="mu-mobile-drawer-actions">
                 <a href="#admissions" className="mu-btn mu-btn-gold" style={{ width: '100%' }} onClick={() => setMobileMenuOpen(false)}>
                   Apply for Admission <ArrowRight size={16} />
@@ -203,7 +224,7 @@ export default function App() {
       </header>
 
       {/* =========================================================================
-          PHASE 02: Hero Section
+          SECTION 03: Hero / Introduction
           ========================================================================= */}
       <section className="mu-hero-section">
         <div className="mu-container mu-hero-grid">
@@ -217,15 +238,15 @@ export default function App() {
             </div>
             
             <p className="mu-hero-subtext mu-fade-in-2">
-              Spanning 353 acres at the confluence of the Nethravathi river and Arabian Sea, Mangalore University is home to 26 postgraduate departments and over 200 affiliated colleges across coastal Karnataka.
+              Spanning 353 acres atop the scenic Konaje hillocks, Mangalore University is a NAAC A++ accredited premier state institution with 26 postgraduate departments, internationally recognized nuclear research centres, and 204 affiliated colleges across coastal Karnataka.
             </p>
 
             <div className="mu-hero-actions mu-fade-in-3">
               <a href="#admissions" className="mu-btn mu-btn-gold">
-                Apply for admission <ArrowRight size={16} />
+                Apply for Admission <ArrowRight size={16} />
               </a>
               <a href="#academics" className="mu-btn mu-btn-outline">
-                View programmes
+                View Programmes
               </a>
             </div>
           </div>
@@ -236,14 +257,14 @@ export default function App() {
             <div className="mu-hero-image-card">
               <img
                 src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80"
-                alt="Mangalore University Campus Architecture"
+                alt="Mangalore University Main Administrative Complex"
                 className="mu-hero-img"
               />
               <div className="mu-hero-badge">
-                <Award size={18} className="mu-badge-icon" />
+                <Award size={20} className="mu-badge-icon" />
                 <div>
-                  <strong>A++ NAAC Accredited</strong>
-                  <span>353-Acre Green Campus</span>
+                  <strong>NAAC A++ Accredited</strong>
+                  <span>353-Acre Verdant Campus</span>
                 </div>
               </div>
             </div>
@@ -252,49 +273,62 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          PHASE 03: About Section
+          SECTION 04: About Mangalore University & Vice-Chancellor's Message
           ========================================================================= */}
       <section id="about" className="mu-section mu-bg-paper">
-        <div className="mu-container mu-about-grid">
-          {/* Left Media */}
-          <div className="mu-about-media">
-            <div className="mu-about-image-wrapper">
-              <img
-                src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80"
-                alt="University Library and Heritage"
-                className="mu-about-img"
-              />
-              <div className="mu-about-milestone">
-                <span className="mu-milestone-year">1980</span>
-                <span className="mu-milestone-text">Autonomous University Established</span>
+        <div className="mu-container">
+          <div className="mu-about-grid">
+            {/* Left Narrative & VC Card */}
+            <div className="mu-about-text">
+              <span className="mu-eyebrow">ABOUT THE UNIVERSITY</span>
+              <h2 className="mu-heading">From a postgraduate centre to a premier coastal institution</h2>
+              <p className="mu-about-p">
+                Mangalore University was established in 1980, growing out of a modest postgraduate centre of the University of Mysore at Konaje which originally commenced with just three departments.
+              </p>
+              <p className="mu-about-p">
+                Today, the university encompasses 26 postgraduate departments on its main campus, offering advanced interdisciplinary research, frontier laboratory infrastructure, and comprehensive academic jurisdiction across Dakshina Kannada, Udupi, and Kodagu districts.
+              </p>
+
+              <div className="mu-about-vc-card">
+                <div className="mu-vc-header">
+                  <div className="mu-vc-avatar">
+                    <Building2 size={24} color="var(--gold)" />
+                  </div>
+                  <div>
+                    <h4 className="mu-vc-title">Vice-Chancellor's Message</h4>
+                    <span className="mu-vc-sub">Prof. P. L. Dharma, Vice-Chancellor</span>
+                  </div>
+                </div>
+                <p className="mu-vc-quote">
+                  "Our vision is to evolve as a centre of academic excellence and holistic human development, nurturing global competence anchored in ethics, cultural heritage, and frontier research."
+                </p>
+              </div>
+
+              <a href="#history" className="mu-link-arrow" style={{ marginTop: '16px' }}>
+                Read our full history & vision <ArrowRight size={15} />
+              </a>
+            </div>
+
+            {/* Right Media */}
+            <div className="mu-about-media">
+              <div className="mu-about-image-wrapper">
+                <img
+                  src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80"
+                  alt="University Library and Heritage"
+                  className="mu-about-img"
+                />
+                <div className="mu-about-milestone">
+                  <span className="mu-milestone-year">1980</span>
+                  <span className="mu-milestone-text">Chartered Independent University</span>
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* Right Narrative */}
-          <div className="mu-about-text">
-            <span className="mu-eyebrow">ABOUT THE UNIVERSITY</span>
-            <h2 className="mu-heading">From a postgraduate centre to a premier coastal institution</h2>
-            <p className="mu-about-p">
-              Mangalore University grew out of a modest postgraduate centre of the University of Mysore at Konaje, which originally commenced with just three departments. In 1980, it was formally chartered as an independent, self-governing university.
-            </p>
-            <p className="mu-about-p">
-              Today, the university encompasses 26 postgraduate teaching and research departments on its main campus, offering advanced interdisciplinary degrees, cutting-edge laboratory infrastructure, and comprehensive academic jurisdiction across Dakshina Kannada, Udupi, and Kodagu districts.
-            </p>
-
-            <blockquote className="mu-pullquote">
-              "Fostering academic excellence, innovative research, and ethical leadership in a dynamic global environment."
-            </blockquote>
-
-            <a href="#history" className="mu-link-arrow">
-              Read our full history <ArrowRight size={15} />
-            </a>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          PHASE 04: At a Glance (Stats Band)
+          SECTION 05: At a Glance (Stats Band)
           ========================================================================= */}
       <section ref={statsRef} className="mu-section-tight mu-bg-mist mu-stats-section">
         <div className="mu-container">
@@ -324,67 +358,17 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          PHASE 05: Why Choose Mangalore University (Pillars)
+          SECTION 06: Academics & Degrees
           ========================================================================= */}
-      <section className="mu-section mu-bg-paper">
-        <div className="mu-container">
-          <div className="mu-section-header-center">
-            <span className="mu-eyebrow">INSTITUTIONAL DISTINCTION</span>
-            <h2 className="mu-heading">Why Choose Mangalore University</h2>
-            <p className="mu-body-lead" style={{ margin: '0 auto' }}>
-              A confluence of traditional scholarly rigor, modern frontier research, and an inspiring coastal living environment.
-            </p>
-          </div>
-
-          <div className="mu-pillars-grid">
-            {/* Pillar 1 */}
-            <div className="mu-pillar-card">
-              <div className="mu-pillar-icon-badge">
-                <GraduationCap size={24} />
-              </div>
-              <h3 className="mu-pillar-title">Academic Depth & Flexibility</h3>
-              <p className="mu-pillar-desc">
-                Comprehensive Choice Based Credit System (CBCS) curriculum across 26 disciplines, allowing scholars to design interdisciplinary academic pathways tailored to evolving industry demands.
-              </p>
-            </div>
-
-            {/* Pillar 2 */}
-            <div className="mu-pillar-card">
-              <div className="mu-pillar-icon-badge">
-                <Microscope size={24} />
-              </div>
-              <h3 className="mu-pillar-title">Coastal & Frontier Research</h3>
-              <p className="mu-pillar-desc">
-                Pioneering specialized national research laboratories including the Microtron radiation facility, Marine Geology marine stations, and Coastal Biosciences centers of excellence.
-              </p>
-            </div>
-
-            {/* Pillar 3 */}
-            <div className="mu-pillar-card">
-              <div className="mu-pillar-icon-badge">
-                <Trees size={24} />
-              </div>
-              <h3 className="mu-pillar-title">A Campus Built for Belonging</h3>
-              <p className="mu-pillar-desc">
-                A scenic 353-acre sanctuary on the hilltops of Konaje, featuring a state-of-the-art central library, sports complex, research hostels, and vibrant cultural student societies.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          PHASE 06: Academic Programmes (Faculties Grid)
-          ========================================================================= */}
-      <section id="academics" className="mu-section mu-bg-mist">
+      <section id="academics" className="mu-section mu-bg-paper">
         <div className="mu-container">
           <div className="mu-section-header">
             <div>
-              <span className="mu-eyebrow">ACADEMIC ARCHITECTURE</span>
-              <h2 className="mu-heading">Faculties & Postgraduate Programmes</h2>
+              <span className="mu-eyebrow">ACADEMIC EXCELLENCE</span>
+              <h2 className="mu-heading">Academics, Faculties & Degrees</h2>
             </div>
             <p className="mu-body-lead">
-              Structured into four core faculties offering Master's, Doctoral, and Postgraduate Diploma qualifications.
+              Offering Master's (M.A., M.Sc., M.Com, M.Ed, MBA, MCA), Doctoral (Ph.D), and Postgraduate Diploma programmes under the Choice Based Credit System (CBCS).
             </p>
           </div>
 
@@ -397,14 +381,14 @@ export default function App() {
               </div>
               <ul className="mu-dept-list">
                 <li>English Language & Literature</li>
-                <li>Kannada & Regional Studies</li>
+                <li>Kannada & Regional Heritage</li>
                 <li>History & Archaeology</li>
-                <li>Economics & Development</li>
+                <li>Economics & Development Studies</li>
                 <li>Mass Communication & Journalism</li>
-                <li>Sociology & Social Work</li>
+                <li>Sociology & Social Work (MSW)</li>
               </ul>
               <a href="#faculty-arts" className="mu-faculty-link">
-                Explore Faculty of Arts <ArrowUpRight size={16} />
+                Explore Arts Programmes <ArrowUpRight size={16} />
               </a>
             </div>
 
@@ -416,14 +400,14 @@ export default function App() {
               </div>
               <ul className="mu-dept-list">
                 <li>Physics & Materials Science</li>
-                <li>Chemistry & Applied Chemistry</li>
+                <li>Applied Chemistry & Biochemistry</li>
                 <li>Marine Geology & Oceanography</li>
                 <li>Biosciences & Biotechnology</li>
-                <li>Computer Science & Applications</li>
+                <li>Computer Science (M.Sc. & MCA)</li>
                 <li>Mathematics & Statistics</li>
               </ul>
               <a href="#faculty-science" className="mu-faculty-link">
-                Explore Faculty of Science <ArrowUpRight size={16} />
+                Explore Science Programmes <ArrowUpRight size={16} />
               </a>
             </div>
 
@@ -436,13 +420,13 @@ export default function App() {
               <ul className="mu-dept-list">
                 <li>Master of Commerce (M.Com)</li>
                 <li>Master of Business Admin (MBA)</li>
-                <li>Financial Management & Banking</li>
-                <li>International Business Studies</li>
-                <li>Corporate Governance Cell</li>
+                <li>Finance & Banking Technology</li>
+                <li>International Trade & Logistics</li>
+                <li>Human Resource Management</li>
                 <li>Doctoral Research in Commerce</li>
               </ul>
               <a href="#faculty-commerce" className="mu-faculty-link">
-                Explore Faculty of Commerce <ArrowUpRight size={16} />
+                Explore Commerce Programmes <ArrowUpRight size={16} />
               </a>
             </div>
 
@@ -456,12 +440,12 @@ export default function App() {
                 <li>Master of Education (M.Ed)</li>
                 <li>Physical Education (M.P.Ed)</li>
                 <li>Sports Science & Biomechanics</li>
-                <li>Educational Technology & Policy</li>
-                <li>Teacher Training Research</li>
-                <li>Athletic Performance Lab</li>
+                <li>Curriculum Design & Evaluation</li>
+                <li>Educational Technology Lab</li>
+                <li>Athletic Performance Centre</li>
               </ul>
               <a href="#faculty-education" className="mu-faculty-link">
-                Explore Faculty of Education <ArrowUpRight size={16} />
+                Explore Education Programmes <ArrowUpRight size={16} />
               </a>
             </div>
           </div>
@@ -469,9 +453,184 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          PHASE 07: Campus Life (Full-Bleed Visual Break)
+          SECTION 07: Why Study at Mangalore University (Pillars)
           ========================================================================= */}
-      <section id="campus" className="mu-campus-break">
+      <section className="mu-section mu-bg-mist">
+        <div className="mu-container">
+          <div className="mu-section-header-center">
+            <span className="mu-eyebrow">INSTITUTIONAL DISTINCTION</span>
+            <h2 className="mu-heading">Why Study at Mangalore University</h2>
+            <p className="mu-body-lead" style={{ margin: '0 auto' }}>
+              A confluence of traditional scholarly rigor, national-grade research infrastructure, and holistic student growth.
+            </p>
+          </div>
+
+          <div className="mu-pillars-grid">
+            {/* Pillar 1 */}
+            <div className="mu-pillar-card">
+              <div className="mu-pillar-icon-badge">
+                <GraduationCap size={24} />
+              </div>
+              <h3 className="mu-pillar-title">Academic Excellence & CBCS</h3>
+              <p className="mu-pillar-desc">
+                Dynamic Choice Based Credit System offering flexibility across disciplines, industry-relevant syllabi, continuous internal assessment, and interdisciplinary electives.
+              </p>
+            </div>
+
+            {/* Pillar 2 */}
+            <div className="mu-pillar-card">
+              <div className="mu-pillar-icon-badge">
+                <Microscope size={24} />
+              </div>
+              <h3 className="mu-pillar-title">Frontier Research & Heritage</h3>
+              <p className="mu-pillar-desc">
+                High-impact scientific research funded by DST, DBT, BRNS, and UGC with dedicated radiation, marine, and bio-science research centres.
+              </p>
+            </div>
+
+            {/* Pillar 3 */}
+            <div className="mu-pillar-card">
+              <div className="mu-pillar-icon-badge">
+                <Trees size={24} />
+              </div>
+              <h3 className="mu-pillar-title">Student Belonging & Community</h3>
+              <p className="mu-pillar-desc">
+                An inclusive, secure 353-acre hilltop environment with active cultural societies, national sports championships, subsidized hostels, and student welfare councils.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 08: Campus & Infrastructure
+          ========================================================================= */}
+      <section id="infrastructure" className="mu-section mu-bg-paper">
+        <div className="mu-container">
+          <div className="mu-section-header">
+            <div>
+              <span className="mu-eyebrow">WORLD-CLASS AMENITIES</span>
+              <h2 className="mu-heading">Campus & Infrastructure</h2>
+            </div>
+            <p className="mu-body-lead">
+              State-of-the-art facilities designed to foster holistic academic, research, athletic, and residential life.
+            </p>
+          </div>
+
+          <div className="mu-infra-grid">
+            {/* Infra Card 1 */}
+            <div className="mu-infra-card">
+              <div className="mu-infra-icon-box"><Library size={22} /></div>
+              <h3 className="mu-infra-title">Central Library</h3>
+              <p className="mu-infra-desc">Over 250,000 volumes, 300+ print journals, INFLIBNET access, e-ShodhSindhu portal, and 24/7 digital reading halls.</p>
+            </div>
+
+            {/* Infra Card 2 */}
+            <div className="mu-infra-card">
+              <div className="mu-infra-icon-box"><Trophy size={22} /></div>
+              <h3 className="mu-infra-title">Sports Complex & Stadium</h3>
+              <p className="mu-infra-desc">400m synthetic athletic track, indoor sports pavilion, gymnasium, basketball & tennis courts supporting national athletes.</p>
+            </div>
+
+            {/* Infra Card 3 */}
+            <div className="mu-infra-card">
+              <div className="mu-infra-icon-box"><Home size={22} /></div>
+              <h3 className="mu-infra-title">Hostels & Residential Life</h3>
+              <p className="mu-infra-desc">Modern separate hostels for men, women, and research scholars with Wi-Fi, hygienic dining halls, and 24/7 security.</p>
+            </div>
+
+            {/* Infra Card 4 */}
+            <div className="mu-infra-card">
+              <div className="mu-infra-icon-box"><Laptop size={22} /></div>
+              <h3 className="mu-infra-title">ICT & Computing Centre</h3>
+              <p className="mu-infra-desc">Campus-wide optical fiber network, high-performance computing clusters, smart classrooms, and centralized data facilities.</p>
+            </div>
+
+            {/* Infra Card 5 */}
+            <div className="mu-infra-card">
+              <div className="mu-infra-icon-box"><HeartPulse size={22} /></div>
+              <h3 className="mu-infra-title">University Health Centre</h3>
+              <p className="mu-infra-desc">Dedicated medical facility providing primary healthcare, 24/7 emergency response, pharmacy, and diagnostic services for students and staff.</p>
+            </div>
+
+            {/* Infra Card 6 */}
+            <div className="mu-infra-card">
+              <div className="mu-infra-icon-box"><Compass size={22} /></div>
+              <h3 className="mu-infra-title">Botanical Garden & Arboretum</h3>
+              <p className="mu-infra-desc">Sprawling arboretum conserving endemic Western Ghats flora, medicinal plant gardens, and green energy solar installations.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 09: Nationally Recognized Research Centres
+          ========================================================================= */}
+      <section id="research" className="mu-section mu-bg-mist">
+        <div className="mu-container">
+          <div className="mu-section-header">
+            <div>
+              <span className="mu-eyebrow">PIONEERING DISCOVERY</span>
+              <h2 className="mu-heading">Nationally Recognized Research Centres</h2>
+            </div>
+            <p className="mu-body-lead">
+              Hosting prestigious national research facilities funded by DAE, DST, BRNS, and international research collaborations.
+            </p>
+          </div>
+
+          <div className="mu-research-grid">
+            {/* Research Card 1 */}
+            <div className="mu-research-card">
+              <div className="mu-research-header">
+                <div className="mu-research-icon"><Radiation size={24} /></div>
+                <span className="mu-research-badge">DAE / BRNS Recognized</span>
+              </div>
+              <h3 className="mu-research-title">Microtron Centre</h3>
+              <p className="mu-research-desc">
+                An advanced electron accelerator facility established in collaboration with Raja Ramanna Centre for Advanced Technology (RRCAT) and Bhabha Atomic Research Centre (BARC) for radiation physics, materials modification, and polymer research.
+              </p>
+              <div className="mu-research-footer">
+                <span>Key Areas: Radiation Physics, Polymers, Electron Beam Tech</span>
+              </div>
+            </div>
+
+            {/* Research Card 2 */}
+            <div className="mu-research-card">
+              <div className="mu-research-header">
+                <div className="mu-research-icon"><Atom size={24} /></div>
+                <span className="mu-research-badge">National Centre of Excellence</span>
+              </div>
+              <h3 className="mu-research-title">CARRT</h3>
+              <p className="mu-research-desc">
+                Centre for Application of Radioisotopes and Radiation Technology (CARRT) — conducting frontier research in medical physics, nuclear diagnostics, food irradiation, and radiation biology in partnership with BRNS and AERB.
+              </p>
+              <div className="mu-research-footer">
+                <span>Key Areas: Radiopharmacy, Food Preservation, Nuclear Medicine</span>
+              </div>
+            </div>
+
+            {/* Research Card 3 */}
+            <div className="mu-research-card">
+              <div className="mu-research-header">
+                <div className="mu-research-icon"><Dna size={24} /></div>
+                <span className="mu-research-badge">Coastal Ecology & Marine</span>
+              </div>
+              <h3 className="mu-research-title">CAREER & Marine Research Station</h3>
+              <p className="mu-research-desc">
+                Centre for Advanced Research in Environmental Radioactivity (CAREER) and Oceanographic stations monitoring coastal ecology, Arabian Sea sedimentary dynamics, and marine biodiversity conservation.
+              </p>
+              <div className="mu-research-footer">
+                <span>Key Areas: Marine Geology, Coastal Geomorphology, Oceanography</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 10: Campus / Coastal Identity (Full-Bleed Visual Break)
+          ========================================================================= */}
+      <section id="coastal" className="mu-campus-break">
         <div className="mu-campus-overlay"></div>
         <div className="mu-container mu-campus-content">
           <div className="mu-campus-text-card">
@@ -490,18 +649,32 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          PHASE 08: Careers & Placement Guidance Bureau
+          SECTION 11: Placement & Career Ecosystem
           ========================================================================= */}
-      <section id="careers" className="mu-section mu-bg-paper">
+      <section id="placement" className="mu-section mu-bg-paper">
         <div className="mu-container mu-careers-grid">
           {/* Left Narrative */}
           <div className="mu-careers-intro">
-            <span className="mu-eyebrow">CAREER & STUDENT SUPPORT</span>
-            <h2 className="mu-heading">University Employment Information & Guidance Bureau</h2>
+            <span className="mu-eyebrow">CAREER & STUDENT SUCCESS</span>
+            <h2 className="mu-heading">Placement & Career Ecosystem</h2>
             <p className="mu-careers-p">
-              The Bureau functions as a vital bridge between academic attainment and career fulfillment, organizing on-campus recruitments, soft skills training, civil service guidance, and overseas scholarship counseling.
+              The University Employment Information & Guidance Bureau functions as a vital career springboard, coordinating campus recruitments, competitive civil services mentorship, corporate internship pipelines, and international higher education pathways.
             </p>
-            <a href="#placement" className="mu-link-arrow">
+            <div className="mu-placement-stats-mini">
+              <div className="mu-mini-stat">
+                <strong>85%+</strong>
+                <span>Placement Assistance</span>
+              </div>
+              <div className="mu-mini-stat">
+                <strong>120+</strong>
+                <span>Recruitment Partners</span>
+              </div>
+              <div className="mu-mini-stat">
+                <strong>₹14 LPA</strong>
+                <span>Highest Package</span>
+              </div>
+            </div>
+            <a href="#placement-cell" className="mu-link-arrow">
               Connect with Placement Cell <ArrowRight size={15} />
             </a>
           </div>
@@ -512,7 +685,7 @@ export default function App() {
               <div className="mu-service-dot"></div>
               <div>
                 <h4 className="mu-service-title">Campus Placement & Corporate Recruitment</h4>
-                <p className="mu-service-desc">Facilitating top-tier recruitment drives in collaboration with multinational corporations and research organizations.</p>
+                <p className="mu-service-desc">Facilitating top-tier recruitment drives with IT, banking, pharmaceutical, manufacturing, and research conglomerates.</p>
               </div>
             </div>
 
@@ -520,7 +693,7 @@ export default function App() {
               <div className="mu-service-dot"></div>
               <div>
                 <h4 className="mu-service-title">UPSC, KPSC, NET & SLET Coaching</h4>
-                <p className="mu-service-desc">Comprehensive specialized mentorship and coaching for national and state civil services and lectureship eligibility exams.</p>
+                <p className="mu-service-desc">Comprehensive mentorship programs for national/state civil services, administrative examinations, and UGC lectureship eligibility.</p>
               </div>
             </div>
 
@@ -528,7 +701,7 @@ export default function App() {
               <div className="mu-service-dot"></div>
               <div>
                 <h4 className="mu-service-title">Higher Education & Overseas Fellowships</h4>
-                <p className="mu-service-desc">Dedicated advisory and application support for prestigious international research grants and doctoral fellowships.</p>
+                <p className="mu-service-desc">Dedicated advisory and application mentorship for prestigious international research grants and doctoral fellowships.</p>
               </div>
             </div>
 
@@ -544,14 +717,14 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          PHASE 09: Latest News & Announcements
+          SECTION 12: News, Events & Official Circulars
           ========================================================================= */}
       <section id="news" className="mu-section mu-bg-mist">
         <div className="mu-container">
           <div className="mu-news-header">
             <div>
               <span className="mu-eyebrow">NOTICES & CIRCULARS</span>
-              <h2 className="mu-heading">Latest University Announcements</h2>
+              <h2 className="mu-heading">News, Events & Official Circulars</h2>
             </div>
             <a href="#all-news" className="mu-link-arrow">
               View all notifications <ArrowRight size={15} />
@@ -579,7 +752,7 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          PHASE 10: Student & Alumni Testimonials Carousel
+          SECTION 13: Student & Alumni Testimonials
           ========================================================================= */}
       <section className="mu-section mu-bg-navy">
         <div className="mu-container">
@@ -634,7 +807,7 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          PHASE 11: Admissions Call to Action Banner
+          SECTION 14: Admissions CTA Banner
           ========================================================================= */}
       <section id="admissions" className="mu-cta-banner">
         <div className="mu-container mu-cta-content">
@@ -655,7 +828,7 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          PHASE 12: Institutional Footer & Statutory Disclosures
+          SECTION 15: Institutional Footer
           ========================================================================= */}
       <footer className="mu-footer">
         <div className="mu-container">
@@ -688,7 +861,7 @@ export default function App() {
                 <li><a href="#faculty-science">Faculty of Science & Tech</a></li>
                 <li><a href="#faculty-commerce">Faculty of Commerce</a></li>
                 <li><a href="#faculty-education">Faculty of Education</a></li>
-                <li><a href="#research-labs">Research Centres & Labs</a></li>
+                <li><a href="#research">Microtron & CARRT Centres</a></li>
                 <li><a href="#calendar">Academic Calendar 2026</a></li>
               </ul>
             </div>
@@ -713,7 +886,7 @@ export default function App() {
                 <li><a href="#anti-ragging">Anti-Ragging Squad & Cell</a></li>
                 <li><a href="#grievance">Women's Grievance Redressal</a></li>
                 <li><a href="#scst">SC / ST Special Cell</a></li>
-                <li><a href="#library">Central Library Catalog</a></li>
+                <li><a href="#infrastructure">Central Library Catalog</a></li>
                 <li><a href="#nirf">NIRF Disclosures</a></li>
                 <li><a href="#uucms">Karnataka UUCMS Portal</a></li>
               </ul>
@@ -763,6 +936,10 @@ export default function App() {
         }
         .mu-utility-link:hover {
           color: var(--gold);
+        }
+        .mu-utility-lang {
+          color: var(--gold);
+          font-weight: 600;
         }
         .mu-utility-divider {
           color: rgba(255, 255, 255, 0.2);
@@ -849,7 +1026,7 @@ export default function App() {
         .mu-nav-desktop {
           display: flex;
           align-items: center;
-          gap: 28px;
+          gap: 26px;
         }
         .mu-nav-link {
           font-size: 14.5px;
@@ -1000,7 +1177,7 @@ export default function App() {
         /* About Section */
         .mu-about-grid {
           display: grid;
-          grid-template-columns: 0.85fr 1.15fr;
+          grid-template-columns: 1.15fr 0.85fr;
           gap: 64px;
           align-items: center;
         }
@@ -1009,7 +1186,7 @@ export default function App() {
         }
         .mu-about-img {
           width: 100%;
-          height: 420px;
+          height: 440px;
           object-fit: cover;
           border-radius: var(--radius);
           border: 1px solid var(--line);
@@ -1042,16 +1219,45 @@ export default function App() {
           margin-bottom: 16px;
           line-height: 1.6;
         }
-        .mu-pullquote {
-          margin: 24px 0;
-          padding: 16px 20px;
+        .mu-about-vc-card {
+          margin: 20px 0;
+          padding: 20px 24px;
           background-color: var(--mist);
-          border-left: 3px solid var(--gold);
+          border-left: 3px solid var(--teal);
+          border-radius: var(--radius);
+        }
+        .mu-vc-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 10px;
+        }
+        .mu-vc-avatar {
+          width: 38px;
+          height: 38px;
+          background-color: var(--teal);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .mu-vc-title {
           font-family: var(--font-serif);
-          font-size: 18px;
-          font-style: italic;
+          font-size: 16px;
           color: var(--teal);
-          line-height: 1.45;
+          margin-bottom: 2px;
+        }
+        .mu-vc-sub {
+          font-size: 12.5px;
+          color: var(--blue);
+          font-weight: 600;
+        }
+        .mu-vc-quote {
+          font-family: var(--font-serif);
+          font-size: 15.5px;
+          font-style: italic;
+          color: var(--ink);
+          line-height: 1.5;
         }
         .mu-link-arrow {
           display: inline-flex;
@@ -1196,6 +1402,103 @@ export default function App() {
           color: var(--blue);
         }
 
+        /* Infrastructure Section */
+        .mu-infra-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 28px;
+        }
+        .mu-infra-card {
+          background-color: #FFFFFF;
+          border: 1px solid var(--line);
+          border-radius: var(--radius);
+          padding: 30px 26px;
+          transition: border-color 0.2s;
+        }
+        .mu-infra-card:hover {
+          border-color: var(--teal);
+        }
+        .mu-infra-icon-box {
+          width: 44px;
+          height: 44px;
+          border-radius: var(--radius);
+          background-color: var(--mist);
+          color: var(--teal);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 18px;
+        }
+        .mu-infra-title {
+          font-size: 18px;
+          margin-bottom: 10px;
+          color: var(--teal);
+        }
+        .mu-infra-desc {
+          font-size: 14.5px;
+          color: var(--ink-soft);
+          line-height: 1.55;
+        }
+
+        /* Research Centres Section */
+        .mu-research-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 32px;
+        }
+        .mu-research-card {
+          background-color: #FFFFFF;
+          border: 1px solid var(--line);
+          border-radius: var(--radius);
+          padding: 36px 30px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+        .mu-research-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+        .mu-research-icon {
+          width: 46px;
+          height: 46px;
+          background-color: var(--teal);
+          color: var(--gold);
+          border-radius: var(--radius);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .mu-research-badge {
+          font-size: 11.5px;
+          font-weight: 600;
+          text-transform: uppercase;
+          background-color: var(--mist);
+          color: var(--blue);
+          padding: 4px 10px;
+          border-radius: var(--radius);
+        }
+        .mu-research-title {
+          font-size: 20px;
+          color: var(--teal);
+          margin-bottom: 14px;
+        }
+        .mu-research-desc {
+          font-size: 14.5px;
+          color: var(--ink-soft);
+          line-height: 1.6;
+          margin-bottom: 24px;
+        }
+        .mu-research-footer {
+          font-size: 12.5px;
+          color: var(--blue);
+          font-weight: 600;
+          border-top: 1px solid var(--line-soft);
+          padding-top: 14px;
+        }
+
         /* Campus Full-Bleed Section */
         .mu-campus-break {
           position: relative;
@@ -1229,10 +1532,10 @@ export default function App() {
           margin-bottom: 28px;
         }
 
-        /* Careers Section */
+        /* Careers & Placement Section */
         .mu-careers-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 1.05fr 0.95fr;
           gap: 56px;
           align-items: center;
         }
@@ -1241,6 +1544,24 @@ export default function App() {
           color: var(--ink-soft);
           line-height: 1.6;
           margin-bottom: 24px;
+        }
+        .mu-placement-stats-mini {
+          display: flex;
+          gap: 24px;
+          margin-bottom: 24px;
+          padding: 16px 0;
+          border-top: 1px solid var(--line);
+          border-bottom: 1px solid var(--line);
+        }
+        .mu-mini-stat strong {
+          display: block;
+          font-family: var(--font-serif);
+          font-size: 24px;
+          color: var(--teal);
+        }
+        .mu-mini-stat span {
+          font-size: 12px;
+          color: var(--ink-soft);
         }
         .mu-careers-services {
           display: flex;
@@ -1527,6 +1848,12 @@ export default function App() {
           .mu-faculties-grid {
             grid-template-columns: repeat(2, 1fr);
           }
+          .mu-infra-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .mu-research-grid {
+            grid-template-columns: 1fr;
+          }
         }
 
         @media (max-width: 860px) {
@@ -1587,6 +1914,9 @@ export default function App() {
 
         @media (max-width: 560px) {
           .mu-faculties-grid {
+            grid-template-columns: 1fr;
+          }
+          .mu-infra-grid {
             grid-template-columns: 1fr;
           }
           .mu-footer-grid {

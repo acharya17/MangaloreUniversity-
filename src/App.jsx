@@ -40,7 +40,8 @@ import {
   Sparkles,
   Search,
   Globe2,
-  Quote
+  Quote,
+  Star
 } from 'lucide-react';
 
 export default function App() {
@@ -48,15 +49,68 @@ export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Active Tab for Academics / Faculties
-  const [activeFacultyTab, setActiveFacultyTab] = useState('science');
+  // Hero Background Carousel State & Slide Data
+  const [heroSlide, setHeroSlide] = useState(0);
+  const heroSlides = [
+    {
+      image: "/hero-campus.jpg",
+      title: "Verdant 353-Acre Mangalagangothri Hilltop Campus",
+      subtitle: "Scenic coastal hilltops fostering frontier multidisciplinary education since 1980"
+    },
+    {
+      image: "/news-thumb-4.jpg",
+      title: "Central Library & Digital Research Learning Resource Centre",
+      subtitle: "Over 2.5 lakh volumes, e-journals, and high-speed digital research archives"
+    },
+    {
+      image: "/news-thumb-2.jpg",
+      title: "Advanced Laboratories & Microtron Atomic Research Facility",
+      subtitle: "Nationally recognized collaborative radiation physics and materials research"
+    },
+    {
+      image: "/news-featured.jpg",
+      title: "Annual Convocation, Academic Honours & Cultural Heritage",
+      subtitle: "Celebrating four decades of scholarly achievement and regional leadership"
+    },
+    {
+      image: "/news-thumb-3.jpg",
+      title: "Mangala Stadium, Sports Complex & Athletic Excellence",
+      subtitle: "400m international synthetic track, indoor arenas, and championship sports"
+    },
+    {
+      image: "/why-campus.jpg",
+      title: "Vibrant Student Community & Residential Campus Life",
+      subtitle: "Spacious modern hostels, active student societies, and inclusive campus life"
+    },
+    {
+      image: "/coastal-campus.jpg",
+      title: "CAREER Marine Research & Coastal Ecological Sanctuaries",
+      subtitle: "Direct Arabian Sea field stations, estuarine biodiversity, and coastal science"
+    }
+  ];
+
+  // Auto-play hero image carousel with subtle smooth crossfade
+  useEffect(() => {
+    const heroTimer = setInterval(() => {
+      setHeroSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5500);
+    return () => clearInterval(heroTimer);
+  }, [heroSlides.length]);
 
   // Testimonial Carousel State
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
-  // Animated Stats Counter State
-  const [statsCounted, setStatsCounted] = useState(false);
+  // Animated Stats Counter State & Values
+  const [statsVisible, setStatsVisible] = useState(false);
+  const [statCounts, setStatCounts] = useState({
+    years: 0,
+    pgDepts: 0,
+    colleges: 0,
+    acres: 0,
+    autonomous: 0
+  });
   const statsRef = useRef(null);
+  const hasAnimatedRef = useRef(false);
 
   // Scroll listener for sticky navbar
   useEffect(() => {
@@ -67,72 +121,293 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Intersection observer for stats band
+  // Intersection observer for stats band & smooth count-up animation
   useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      setStatCounts({
+        years: 45,
+        pgDepts: 26,
+        colleges: 204,
+        acres: 353,
+        autonomous: 5
+      });
+      setStatsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setStatsCounted(true);
+        if (entry.isIntersecting && !hasAnimatedRef.current) {
+          hasAnimatedRef.current = true;
+          setStatsVisible(true);
+
+          const duration = 1800; // 1.8 seconds smooth count-up
+          const startTime = performance.now();
+
+          // Smooth exponential ease-out
+          const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+
+          const targets = {
+            years: 45,
+            pgDepts: 26,
+            colleges: 204,
+            acres: 353,
+            autonomous: 5
+          };
+
+          const frame = (now) => {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = easeOutExpo(progress);
+
+            setStatCounts({
+              years: Math.round(targets.years * eased),
+              pgDepts: Math.round(targets.pgDepts * eased),
+              colleges: Math.round(targets.colleges * eased),
+              acres: Math.round(targets.acres * eased),
+              autonomous: Math.round(targets.autonomous * eased)
+            });
+
+            if (progress < 1) {
+              requestAnimationFrame(frame);
+            } else {
+              setStatCounts(targets);
+            }
+          };
+
+          requestAnimationFrame(frame);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.25 }
     );
+
     if (statsRef.current) {
       observer.observe(statsRef.current);
     }
     return () => observer.disconnect();
   }, []);
 
-  // Testimonials Data
+  // Testimonials Data (5 Student/Alumni Perspectives)
   const testimonials = [
     {
+      id: "t1",
       quote:
-        "The proximity to the Arabian Sea and the university's dedicated marine research stations provided field exposure that few institutions in the country can match.",
+        "The proximity to the Arabian Sea and the dedicated marine research stations provided field exposure that few institutions in the country can match.",
       name: "Pooja Hegde",
-      role: "M.Sc. Marine Geology (Batch of 2023)",
-      field: "Oceanographic Research"
+      role: "M.Sc. Marine Geology",
+      batch: "Batch of 2023",
+      rating: 5,
+      avatar: "PH"
     },
     {
+      id: "t2",
       quote:
-        "Mangalagangothri gave me both the critical perspective and the practical studio training necessary to transition directly into investigative broadcast media.",
+        "Mangalagangothri gave me both the critical perspective and practical studio training to transition directly into investigative broadcast media.",
       name: "Karthik Rao",
-      role: "M.A. Journalism & Mass Communication (Batch of 2022)",
-      field: "Media & Communications"
+      role: "M.A. Journalism & Mass Comm",
+      batch: "Batch of 2022",
+      rating: 5,
+      avatar: "KR"
     },
     {
+      id: "t3",
       quote:
-        "The interdisciplinary encouragement and mentorship from senior faculty shaped my research methodology and opened doors to prestigious national doctoral fellowships.",
-      name: "Ananya Shenoy",
-      role: "Ph.D Scholar in Economics",
-      field: "Development Economics"
+        "Interdisciplinary faculty mentorship in materials science shaped my research methodology and secured a doctoral fellowship at BARC.",
+      name: "Dr. Ananya Shenoy",
+      role: "Ph.D in Materials Science",
+      batch: "Doctoral Fellow",
+      rating: 5,
+      avatar: "AS"
+    },
+    {
+      id: "t4",
+      quote:
+        "The central library archives, high-speed computing labs, and corporate placement drives paved my way to a top multinational fintech career.",
+      name: "Naveen D'Souza",
+      role: "Master of Business Admin (MBA)",
+      batch: "Batch of 2024",
+      rating: 5,
+      avatar: "ND"
+    },
+    {
+      id: "t5",
+      quote:
+        "World-class athletics synthetic track and specialized sports science faculties enabled me to represent Karnataka at national university games.",
+      name: "Sahana Acharya",
+      role: "Master of Physical Education",
+      batch: "Batch of 2023",
+      rating: 5,
+      avatar: "SA"
     }
   ];
 
-  // Official News & Circulars Data
-  const newsItems = [
+  // Academic Faculties Data for Horizontal Scrollable Showcase
+  const faculties = [
     {
+      id: "arts",
+      title: "Faculty of Arts",
+      category: "HUMANITIES & SOCIAL SCIENCES",
+      deptCount: "8 Departments",
+      image: "/faculty-arts.jpg",
+      color: "#6B3E26", // Warm terracotta / mahogany
+      badgeBg: "rgba(107, 62, 38, 0.9)",
+      desc: "Nurturing critical inquiry, literary traditions, regional historiography, and contemporary socio-cultural dialogues.",
+      link: "#faculty-arts",
+      programmes: [
+        "English Language & Literature",
+        "Kannada & Regional Heritage",
+        "History & Archaeology",
+        "Economics & Development Studies",
+        "Mass Communication & Journalism",
+        "Sociology & Social Work (MSW)"
+      ]
+    },
+    {
+      id: "science",
+      title: "Science & Technology",
+      category: "PHYSICAL & LIFE SCIENCES",
+      deptCount: "17 Departments",
+      image: "/faculty-science.jpg",
+      color: "#0F4C81", // Deep Cobalt
+      badgeBg: "rgba(15, 76, 129, 0.9)",
+      desc: "Pioneering frontier laboratory research in materials science, biosciences, atomic energy, and computing algorithms.",
+      link: "#faculty-science",
+      programmes: [
+        "Physics & Materials Science",
+        "Applied Chemistry & Biochemistry",
+        "Biosciences & Biotechnology",
+        "Computer Science (M.Sc. & MCA)",
+        "Mathematics & Statistics",
+        "Electronics & Applied Physics"
+      ]
+    },
+    {
+      id: "commerce",
+      title: "Faculty of Commerce",
+      category: "MANAGEMENT & CORPORATE STUDIES",
+      deptCount: "2 Departments",
+      image: "/faculty-commerce.jpg",
+      color: "#1E5F74", // Slate Teal
+      badgeBg: "rgba(30, 95, 116, 0.9)",
+      desc: "Cultivating ethical business leadership, strategic managerial competence, and modern fintech expertise.",
+      link: "#faculty-commerce",
+      programmes: [
+        "Master of Commerce (M.Com)",
+        "Master of Business Admin (MBA)",
+        "Finance & Banking Technology",
+        "International Trade & Logistics",
+        "Human Resource Management",
+        "Doctoral Research in Commerce"
+      ]
+    },
+    {
+      id: "education",
+      title: "Faculty of Education",
+      category: "PEDAGOGY & SPORTS SCIENCE",
+      deptCount: "2 Departments",
+      image: "/faculty-education.jpg",
+      color: "#7D4E57", // Rosewood Plum
+      badgeBg: "rgba(125, 78, 87, 0.9)",
+      desc: "Advancing pedagogical methodologies, educational psychology, physical education, and athletic performance sciences.",
+      link: "#faculty-education",
+      programmes: [
+        "Master of Education (M.Ed)",
+        "Physical Education (M.P.Ed)",
+        "Sports Science & Biomechanics",
+        "Curriculum Design & Evaluation",
+        "Educational Technology Lab",
+        "Athletic Performance Centre"
+      ]
+    },
+    {
+      id: "marine",
+      title: "Marine & Coastal Studies",
+      category: "OCEANOGRAPHY & EARTH SCIENCES",
+      deptCount: "3 Research Units",
+      image: "/faculty-marine.jpg",
+      color: "#0E5A6A", // Marine Cyan / Deep Aqua
+      badgeBg: "rgba(14, 90, 106, 0.9)",
+      desc: "Leveraging coastal Karnataka's shoreline for frontier oceanographic explorations, marine geology, and coastal ecosystem preservation.",
+      link: "#faculty-marine",
+      programmes: [
+        "Marine Geology & Oceanography",
+        "Coastal Geomorphology & Sediments",
+        "Marine Geophysics & Bathymetry",
+        "Arabian Sea Ecology Station",
+        "Coastal Zone Monitoring Unit"
+      ]
+    }
+  ];
+
+  // Featured News & Official Circulars Data
+  const featuredStory = {
+    category: "CONVOCATION & DISTINCTION",
+    date: "SEP 18, 2026",
+    title: "44th Annual Grand Convocation Ceremony Announced at Mangalagangothri",
+    desc: "Hon'ble Chancellor and eminent scholars will confer doctoral degrees, academic gold medals, and honorary doctorates to distinguished achievers across 26 departments.",
+    image: "/news-featured.jpg",
+    link: "#convocation-2026"
+  };
+
+  const secondaryNews = [
+    {
+      id: "news-1",
       date: "SEP 15, 2026",
       category: "Admissions",
-      title: "Ph.D Entrance Examination 2026 Notification & Syllabus Guidelines",
-      desc: "Detailed schedule, eligibility criteria, vacancy matrix across 26 PG departments, and examination centre guidelines."
+      title: "Ph.D Entrance Examination 2026 Notification & Syllabus Matrix",
+      desc: "Detailed schedule, vacancy matrix across 26 PG departments, and syllabus guidelines.",
+      image: "/news-thumb-1.jpg",
+      link: "#phd-admission"
     },
     {
+      id: "news-2",
+      date: "SEP 11, 2026",
+      category: "Research",
+      title: "BRNS & DAE Grant ₹4.8 Cr Sanctioned for Microtron Radiation Facility",
+      desc: "Advanced electron accelerator laboratory to expand research in materials modification and polymer physics.",
+      image: "/news-thumb-2.jpg",
+      link: "#microtron-grant"
+    },
+    {
+      id: "news-3",
       date: "SEP 08, 2026",
       category: "Examinations",
-      title: "Postgraduate Common Entrance Test (PGCET) Calendar & Verification",
-      desc: "Revised schedule for centralized university counseling, merit list publication, and mandatory document verification."
+      title: "Postgraduate Common Entrance (PGCET) Calendar & Verification",
+      desc: "Revised schedule for centralized university counseling and mandatory document verification.",
+      image: "/news-thumb-1.jpg",
+      link: "#pgcet-schedule"
     },
     {
+      id: "news-4",
+      date: "SEP 02, 2026",
+      category: "Sports & Athletics",
+      title: "All India Inter-University Athletics Championship Selection Trials",
+      desc: "Mangalore University athletic contingent trials to be held at the 400m synthetic track stadium.",
+      image: "/news-thumb-3.jpg",
+      link: "#athletics-trials"
+    },
+    {
+      id: "news-5",
       date: "AUG 28, 2026",
-      category: "Results",
-      title: "Revaluation & Result Scrutiny Applications — Even Semester 2026",
-      desc: "Last date for online submission of revaluation requests extended for undergraduate and postgraduate courses."
+      category: "Academic Library",
+      title: "e-ShodhSindhu & INFLIBNET Digital Journal Portal Expanded for Scholars",
+      desc: "Access to over 15,000+ peer-reviewed international journals enabled across campus Wi-Fi network.",
+      image: "/news-thumb-4.jpg",
+      link: "#library-portal"
     },
     {
+      id: "news-6",
       date: "AUG 14, 2026",
-      category: "General",
-      title: "Official Release of University Prospectus & Academic Calendar 2026–2027",
-      desc: "Comprehensive handbook detailing CBCS curriculum regulations, term dates, fee structures, and campus statutes."
+      category: "Official Circular",
+      title: "University Prospectus & Academic Calendar 2026–2027 Handbook Released",
+      desc: "Comprehensive handbook detailing CBCS curriculum regulations, term dates, and examination statutes.",
+      image: "/campus-heritage.jpg",
+      link: "#academic-handbook"
     }
   ];
 
@@ -222,48 +497,82 @@ export default function App() {
       </header>
 
       {/* =========================================================================
-          SECTION 03: Hero / Introduction
+          SECTION 03: Hero / Introduction (Refined Compact Carousel with Lower-Left Alignment)
           ========================================================================= */}
-      <section className="mu-hero-section">
-        <div className="mu-container mu-hero-grid">
-          {/* Hero Left Column */}
-          <div className="mu-hero-content">
-            <div className="mu-fade-in-1">
-              <span className="mu-eyebrow">ESTD. 1980 • MANGALAGANGOTHRI</span>
-              <h1 className="mu-hero-headline">
-                Four decades of learning where the river meets the sea.
-              </h1>
-            </div>
-            
-            <p className="mu-hero-subtext mu-fade-in-2">
-              Spanning 353 acres atop the scenic Konaje hillocks, Mangalore University is a NAAC A++ accredited premier state institution with 26 postgraduate departments, internationally recognized nuclear research centres, and 204 affiliated colleges across coastal Karnataka.
-            </p>
-
-            <div className="mu-hero-actions mu-fade-in-3">
-              <a href="#admissions" className="mu-btn mu-btn-gold">
-                Apply for Admission <ArrowRight size={16} />
-              </a>
-              <a href="#academics" className="mu-btn mu-btn-outline">
-                View Programmes
-              </a>
-            </div>
-          </div>
-
-          {/* Hero Right Framed Media */}
-          <div className="mu-hero-media-wrapper mu-fade-in-3">
-            <div className="mu-hero-frame-border"></div>
-            <div className="mu-hero-image-card">
+      <section className="mu-hero-fullscreen" aria-label="Mangalore University Campus Showcase">
+        {/* Full-Screen Photographic Carousel Background with Smooth Crossfade */}
+        <div className="mu-hero-carousel-bg">
+          {heroSlides.map((slide, idx) => (
+            <div
+              key={slide.image}
+              className={`mu-hero-carousel-slide ${idx === heroSlide ? 'mu-hero-slide-active' : ''}`}
+              aria-hidden={idx !== heroSlide}
+            >
               <img
-                src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80"
-                alt="Mangalore University Main Administrative Complex"
-                className="mu-hero-img"
+                src={slide.image}
+                alt={slide.title}
+                className="mu-hero-carousel-img"
               />
-              <div className="mu-hero-badge">
-                <Award size={20} className="mu-badge-icon" />
-                <div>
-                  <strong>NAAC A++ Accredited</strong>
-                  <span>353-Acre Verdant Campus</span>
-                </div>
+            </div>
+          ))}
+          {/* Refined Gradient Overlay: Left & Bottom dark navy for crystal-clear readability */}
+          <div className="mu-hero-fullscreen-overlay"></div>
+        </div>
+
+        {/* Compact, Refined Text Block Vertically Aligned Toward Lower-Left Bottom */}
+        <div className="mu-container mu-hero-fullscreen-content">
+          <div className="mu-hero-text-panel">
+            <div className="mu-hero-badge-row">
+              <span className="mu-hero-pill-tag">ACCREDITED GRADE 'A' BY NAAC</span>
+              <span className="mu-hero-pill-divider">•</span>
+              <span className="mu-hero-pill-estd">ESTD. 1980</span>
+            </div>
+
+            <h1 className="mu-hero-fullscreen-headline">
+              Excellence in Higher Learning &amp; Coastal Research
+            </h1>
+
+            <p className="mu-hero-fullscreen-subtext">
+              Chartered across 353 hilltop acres, fostering 26 postgraduate departments and frontier atomic research facilities.
+            </p>
+          </div>
+        </div>
+
+        {/* =========================================================================
+            FLASH NEWS TICKER (Embedded at the Bottom of Hero Section)
+            ========================================================================= */}
+        <div className="mu-ticker-band">
+          <div className="mu-container mu-ticker-container">
+            <div className="mu-ticker-badge">
+              <span className="mu-ticker-dot"></span>
+              <span className="mu-ticker-badge-text">FLASH NEWS</span>
+            </div>
+            <div className="mu-ticker-track">
+              <div className="mu-ticker-content">
+                <a href="#news" className="mu-ticker-item">
+                  <span className="mu-ticker-date">NEW</span>
+                  Ph.D Entrance Examination 2026–27 notification and center guidelines published.
+                </a>
+                <span className="mu-ticker-sep">•</span>
+                <a href="#news" className="mu-ticker-item">
+                  <span className="mu-ticker-date">ANNOUNCEMENT</span>
+                  Postgraduate Common Entrance Test (PGCET) centralized counselling schedule updated.
+                </a>
+                <span className="mu-ticker-sep">•</span>
+                <a href="#news" className="mu-ticker-item">
+                  <span className="mu-ticker-date">EXAM</span>
+                  Last date for submission of revaluation forms for Even Semester extended.
+                </a>
+                <span className="mu-ticker-sep">•</span>
+                <a href="#news" className="mu-ticker-item">
+                  <span className="mu-ticker-date">ACADEMIC</span>
+                  Official University Prospectus & CBCS Calendar 2026–2027 released.
+                </a>
+                <span className="mu-ticker-sep">•</span>
+                <a href="#news" className="mu-ticker-item">
+                  <span className="mu-ticker-date">ADMISSION</span>
+                  Karnataka UUCMS Portal open for 1st Semester PG/UG applications.
+                </a>
               </div>
             </div>
           </div>
@@ -271,12 +580,12 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          SECTION 04: About Mangalore University & Vice-Chancellor's Message
+          SECTION 04: About Mangalore University
           ========================================================================= */}
       <section id="about" className="mu-section mu-bg-paper">
         <div className="mu-container">
           <div className="mu-about-grid">
-            {/* Left Narrative & VC Card */}
+            {/* Left Narrative */}
             <div className="mu-about-text">
               <span className="mu-eyebrow">ABOUT THE UNIVERSITY</span>
               <h2 className="mu-heading">From a postgraduate centre to a premier coastal institution</h2>
@@ -287,22 +596,7 @@ export default function App() {
                 Today, the university encompasses 26 postgraduate departments on its main campus, offering advanced interdisciplinary research, frontier laboratory infrastructure, and comprehensive academic jurisdiction across Dakshina Kannada, Udupi, and Kodagu districts.
               </p>
 
-              <div className="mu-about-vc-card">
-                <div className="mu-vc-header">
-                  <div className="mu-vc-avatar">
-                    <Building2 size={24} color="var(--gold)" />
-                  </div>
-                  <div>
-                    <h4 className="mu-vc-title">Vice-Chancellor's Message</h4>
-                    <span className="mu-vc-sub">Prof. P. L. Dharma, Vice-Chancellor</span>
-                  </div>
-                </div>
-                <p className="mu-vc-quote">
-                  "Our vision is to evolve as a centre of academic excellence and holistic human development, nurturing global competence anchored in ethics, cultural heritage, and frontier research."
-                </p>
-              </div>
-
-              <a href="#history" className="mu-link-arrow" style={{ marginTop: '16px' }}>
+              <a href="#history" className="mu-link-arrow" style={{ marginTop: '8px' }}>
                 Read our full history & vision <ArrowRight size={15} />
               </a>
             </div>
@@ -311,8 +605,8 @@ export default function App() {
             <div className="mu-about-media">
               <div className="mu-about-image-wrapper">
                 <img
-                  src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80"
-                  alt="University Library and Heritage"
+                  src="/campus-heritage.jpg"
+                  alt="Mangalore University Heritage & Academic Library"
                   className="mu-about-img"
                 />
                 <div className="mu-about-milestone">
@@ -326,29 +620,77 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          SECTION 05: At a Glance (Stats Band)
+          SECTION 04B: Vice-Chancellor's Message (Minimalist Editorial Two-Column)
+          ========================================================================= */}
+      <section id="vc-message" className="mu-vc-editorial-section">
+        <div className="mu-container">
+          <div className="mu-vc-editorial-grid">
+            {/* Left Column: Portrait Cutout with Soft Bottom Fade + Name & Designation */}
+            <div className="mu-vc-portrait-col">
+              <div className="mu-vc-cutout-frame">
+                <img
+                  src="/vc-portrait.png"
+                  alt="Prof. P. L. Dharma, Vice-Chancellor of Mangalore University"
+                  className="mu-vc-cutout-img"
+                />
+                <div className="mu-vc-cutout-bottom-fade"></div>
+              </div>
+
+              <div className="mu-vc-signoff-block">
+                <h4 className="mu-vc-signoff-name">Prof. P. L. Dharma</h4>
+                <span className="mu-vc-signoff-title">Vice-Chancellor</span>
+                <span className="mu-vc-signoff-inst">Mangalore University</span>
+              </div>
+            </div>
+
+            {/* Right Column: Eyebrow, Gold Quotation Mark & Message Content */}
+            <div className="mu-vc-message-col">
+              <div className="mu-vc-header-row">
+                <span className="mu-eyebrow mu-vc-eyebrow-accent">VICE-CHANCELLOR'S MESSAGE</span>
+                <Quote size={32} className="mu-vc-editorial-quote-mark" />
+              </div>
+
+              <h3 className="mu-vc-editorial-lead">
+                “Fostering global academic competence anchored in cultural heritage, ethical rigor, and frontier scientific discovery.”
+              </h3>
+
+              <div className="mu-vc-editorial-body">
+                <p>
+                  Mangalore University stands at the confluence of rich coastal intellectual traditions and modern research innovation. Over four decades, our scholars and faculty have driven impactful advancements across sciences, humanities, management, and oceanography.
+                </p>
+                <p>
+                  We are committed to nurturing an inclusive, forward-looking academic ecosystem where curious minds explore multidisciplinary boundaries, pioneer sustainable solutions, and contribute meaningfully to society and the nation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 05: At a Glance (Stats Band with Smooth Count-Up)
           ========================================================================= */}
       <section ref={statsRef} className="mu-section-tight mu-bg-mist mu-stats-section">
         <div className="mu-container">
           <div className="mu-stats-grid">
             <div className="mu-stat-card">
-              <div className="mu-stat-number">{statsCounted ? '45+' : '0+'}</div>
+              <div className="mu-stat-number">{statCounts.years}+</div>
               <div className="mu-stat-label">Years of Academic Excellence</div>
             </div>
             <div className="mu-stat-card">
-              <div className="mu-stat-number">{statsCounted ? '26' : '0'}</div>
+              <div className="mu-stat-number">{statCounts.pgDepts}</div>
               <div className="mu-stat-label">Postgraduate Departments</div>
             </div>
             <div className="mu-stat-card">
-              <div className="mu-stat-number">{statsCounted ? '204' : '0'}</div>
+              <div className="mu-stat-number">{statCounts.colleges}</div>
               <div className="mu-stat-label">Affiliated Colleges</div>
             </div>
             <div className="mu-stat-card">
-              <div className="mu-stat-number">{statsCounted ? '353' : '0'}</div>
+              <div className="mu-stat-number">{statCounts.acres}</div>
               <div className="mu-stat-label">Acres of Verdant Campus</div>
             </div>
             <div className="mu-stat-card mu-stat-card-last">
-              <div className="mu-stat-number">{statsCounted ? '5' : '0'}</div>
+              <div className="mu-stat-number">{statCounts.autonomous}</div>
               <div className="mu-stat-label">Autonomous Colleges</div>
             </div>
           </div>
@@ -356,269 +698,526 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          SECTION 06: Academics & Degrees
+          SECTION 06: Academics & Degrees (Screen-Fit Modern Card Grid)
           ========================================================================= */}
-      <section id="academics" className="mu-section mu-bg-paper">
+      <section id="academics" className="mu-section mu-bg-paper mu-faculty-section">
         <div className="mu-container">
           <div className="mu-section-header">
             <div>
               <span className="mu-eyebrow">ACADEMIC EXCELLENCE</span>
               <h2 className="mu-heading">Academics, Faculties & Degrees</h2>
             </div>
-            <p className="mu-body-lead">
-              Offering Master's (M.A., M.Sc., M.Com, M.Ed, MBA, MCA), Doctoral (Ph.D), and Postgraduate Diploma programmes under the Choice Based Credit System (CBCS).
-            </p>
           </div>
 
-          <div className="mu-faculties-grid">
-            {/* Faculty of Arts */}
-            <div className="mu-faculty-card">
-              <div className="mu-faculty-header">
-                <span className="mu-faculty-count">8 Departments</span>
-                <h3 className="mu-faculty-title">Faculty of Arts</h3>
-              </div>
-              <ul className="mu-dept-list">
-                <li>English Language & Literature</li>
-                <li>Kannada & Regional Heritage</li>
-                <li>History & Archaeology</li>
-                <li>Economics & Development Studies</li>
-                <li>Mass Communication & Journalism</li>
-                <li>Sociology & Social Work (MSW)</li>
-              </ul>
-              <a href="#faculty-arts" className="mu-faculty-link">
-                Explore Arts Programmes <ArrowUpRight size={16} />
-              </a>
-            </div>
+          <div className="mu-faculty-grid">
+            {faculties.map((fac) => (
+              <div key={fac.id} className="mu-faculty-hcard" style={{ '--accent-color': fac.color }}>
+                {/* Default State: Large Image + Category Badge + Title + Description */}
+                <div className="mu-hcard-image-wrap">
+                  <img src={fac.image} alt={fac.title} className="mu-hcard-img" />
+                  <div className="mu-hcard-top-gradient"></div>
+                  <span className="mu-hcard-badge" style={{ backgroundColor: fac.badgeBg }}>
+                    {fac.deptCount}
+                  </span>
+                </div>
 
-            {/* Faculty of Science & Tech */}
-            <div className="mu-faculty-card">
-              <div className="mu-faculty-header">
-                <span className="mu-faculty-count">17 Departments</span>
-                <h3 className="mu-faculty-title">Science & Technology</h3>
-              </div>
-              <ul className="mu-dept-list">
-                <li>Physics & Materials Science</li>
-                <li>Applied Chemistry & Biochemistry</li>
-                <li>Marine Geology & Oceanography</li>
-                <li>Biosciences & Biotechnology</li>
-                <li>Computer Science (M.Sc. & MCA)</li>
-                <li>Mathematics & Statistics</li>
-              </ul>
-              <a href="#faculty-science" className="mu-faculty-link">
-                Explore Science Programmes <ArrowUpRight size={16} />
-              </a>
-            </div>
+                <div className="mu-hcard-content">
+                  <span className="mu-hcard-category">{fac.category}</span>
+                  <h3 className="mu-hcard-title">{fac.title}</h3>
+                  <p className="mu-hcard-desc">{fac.desc}</p>
+                </div>
 
-            {/* Faculty of Commerce */}
-            <div className="mu-faculty-card">
-              <div className="mu-faculty-header">
-                <span className="mu-faculty-count">2 Departments</span>
-                <h3 className="mu-faculty-title">Faculty of Commerce</h3>
-              </div>
-              <ul className="mu-dept-list">
-                <li>Master of Commerce (M.Com)</li>
-                <li>Master of Business Admin (MBA)</li>
-                <li>Finance & Banking Technology</li>
-                <li>International Trade & Logistics</li>
-                <li>Human Resource Management</li>
-                <li>Doctoral Research in Commerce</li>
-              </ul>
-              <a href="#faculty-commerce" className="mu-faculty-link">
-                Explore Commerce Programmes <ArrowUpRight size={16} />
-              </a>
-            </div>
+                {/* Hover State: Deep Navy / Dark Overlay with Detailed Programme List */}
+                <div className="mu-hcard-hover-overlay">
+                  <div className="mu-hcard-hover-header">
+                    <span className="mu-hcard-hover-category">{fac.category}</span>
+                    <h3 className="mu-hcard-hover-title">{fac.title}</h3>
+                  </div>
 
-            {/* Faculty of Education */}
-            <div className="mu-faculty-card">
-              <div className="mu-faculty-header">
-                <span className="mu-faculty-count">2 Departments</span>
-                <h3 className="mu-faculty-title">Faculty of Education</h3>
+                  <p className="mu-hcard-hover-desc">{fac.desc}</p>
+
+                  <div className="mu-hcard-hover-progs">
+                    <span className="mu-hcard-prog-label">Key Departments & Programmes:</span>
+                    <ul className="mu-hcard-prog-list">
+                      {fac.programmes.map((prog, idx) => (
+                        <li key={idx}>
+                          <span className="mu-hcard-prog-bullet">•</span>
+                          {prog}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <a href={fac.link} className="mu-hcard-hover-link">
+                    Explore Programmes <ArrowUpRight size={16} />
+                  </a>
+                </div>
               </div>
-              <ul className="mu-dept-list">
-                <li>Master of Education (M.Ed)</li>
-                <li>Physical Education (M.P.Ed)</li>
-                <li>Sports Science & Biomechanics</li>
-                <li>Curriculum Design & Evaluation</li>
-                <li>Educational Technology Lab</li>
-                <li>Athletic Performance Centre</li>
-              </ul>
-              <a href="#faculty-education" className="mu-faculty-link">
-                Explore Education Programmes <ArrowUpRight size={16} />
-              </a>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 07: Why Study at Mangalore University (Pillars)
+          SECTION 07: Why Study at Mangalore University (Asymmetrical Editorial Visual Grid)
           ========================================================================= */}
-      <section className="mu-section mu-bg-mist">
+      <section className="mu-section mu-bg-mist mu-why-study-section">
         <div className="mu-container">
           <div className="mu-section-header-center">
             <span className="mu-eyebrow">INSTITUTIONAL DISTINCTION</span>
             <h2 className="mu-heading">Why Study at Mangalore University</h2>
-            <p className="mu-body-lead" style={{ margin: '0 auto' }}>
-              A confluence of traditional scholarly rigor, national-grade research infrastructure, and holistic student growth.
-            </p>
           </div>
 
-          <div className="mu-pillars-grid">
-            {/* Pillar 1 */}
-            <div className="mu-pillar-card">
-              <div className="mu-pillar-icon-badge">
-                <GraduationCap size={24} />
+          <div className="mu-why-asym-grid">
+            {/* Block 1: Academic Excellence (Tall Hero Card on Left) */}
+            <div className="mu-why-card mu-why-card-tall">
+              <div className="mu-why-image-wrapper">
+                <img
+                  src="/why-academic.jpg"
+                  alt="Academic Excellence & Choice Based Credit System at Mangalore University"
+                  className="mu-why-img"
+                />
+                <div className="mu-why-gradient"></div>
               </div>
-              <h3 className="mu-pillar-title">Academic Excellence & CBCS</h3>
-              <p className="mu-pillar-desc">
-                Dynamic Choice Based Credit System offering flexibility across disciplines, industry-relevant syllabi, continuous internal assessment, and interdisciplinary electives.
-              </p>
+              <div className="mu-why-content-panel">
+                <span className="mu-why-eyebrow">CURRICULUM & PEDAGOGY</span>
+                <h3 className="mu-why-title">Academic Excellence & CBCS Flexibility</h3>
+                <p className="mu-why-desc">
+                  Dynamic Choice Based Credit System offering flexibility across disciplines, industry-relevant syllabi, and interdisciplinary electives mentored by senior scholars.
+                </p>
+              </div>
+              {/* Hover Detail Overlay */}
+              <div className="mu-why-hover-overlay">
+                <span className="mu-why-hover-badge">ACADEMIC RIGOR</span>
+                <h3 className="mu-why-hover-title">Academic Excellence & CBCS Flexibility</h3>
+                <p className="mu-why-hover-desc">
+                  With 26 postgraduate departments and 204 affiliated institutions, Mangalore University pairs time-tested academic foundations with cutting-edge semester choice credits, seminars, and comprehensive continuous assessment.
+                </p>
+                <div className="mu-why-hover-metric">
+                  <span className="mu-why-metric-val">26 PG Departments</span>
+                  <span className="mu-why-metric-lbl">Under CBCS Framework</span>
+                </div>
+              </div>
             </div>
 
-            {/* Pillar 2 */}
-            <div className="mu-pillar-card">
-              <div className="mu-pillar-icon-badge">
-                <Microscope size={24} />
+            {/* Right Column: Two stacked blocks with varied rhythm */}
+            <div className="mu-why-right-stack">
+              {/* Block 2: Frontier Research (Wide Horizontal Aspect) */}
+              <div className="mu-why-card mu-why-card-wide">
+                <div className="mu-why-image-wrapper">
+                  <img
+                    src="/why-research.jpg"
+                    alt="Frontier Radiation & Marine Research Facilities"
+                    className="mu-why-img"
+                  />
+                  <div className="mu-why-gradient"></div>
+                </div>
+                <div className="mu-why-content-panel">
+                  <span className="mu-why-eyebrow">DISCOVERY & INNOVATION</span>
+                  <h3 className="mu-why-title">Frontier Research & National Centres</h3>
+                  <p className="mu-why-desc">
+                    High-impact scientific research funded by DST, DBT, BRNS, and AERB with dedicated Microtron particle accelerator, CARRT, and marine laboratories.
+                  </p>
+                </div>
+                {/* Hover Detail Overlay */}
+                <div className="mu-why-hover-overlay">
+                  <span className="mu-why-hover-badge">NATIONAL IMPACT</span>
+                  <h3 className="mu-why-hover-title">Frontier Research & National Centres</h3>
+                  <p className="mu-why-hover-desc">
+                    Home to pioneering nuclear research installations, radiation technology applications, and coastal oceanographic stations conducting sponsored investigations.
+                  </p>
+                  <div className="mu-why-hover-metric">
+                    <span className="mu-why-metric-val">₹40+ Cr Grants</span>
+                    <span className="mu-why-metric-lbl">From DST, BRNS & UGC</span>
+                  </div>
+                </div>
               </div>
-              <h3 className="mu-pillar-title">Frontier Research & Heritage</h3>
-              <p className="mu-pillar-desc">
-                High-impact scientific research funded by DST, DBT, BRNS, and UGC with dedicated radiation, marine, and bio-science research centres.
-              </p>
-            </div>
 
-            {/* Pillar 3 */}
-            <div className="mu-pillar-card">
-              <div className="mu-pillar-icon-badge">
-                <Trees size={24} />
+              {/* Block 3: Campus Life & Belonging (Balanced Coastal Atmosphere) */}
+              <div className="mu-why-card mu-why-card-wide">
+                <div className="mu-why-image-wrapper">
+                  <img
+                    src="/why-campus.jpg"
+                    alt="Student Belonging & Coastal Hilltop Campus Life"
+                    className="mu-why-img"
+                  />
+                  <div className="mu-why-gradient"></div>
+                </div>
+                <div className="mu-why-content-panel">
+                  <span className="mu-why-eyebrow">CAMPUS & ECOSYSTEM</span>
+                  <h3 className="mu-why-title">Vibrant Coastal Hilltop Community</h3>
+                  <p className="mu-why-desc">
+                    A secure 353-acre hilltop campus with panoramic vistas of the Western Ghats and Arabian Sea, active cultural societies, and athletic sports pavilions.
+                  </p>
+                </div>
+                {/* Hover Detail Overlay */}
+                <div className="mu-why-hover-overlay">
+                  <span className="mu-why-hover-badge">STUDENT LIFE</span>
+                  <h3 className="mu-why-hover-title">Vibrant Coastal Hilltop Community</h3>
+                  <p className="mu-why-hover-desc">
+                    An inspiring environment where academic life intersects with botanical gardens, Olympic-standard athletics, modernized residential hostels, and student welfare councils.
+                  </p>
+                  <div className="mu-why-hover-metric">
+                    <span className="mu-why-metric-val">353 Acres</span>
+                    <span className="mu-why-metric-lbl">Verdant Hilltop Canopy</span>
+                  </div>
+                </div>
               </div>
-              <h3 className="mu-pillar-title">Student Belonging & Community</h3>
-              <p className="mu-pillar-desc">
-                An inclusive, secure 353-acre hilltop environment with active cultural societies, national sports championships, subsidized hostels, and student welfare councils.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 08: Campus & Infrastructure
+          SECTION 08: Campus & Infrastructure (Single-Screen Editorial Bento Grid)
           ========================================================================= */}
-      <section id="infrastructure" className="mu-section mu-bg-paper">
+      <section id="infrastructure" className="mu-section-compact mu-bg-paper mu-infra-editorial-section">
         <div className="mu-container">
-          <div className="mu-section-header">
+          <div className="mu-infra-header-row">
             <div>
               <span className="mu-eyebrow">WORLD-CLASS AMENITIES</span>
-              <h2 className="mu-heading">Campus & Infrastructure</h2>
+              <h2 className="mu-heading-tight">Campus & Infrastructure</h2>
             </div>
-            <p className="mu-body-lead">
-              State-of-the-art facilities designed to foster holistic academic, research, athletic, and residential life.
-            </p>
+            <span className="mu-infra-tagline">
+              State-of-the-art facilities designed for academic excellence, athletics, and vibrant student living.
+            </span>
           </div>
 
-          <div className="mu-infra-grid">
-            {/* Infra Card 1 */}
-            <div className="mu-infra-card">
-              <div className="mu-infra-icon-box"><Library size={22} /></div>
-              <h3 className="mu-infra-title">Central Library</h3>
-              <p className="mu-infra-desc">Over 250,000 volumes, 300+ print journals, INFLIBNET access, e-ShodhSindhu portal, and 24/7 digital reading halls.</p>
+          <div className="mu-infra-bento-grid">
+            {/* Block 1: Central Library (Dominant Hero Feature on Left) */}
+            <div className="mu-infra-bento-card mu-infra-bento-hero">
+              <div className="mu-infra-img-wrap">
+                <img
+                  src="/news-thumb-4.jpg"
+                  alt="Central Library & Knowledge Hub"
+                  className="mu-infra-img"
+                />
+                <div className="mu-infra-gradient-base"></div>
+              </div>
+
+              {/* Default Content */}
+              <div className="mu-infra-content">
+                <div className="mu-infra-tag-row">
+                  <span className="mu-infra-badge">CAMPUS HEART</span>
+                  <Library size={16} className="mu-infra-badge-icon" />
+                </div>
+                <h3 className="mu-infra-title">Central Library & Knowledge Hub</h3>
+                <p className="mu-infra-desc">
+                  250,000+ volumes, 300+ print journals, INFLIBNET access, and 24/7 digital reading halls.
+                </p>
+              </div>
+
+              {/* Hover Overlay */}
+              <div className="mu-infra-hover-panel">
+                <span className="mu-infra-hover-badge">ACADEMIC RESOURCE</span>
+                <h3 className="mu-infra-hover-title">Central Library & Digital Hub</h3>
+                <p className="mu-infra-hover-desc">
+                  RFID automation, centralized OPAC search, doctoral research cubicles, and national library network access.
+                </p>
+                <div className="mu-infra-hover-metric">
+                  <span className="mu-infra-metric-val">250K+ Volumes</span>
+                  <span className="mu-infra-metric-lbl">24/7 Scholar Access</span>
+                </div>
+              </div>
             </div>
 
-            {/* Infra Card 2 */}
-            <div className="mu-infra-card">
-              <div className="mu-infra-icon-box"><Trophy size={22} /></div>
-              <h3 className="mu-infra-title">Sports Complex & Stadium</h3>
-              <p className="mu-infra-desc">400m synthetic athletic track, indoor sports pavilion, gymnasium, basketball & tennis courts supporting national athletes.</p>
-            </div>
+            {/* Right 5-Grid Mosaic Container */}
+            <div className="mu-infra-bento-right">
+              {/* Row 1: Sports Complex (wide) + Hostels (compact) */}
+              <div className="mu-infra-bento-card mu-infra-card-sports">
+                <div className="mu-infra-img-wrap">
+                  <img
+                    src="/news-thumb-3.jpg"
+                    alt="Sports Complex & Olympic Stadium"
+                    className="mu-infra-img"
+                  />
+                  <div className="mu-infra-gradient-base"></div>
+                </div>
 
-            {/* Infra Card 3 */}
-            <div className="mu-infra-card">
-              <div className="mu-infra-icon-box"><Home size={22} /></div>
-              <h3 className="mu-infra-title">Hostels & Residential Life</h3>
-              <p className="mu-infra-desc">Modern separate hostels for men, women, and research scholars with Wi-Fi, hygienic dining halls, and 24/7 security.</p>
-            </div>
+                <div className="mu-infra-content">
+                  <div className="mu-infra-tag-row">
+                    <span className="mu-infra-badge">ATHLETICS</span>
+                    <Trophy size={15} className="mu-infra-badge-icon" />
+                  </div>
+                  <h3 className="mu-infra-title">Sports Complex & Stadium</h3>
+                  <p className="mu-infra-desc">
+                    400m synthetic athletic track, indoor pavilion, gymnasium, and tennis courts.
+                  </p>
+                </div>
 
-            {/* Infra Card 4 */}
-            <div className="mu-infra-card">
-              <div className="mu-infra-icon-box"><Laptop size={22} /></div>
-              <h3 className="mu-infra-title">ICT & Computing Centre</h3>
-              <p className="mu-infra-desc">Campus-wide optical fiber network, high-performance computing clusters, smart classrooms, and centralized data facilities.</p>
-            </div>
+                <div className="mu-infra-hover-panel">
+                  <span className="mu-infra-hover-badge">OLYMPIC STANDARD</span>
+                  <h3 className="mu-infra-hover-title">Sports Complex & Stadium</h3>
+                  <p className="mu-infra-hover-desc">
+                    Home to national champion athletes, equipped with synthetic tracks and floodlit arenas.
+                  </p>
+                  <div className="mu-infra-hover-metric">
+                    <span className="mu-infra-metric-val">400m Synthetic</span>
+                    <span className="mu-infra-metric-lbl">Multi-Sport Pavilion</span>
+                  </div>
+                </div>
+              </div>
 
-            {/* Infra Card 5 */}
-            <div className="mu-infra-card">
-              <div className="mu-infra-icon-box"><HeartPulse size={22} /></div>
-              <h3 className="mu-infra-title">University Health Centre</h3>
-              <p className="mu-infra-desc">Dedicated medical facility providing primary healthcare, 24/7 emergency response, pharmacy, and diagnostic services for students and staff.</p>
-            </div>
+              <div className="mu-infra-bento-card mu-infra-card-hostels">
+                <div className="mu-infra-img-wrap">
+                  <img
+                    src="/faculty-arts.jpg"
+                    alt="Hostels & Residential Life"
+                    className="mu-infra-img"
+                  />
+                  <div className="mu-infra-gradient-base"></div>
+                </div>
 
-            {/* Infra Card 6 */}
-            <div className="mu-infra-card">
-              <div className="mu-infra-icon-box"><Compass size={22} /></div>
-              <h3 className="mu-infra-title">Botanical Garden & Arboretum</h3>
-              <p className="mu-infra-desc">Sprawling arboretum conserving endemic Western Ghats flora, medicinal plant gardens, and green energy solar installations.</p>
+                <div className="mu-infra-content">
+                  <div className="mu-infra-tag-row">
+                    <span className="mu-infra-badge">RESIDENTIAL</span>
+                    <Home size={15} className="mu-infra-badge-icon" />
+                  </div>
+                  <h3 className="mu-infra-title">Hostels & Living</h3>
+                  <p className="mu-infra-desc">
+                    Separate halls for men, women, and research scholars with Wi-Fi.
+                  </p>
+                </div>
+
+                <div className="mu-infra-hover-panel">
+                  <span className="mu-infra-hover-badge">STUDENT LIVING</span>
+                  <h3 className="mu-infra-hover-title">Hostels & Living</h3>
+                  <p className="mu-infra-hover-desc">
+                    Hygienic dining halls, solar water heating, recreation rooms, and 24/7 security.
+                  </p>
+                  <div className="mu-infra-hover-metric">
+                    <span className="mu-infra-metric-val">6 Halls</span>
+                    <span className="mu-infra-metric-lbl">24/7 Wi-Fi & Security</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 2: 3 Compact Columns (ICT, Health Centre, Botanical Garden) */}
+              <div className="mu-infra-bento-card mu-infra-card-ict">
+                <div className="mu-infra-img-wrap">
+                  <img
+                    src="/news-thumb-1.jpg"
+                    alt="ICT & Computing Centre"
+                    className="mu-infra-img"
+                  />
+                  <div className="mu-infra-gradient-base"></div>
+                </div>
+
+                <div className="mu-infra-content">
+                  <div className="mu-infra-tag-row">
+                    <span className="mu-infra-badge">TECH</span>
+                    <Laptop size={15} className="mu-infra-badge-icon" />
+                  </div>
+                  <h3 className="mu-infra-title">ICT Centre</h3>
+                  <p className="mu-infra-desc">
+                    Campus optical fiber and HPC data facilities.
+                  </p>
+                </div>
+
+                <div className="mu-infra-hover-panel">
+                  <span className="mu-infra-hover-badge">DATA & NETWORKS</span>
+                  <h3 className="mu-infra-hover-title">ICT & Computing Centre</h3>
+                  <p className="mu-infra-hover-desc">
+                    1 Gbps dedicated NKN optical connectivity powering smart laboratories and campus servers.
+                  </p>
+                  <div className="mu-infra-hover-metric">
+                    <span className="mu-infra-metric-val">1 Gbps NKN</span>
+                    <span className="mu-infra-metric-lbl">HPC Data Core</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mu-infra-bento-card mu-infra-card-health">
+                <div className="mu-infra-img-wrap">
+                  <img
+                    src="/faculty-science.jpg"
+                    alt="University Health Centre"
+                    className="mu-infra-img"
+                  />
+                  <div className="mu-infra-gradient-base"></div>
+                </div>
+
+                <div className="mu-infra-content">
+                  <div className="mu-infra-tag-row">
+                    <span className="mu-infra-badge">WELLNESS</span>
+                    <HeartPulse size={15} className="mu-infra-badge-icon" />
+                  </div>
+                  <h3 className="mu-infra-title">Health Centre</h3>
+                  <p className="mu-infra-desc">
+                    Primary care, 24/7 emergency, and diagnostics.
+                  </p>
+                </div>
+
+                <div className="mu-infra-hover-panel">
+                  <span className="mu-infra-hover-badge">24/7 HEALTHCARE</span>
+                  <h3 className="mu-infra-hover-title">Health Centre</h3>
+                  <p className="mu-infra-hover-desc">
+                    Resident medical officers, diagnostic labs, pharmacy, and ambulance service.
+                  </p>
+                  <div className="mu-infra-hover-metric">
+                    <span className="mu-infra-metric-val">24/7 Care</span>
+                    <span className="mu-infra-metric-lbl">Emergency & Pharmacy</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mu-infra-bento-card mu-infra-card-botanical">
+                <div className="mu-infra-img-wrap">
+                  <img
+                    src="/why-campus.jpg"
+                    alt="Botanical Garden & Arboretum"
+                    className="mu-infra-img"
+                  />
+                  <div className="mu-infra-gradient-base"></div>
+                </div>
+
+                <div className="mu-infra-content">
+                  <div className="mu-infra-tag-row">
+                    <span className="mu-infra-badge">FLORA</span>
+                    <Compass size={15} className="mu-infra-badge-icon" />
+                  </div>
+                  <h3 className="mu-infra-title">Botanical Garden</h3>
+                  <p className="mu-infra-desc">
+                    Western Ghats flora, arboretum, and solar park.
+                  </p>
+                </div>
+
+                <div className="mu-infra-hover-panel">
+                  <span className="mu-infra-hover-badge">BIODIVERSITY</span>
+                  <h3 className="mu-infra-hover-title">Botanical Garden</h3>
+                  <p className="mu-infra-hover-desc">
+                    Living repository conserving endemic Western Ghats flora and medicinal plants.
+                  </p>
+                  <div className="mu-infra-hover-metric">
+                    <span className="mu-infra-metric-val">353 Acres</span>
+                    <span className="mu-infra-metric-lbl">Green Canopy</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 09: Nationally Recognized Research Centres
+          SECTION 09: Nationally Recognized Research Centres (Image-Led Editorial Cards)
           ========================================================================= */}
-      <section id="research" className="mu-section mu-bg-mist">
+      <section id="research" className="mu-section mu-bg-mist mu-research-section">
         <div className="mu-container">
           <div className="mu-section-header">
             <div>
               <span className="mu-eyebrow">PIONEERING DISCOVERY</span>
               <h2 className="mu-heading">Nationally Recognized Research Centres</h2>
             </div>
-            <p className="mu-body-lead">
-              Hosting prestigious national research facilities funded by DAE, DST, BRNS, and international research collaborations.
-            </p>
           </div>
 
-          <div className="mu-research-grid">
-            {/* Research Card 1 */}
-            <div className="mu-research-card">
-              <div className="mu-research-header">
-                <div className="mu-research-icon"><Radiation size={24} /></div>
-                <span className="mu-research-badge">DAE / BRNS Recognized</span>
-              </div>
-              <h3 className="mu-research-title">Microtron Centre</h3>
-              <p className="mu-research-desc">
-                An advanced electron accelerator facility established in collaboration with Raja Ramanna Centre for Advanced Technology (RRCAT) and Bhabha Atomic Research Centre (BARC) for radiation physics, materials modification, and polymer research.
-              </p>
-              <div className="mu-research-footer">
-                <span>Key Areas: Radiation Physics, Polymers, Electron Beam Tech</span>
-              </div>
-            </div>
+          <div className="mu-research-scroll-wrapper">
+            <div className="mu-research-card-grid">
+              {/* Card 1: Microtron Centre */}
+              <div className="mu-research-image-card">
+                <div className="mu-res-img-wrap">
+                  <img
+                    src="/news-thumb-2.jpg"
+                    alt="Microtron Centre — Advanced Electron Accelerator"
+                    className="mu-res-img"
+                  />
+                  <div className="mu-res-gradient-base"></div>
+                </div>
 
-            {/* Research Card 2 */}
-            <div className="mu-research-card">
-              <div className="mu-research-header">
-                <div className="mu-research-icon"><Atom size={24} /></div>
-                <span className="mu-research-badge">National Centre of Excellence</span>
-              </div>
-              <h3 className="mu-research-title">CARRT</h3>
-              <p className="mu-research-desc">
-                Centre for Application of Radioisotopes and Radiation Technology (CARRT) — conducting frontier research in medical physics, nuclear diagnostics, food irradiation, and radiation biology in partnership with BRNS and AERB.
-              </p>
-              <div className="mu-research-footer">
-                <span>Key Areas: Radiopharmacy, Food Preservation, Nuclear Medicine</span>
-              </div>
-            </div>
+                {/* Default Content */}
+                <div className="mu-res-content">
+                  <div className="mu-res-meta">
+                    <span className="mu-res-badge">DAE / BRNS RECOGNIZED</span>
+                    <div className="mu-res-icon-pill"><Radiation size={15} /></div>
+                  </div>
+                  <h3 className="mu-res-title">Microtron Centre</h3>
+                  <p className="mu-res-desc">
+                    Advanced electron accelerator facility for radiation physics, polymer modification, and nuclear research.
+                  </p>
+                </div>
 
-            {/* Research Card 3 */}
-            <div className="mu-research-card">
-              <div className="mu-research-header">
-                <div className="mu-research-icon"><Dna size={24} /></div>
-                <span className="mu-research-badge">Coastal Ecology & Marine</span>
+                {/* Hover Reveal Panel */}
+                <div className="mu-res-hover-panel">
+                  <span className="mu-res-hover-badge">PARTICLE ACCELERATOR</span>
+                  <h3 className="mu-res-hover-title">Microtron Centre</h3>
+                  <p className="mu-res-hover-desc">
+                    Established in collaboration with RRCAT and BARC, conducting frontier research in electron beam technology, radiation physics, and polymer modification.
+                  </p>
+                  <div className="mu-res-hover-footer">
+                    <span className="mu-res-footer-label">Key Research Domains:</span>
+                    <span className="mu-res-footer-tags">Radiation Physics • Polymers • Electron Beam Tech</span>
+                  </div>
+                </div>
               </div>
-              <h3 className="mu-research-title">CAREER & Marine Research Station</h3>
-              <p className="mu-research-desc">
-                Centre for Advanced Research in Environmental Radioactivity (CAREER) and Oceanographic stations monitoring coastal ecology, Arabian Sea sedimentary dynamics, and marine biodiversity conservation.
-              </p>
-              <div className="mu-research-footer">
-                <span>Key Areas: Marine Geology, Coastal Geomorphology, Oceanography</span>
+
+              {/* Card 2: CARRT */}
+              <div className="mu-research-image-card">
+                <div className="mu-res-img-wrap">
+                  <img
+                    src="/why-research.jpg"
+                    alt="CARRT — Centre for Application of Radioisotopes"
+                    className="mu-res-img"
+                  />
+                  <div className="mu-res-gradient-base"></div>
+                </div>
+
+                <div className="mu-res-content">
+                  <div className="mu-res-meta">
+                    <span className="mu-res-badge">CENTRE OF EXCELLENCE</span>
+                    <div className="mu-res-icon-pill"><Atom size={15} /></div>
+                  </div>
+                  <h3 className="mu-res-title">CARRT</h3>
+                  <p className="mu-res-desc">
+                    Frontier applications of radioisotopes in medical physics, nuclear diagnostics, and radiation biology.
+                  </p>
+                </div>
+
+                <div className="mu-res-hover-panel">
+                  <span className="mu-res-hover-badge">RADIOISOTOPE APPLICATIONS</span>
+                  <h3 className="mu-res-hover-title">CARRT (Centre for Radiation Tech)</h3>
+                  <p className="mu-res-hover-desc">
+                    National Centre of Excellence partnered with BRNS and AERB for radiopharmaceutical innovations, radiation sterilization, and agricultural food irradiation.
+                  </p>
+                  <div className="mu-res-hover-footer">
+                    <span className="mu-res-footer-label">Key Research Domains:</span>
+                    <span className="mu-res-footer-tags">Radiopharmacy • Food Preservation • Nuclear Medicine</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 3: CAREER & Marine Research Station */}
+              <div className="mu-research-image-card">
+                <div className="mu-res-img-wrap">
+                  <img
+                    src="/faculty-marine.jpg"
+                    alt="CAREER & Marine Oceanographic Research Station"
+                    className="mu-res-img"
+                  />
+                  <div className="mu-res-gradient-base"></div>
+                </div>
+
+                <div className="mu-res-content">
+                  <div className="mu-res-meta">
+                    <span className="mu-res-badge">COASTAL & OCEANOGRAPHIC</span>
+                    <div className="mu-res-icon-pill"><Dna size={15} /></div>
+                  </div>
+                  <h3 className="mu-res-title">CAREER & Marine Station</h3>
+                  <p className="mu-res-desc">
+                    Monitoring Arabian Sea sedimentary dynamics, coastal ecology, and marine environmental radioactivity.
+                  </p>
+                </div>
+
+                <div className="mu-res-hover-panel">
+                  <span className="mu-res-hover-badge">COASTAL OCEANOGRAPHY</span>
+                  <h3 className="mu-res-hover-title">CAREER & Marine Station</h3>
+                  <p className="mu-res-hover-desc">
+                    Centre for Advanced Research in Environmental Radioactivity monitoring coastal geomorphology, marine biodiversity conservation, and shoreline oceanography.
+                  </p>
+                  <div className="mu-res-hover-footer">
+                    <span className="mu-res-footer-label">Key Research Domains:</span>
+                    <span className="mu-res-footer-tags">Marine Geology • Oceanography • Coastal Ecology</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -647,67 +1246,70 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          SECTION 11: Placement & Career Ecosystem
+          SECTION 11: Placement & Career Ecosystem (Split Editorial Visual Layout)
           ========================================================================= */}
-      <section id="placement" className="mu-section mu-bg-paper">
-        <div className="mu-container mu-careers-grid">
-          {/* Left Narrative */}
-          <div className="mu-careers-intro">
-            <span className="mu-eyebrow">CAREER & STUDENT SUCCESS</span>
-            <h2 className="mu-heading">Placement & Career Ecosystem</h2>
-            <p className="mu-careers-p">
-              The University Employment Information & Guidance Bureau functions as a vital career springboard, coordinating campus recruitments, competitive civil services mentorship, corporate internship pipelines, and international higher education pathways.
-            </p>
-            <div className="mu-placement-stats-mini">
-              <div className="mu-mini-stat">
-                <strong>85%+</strong>
-                <span>Placement Assistance</span>
-              </div>
-              <div className="mu-mini-stat">
-                <strong>120+</strong>
-                <span>Recruitment Partners</span>
-              </div>
-              <div className="mu-mini-stat">
-                <strong>₹14 LPA</strong>
-                <span>Highest Package</span>
-              </div>
-            </div>
-            <a href="#placement-cell" className="mu-link-arrow">
-              Connect with Placement Cell <ArrowRight size={15} />
-            </a>
-          </div>
+      <section id="placement" className="mu-section mu-bg-paper mu-placement-editorial-section">
+        <div className="mu-container">
+          <div className="mu-placement-split-grid">
+            {/* Left Column: Heading, Concise Intro, Stats Row & Primary CTA */}
+            <div className="mu-placement-content-left">
+              <span className="mu-eyebrow">CAREER & STUDENT SUCCESS</span>
+              <h2 className="mu-heading">Placement & Career Ecosystem</h2>
+              <p className="mu-placement-p">
+                The University Employment Information & Guidance Bureau serves as a career catalyst—coordinating corporate recruitments, competitive examination coaching, industry internships, and international academic fellowships.
+              </p>
 
-          {/* Right Services List */}
-          <div className="mu-careers-services">
-            <div className="mu-service-item">
-              <div className="mu-service-dot"></div>
-              <div>
-                <h4 className="mu-service-title">Campus Placement & Corporate Recruitment</h4>
-                <p className="mu-service-desc">Facilitating top-tier recruitment drives with IT, banking, pharmaceutical, manufacturing, and research conglomerates.</p>
-              </div>
-            </div>
+              {/* Compact Career-Service Detail Cards Grid (4 Cards) */}
+              <div className="mu-placement-cards-grid">
+                <div className="mu-placement-card">
+                  <div className="mu-pcard-body">
+                    <h4 className="mu-pcard-title">Campus Recruitment</h4>
+                    <p className="mu-pcard-desc">Industry-led hiring drives, corporate interfaces, and active recruiter engagement.</p>
+                  </div>
+                </div>
 
-            <div className="mu-service-item">
-              <div className="mu-service-dot"></div>
-              <div>
-                <h4 className="mu-service-title">UPSC, KPSC, NET & SLET Coaching</h4>
-                <p className="mu-service-desc">Comprehensive mentorship programs for national/state civil services, administrative examinations, and UGC lectureship eligibility.</p>
-              </div>
-            </div>
+                <div className="mu-placement-card">
+                  <div className="mu-pcard-body">
+                    <h4 className="mu-pcard-title">Career Guidance</h4>
+                    <p className="mu-pcard-desc">Individual counselling, alumni mentorship, and competitive-exam preparation.</p>
+                  </div>
+                </div>
 
-            <div className="mu-service-item">
-              <div className="mu-service-dot"></div>
-              <div>
-                <h4 className="mu-service-title">Higher Education & Overseas Fellowships</h4>
-                <p className="mu-service-desc">Dedicated advisory and application mentorship for prestigious international research grants and doctoral fellowships.</p>
+                <div className="mu-placement-card">
+                  <div className="mu-pcard-body">
+                    <h4 className="mu-pcard-title">Internships & Industry Exposure</h4>
+                    <p className="mu-pcard-desc">Practical learning through summer internships and research-corporate partnerships.</p>
+                  </div>
+                </div>
+
+                <div className="mu-placement-card">
+                  <div className="mu-pcard-body">
+                    <h4 className="mu-pcard-title">Higher Studies & Fellowships</h4>
+                    <p className="mu-pcard-desc">Guidance for doctoral admissions, international fellowships, and national grants.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Single Primary CTA */}
+              <div className="mu-placement-cta-wrapper">
+                <a href="#placement-cell" className="mu-btn mu-btn-gold">
+                  Explore Career Services <ArrowRight size={15} />
+                </a>
               </div>
             </div>
 
-            <div className="mu-service-item">
-              <div className="mu-service-dot"></div>
-              <div>
-                <h4 className="mu-service-title">Skill Enhancement & Industry Internship Linkages</h4>
-                <p className="mu-service-desc">Curriculum-aligned corporate internships, technical certification programs, and professional communication workshops.</p>
+            {/* Right Column: Large Realistic Student/Career Image with Soft Geometric Framing */}
+            <div className="mu-placement-visual-right">
+              <div className="mu-placement-visual-frame">
+                <div className="mu-placement-glow-backdrop"></div>
+                <div className="mu-placement-img-container">
+                  <img
+                    src="/why-academic.jpg"
+                    alt="Mangalore University Students in Career & Academic Progression"
+                    className="mu-placement-main-img"
+                  />
+                  <div className="mu-placement-img-overlay"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -715,75 +1317,166 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          SECTION 12: News, Events & Official Circulars
+          SECTION 12: News, Events & Official Circulars (Editorial 2-Column Split)
           ========================================================================= */}
-      <section id="news" className="mu-section mu-bg-mist">
+      <section id="news" className="mu-section mu-bg-mist mu-news-editorial-section">
         <div className="mu-container">
-          <div className="mu-news-header">
+          <div className="mu-news-top-bar">
             <div>
               <span className="mu-eyebrow">NOTICES & CIRCULARS</span>
               <h2 className="mu-heading">News, Events & Official Circulars</h2>
             </div>
-            <a href="#all-news" className="mu-link-arrow">
-              View all notifications <ArrowRight size={15} />
+            <a href="#all-notifications" className="mu-news-view-all">
+              View All Notifications <ArrowRight size={15} />
             </a>
           </div>
 
-          <div className="mu-news-list">
-            {newsItems.map((item, index) => (
-              <a key={index} href={`#notice-${index}`} className="mu-news-row">
-                <div className="mu-news-date-col">
-                  <span className="mu-news-date">{item.date}</span>
-                  <span className="mu-news-category">{item.category}</span>
+          <div className="mu-news-editorial-grid">
+            {/* Left Column: Featured Large Image Card (55-60% width) */}
+            <div className="mu-news-featured-col">
+              <a href={featuredStory.link} className="mu-news-featured-card">
+                <div className="mu-featured-img-wrap">
+                  <img
+                    src={featuredStory.image}
+                    alt={featuredStory.title}
+                    className="mu-featured-img"
+                  />
+                  <div className="mu-featured-gradient-overlay"></div>
                 </div>
-                <div className="mu-news-content-col">
-                  <h3 className="mu-news-title">{item.title}</h3>
-                  <p className="mu-news-desc">{item.desc}</p>
-                </div>
-                <div className="mu-news-action-col">
-                  <ArrowUpRight size={20} className="mu-news-arrow" />
+
+                <div className="mu-featured-content">
+                  <div className="mu-featured-meta">
+                    <span className="mu-featured-badge">{featuredStory.category}</span>
+                    <span className="mu-featured-date">
+                      <Calendar size={13} /> {featuredStory.date}
+                    </span>
+                  </div>
+
+                  <h3 className="mu-featured-title">{featuredStory.title}</h3>
+                  <p className="mu-featured-desc">{featuredStory.desc}</p>
+
+                  <div className="mu-featured-link-action">
+                    <span>Read Full Coverage</span>
+                    <ArrowUpRight size={16} />
+                  </div>
                 </div>
               </a>
-            ))}
+            </div>
+
+            {/* Right Column: Vertically Scrollable List of Secondary Updates (40-45% width) */}
+            <div className="mu-news-list-col">
+              <div className="mu-news-scroll-container">
+                {secondaryNews.map((item) => (
+                  <a key={item.id} href={item.link} className="mu-news-compact-item">
+                    <div className="mu-item-thumb-wrap">
+                      <img src={item.image} alt={item.title} className="mu-item-thumb" />
+                    </div>
+
+                    <div className="mu-item-details">
+                      <div className="mu-item-meta-row">
+                        <span className="mu-item-category">{item.category}</span>
+                        <span className="mu-item-date">{item.date}</span>
+                      </div>
+
+                      <h4 className="mu-item-title">{item.title}</h4>
+                      <p className="mu-item-desc">{item.desc}</p>
+
+                      <div className="mu-item-readmore">
+                        <span>Read More</span>
+                        <ArrowUpRight size={14} className="mu-item-arrow" />
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 13: Student & Alumni Testimonials
+          SECTION 13: Student & Alumni Testimonials (Compact 3-Card Carousel)
           ========================================================================= */}
-      <section className="mu-section mu-bg-navy">
+      <section id="testimonials" className="mu-section-compact mu-bg-paper mu-testimonial-section">
         <div className="mu-container">
-          <div className="mu-testimonial-wrapper">
-            <div className="mu-quote-glyph">“</div>
-            
-            <div className="mu-testimonial-card">
-              <p className="mu-testimonial-text">
-                {testimonials[activeTestimonial].quote}
-              </p>
-              <div className="mu-testimonial-author">
-                <span className="mu-author-name">{testimonials[activeTestimonial].name}</span>
-                <span className="mu-author-role">{testimonials[activeTestimonial].role}</span>
-              </div>
+          {/* Section Header */}
+          <div className="mu-section-header mu-text-center" style={{ marginBottom: '32px' }}>
+            <span className="mu-eyebrow">VOICES OF MANGALAGANGOTHRI</span>
+            <h2 className="mu-heading">Student & Alumni Perspectives</h2>
+          </div>
+
+          {/* 3-Card Interactive Carousel Container */}
+          <div className="mu-t-carousel-wrapper">
+            <div className="mu-t-cards-row">
+              {[-1, 0, 1].map((offset) => {
+                const index = (activeTestimonial + offset + testimonials.length) % testimonials.length;
+                const item = testimonials[index];
+                const isCenter = offset === 0;
+
+                return (
+                  <div
+                    key={`${item.id}-${offset}`}
+                    onClick={() => {
+                      if (offset === -1) {
+                        setActiveTestimonial((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+                      } else if (offset === 1) {
+                        setActiveTestimonial((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+                      }
+                    }}
+                    className={`mu-t-card ${isCenter ? 'mu-t-card-center' : 'mu-t-card-side'}`}
+                    role="group"
+                    aria-label={`Testimonial by ${item.name}`}
+                  >
+                    {/* Star Rating */}
+                    <div className="mu-t-card-rating">
+                      {[...Array(item.rating)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={13}
+                          className={isCenter ? 'mu-star-gold' : 'mu-star-navy'}
+                          fill={isCenter ? '#E8A317' : '#0B2A4A'}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Short Testimonial Quote */}
+                    <p className="mu-t-card-quote">“{item.quote}”</p>
+
+                    {/* Compact Profile with Name and Programme */}
+                    <div className="mu-t-card-profile">
+                      <div className={`mu-t-avatar ${isCenter ? 'mu-avatar-center' : 'mu-avatar-side'}`}>
+                        {item.avatar}
+                      </div>
+                      <div className="mu-t-meta">
+                        <h4 className="mu-t-name">{item.name}</h4>
+                        <span className="mu-t-role">{item.role}</span>
+                        <span className="mu-t-batch">{item.batch}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
-            {/* Carousel Controls */}
-            <div className="mu-carousel-controls">
+            {/* Previous/Next Navigation Arrows & Progress Dots */}
+            <div className="mu-t-controls-bar">
               <button
-                className="mu-carousel-btn"
+                type="button"
+                className="mu-t-arrow-btn"
                 onClick={() =>
                   setActiveTestimonial((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
                 }
                 aria-label="Previous Testimonial"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={16} />
               </button>
 
-              <div className="mu-carousel-dots">
+              <div className="mu-t-dots-container">
                 {testimonials.map((_, idx) => (
                   <button
                     key={idx}
-                    className={`mu-dot ${activeTestimonial === idx ? 'mu-dot-active' : ''}`}
+                    type="button"
+                    className={`mu-t-dot-pill ${activeTestimonial === idx ? 'mu-t-dot-pill-active' : ''}`}
                     onClick={() => setActiveTestimonial(idx)}
                     aria-label={`Go to testimonial ${idx + 1}`}
                   />
@@ -791,13 +1484,14 @@ export default function App() {
               </div>
 
               <button
-                className="mu-carousel-btn"
+                type="button"
+                className="mu-t-arrow-btn"
                 onClick={() =>
                   setActiveTestimonial((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
                 }
                 aria-label="Next Testimonial"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={16} />
               </button>
             </div>
           </div>
@@ -805,22 +1499,43 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          SECTION 14: Admissions CTA Banner
+          SECTION 14: Admissions CTA Strip (Compact Horizontal Promotional Banner)
           ========================================================================= */}
-      <section id="admissions" className="mu-cta-banner">
-        <div className="mu-container mu-cta-content">
-          <span className="mu-eyebrow mu-eyebrow-gold">ADMISSIONS 2026–2027</span>
-          <h2 className="mu-cta-heading">Begin your journey at Mangalagangothri</h2>
-          <p className="mu-cta-desc">
-            Applications for postgraduate, diploma, and doctoral programmes are now open through the Karnataka Unified University & College Management System (UUCMS).
-          </p>
-          <div className="mu-cta-actions">
-            <a href="#uucms-apply" className="mu-btn mu-btn-gold">
-              Apply Now <ArrowRight size={16} />
-            </a>
-            <a href="#download-prospectus" className="mu-btn mu-btn-outline-white">
-              <Download size={16} /> Download Prospectus (PDF)
-            </a>
+      <section id="admissions" className="mu-cta-banner-strip">
+        <div className="mu-container">
+          <div className="mu-cta-card-wrapper">
+            {/* Blended Background Gradient & Campus Texture */}
+            <div className="mu-cta-bg-layer">
+              <img
+                src="/campus-heritage.jpg"
+                alt="Mangalore University Campus Background"
+                className="mu-cta-bg-img"
+              />
+              <div className="mu-cta-bg-overlay"></div>
+            </div>
+
+            <div className="mu-cta-inner">
+              {/* Left Column: Text Content */}
+              <div className="mu-cta-left">
+                <div className="mu-cta-text-group">
+                  <span className="mu-cta-eyebrow">ADMISSIONS 2026–2027</span>
+                  <h3 className="mu-cta-title">Begin your journey at Mangalagangothri</h3>
+                  <p className="mu-cta-subtitle">
+                    Postgraduate, doctoral, and diploma admissions are open via Karnataka UUCMS portal.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column: Compact Actions */}
+              <div className="mu-cta-actions-right">
+                <a href="#uucms-apply" className="mu-btn mu-btn-gold mu-btn-cta-compact">
+                  Apply Now <ArrowRight size={14} />
+                </a>
+                <a href="#download-prospectus" className="mu-btn mu-btn-outline-white mu-btn-cta-compact">
+                  <Download size={14} /> Prospectus (PDF)
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -907,13 +1622,26 @@ export default function App() {
           STYLES (Self-Contained Inline Layout & Component Rules)
           ========================================================================= */}
       <style>{`
-        /* Header & Utility Bar */
+        .mu-page {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+          position: relative;
+        }
+
+        /* Utility Bar */
         .mu-utility-bar {
-          background-color: var(--teal-deep);
-          color: rgba(255, 255, 255, 0.7);
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          z-index: 1010;
+          background: #071D33;
+          color: rgba(255, 255, 255, 0.85);
           font-size: 13px;
           padding: 8px 0;
           border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          transition: transform 0.3s ease, opacity 0.3s ease;
         }
         .mu-utility-content {
           display: flex;
@@ -926,7 +1654,7 @@ export default function App() {
           gap: 12px;
         }
         .mu-utility-link {
-          color: rgba(255, 255, 255, 0.75);
+          color: rgba(255, 255, 255, 0.85);
           text-decoration: none;
           transition: color 0.2s;
         }
@@ -938,7 +1666,7 @@ export default function App() {
           font-weight: 600;
         }
         .mu-utility-divider {
-          color: rgba(255, 255, 255, 0.2);
+          color: rgba(255, 255, 255, 0.25);
         }
         .mu-utility-socials {
           display: flex;
@@ -946,7 +1674,7 @@ export default function App() {
           gap: 14px;
         }
         .mu-social-icon {
-          color: rgba(255, 255, 255, 0.7);
+          color: rgba(255, 255, 255, 0.8);
           text-decoration: none;
           transition: color 0.2s;
         }
@@ -954,52 +1682,63 @@ export default function App() {
           color: var(--gold);
         }
 
-        /* Main Header */
+        /* Main Header — Fully Seamless Transparent Overlay at Top, Soft Sticky Deep-Navy on Scroll */
         .mu-header {
-          position: sticky;
-          top: 0;
+          position: fixed;
+          top: 36px;
+          left: 0;
+          width: 100%;
           z-index: 1000;
-          background-color: var(--teal);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-          transition: all 0.3s ease;
+          background-color: transparent;
+          border: none;
+          box-shadow: none;
+          transition: top 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
           padding: 12px 0;
         }
         .mu-header-scrolled {
-          background-color: rgba(7, 29, 51, 0.98);
-          backdrop-filter: blur(10px);
-          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-          padding: 10px 0;
+          top: 0;
+          background-color: rgba(7, 29, 51, 0.95);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          padding: 12px 0;
         }
         .mu-header-content {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          gap: 32px;
         }
         .mu-brand {
           display: flex;
           align-items: center;
           text-decoration: none;
+          padding: 2px 0;
+          margin-right: 24px;
         }
         .mu-brand-logo-img {
           height: 60px;
           width: auto;
-          max-width: 380px;
+          max-width: 420px;
           object-fit: contain;
           display: block;
+          filter: none;
           transition: height 0.3s ease;
         }
         .mu-header-scrolled .mu-brand-logo-img {
           height: 52px;
         }
         .mu-footer-brand-wrapper {
-          margin-bottom: 20px;
+          margin-bottom: 24px;
         }
         .mu-footer-logo-img {
           height: 68px;
           width: auto;
-          max-width: 380px;
+          max-width: 400px;
           object-fit: contain;
           display: block;
+          filter: none;
         }
 
         /* Nav Links */
@@ -1011,7 +1750,7 @@ export default function App() {
         .mu-nav-link {
           font-size: 14.5px;
           font-weight: 500;
-          color: rgba(255, 255, 255, 0.88);
+          color: rgba(255, 255, 255, 0.92);
           text-decoration: none;
           position: relative;
           padding: 4px 0;
@@ -1049,7 +1788,7 @@ export default function App() {
           width: 100%;
           background-color: var(--teal-deep);
           padding: 24px 0;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         .mu-mobile-drawer-content {
@@ -1068,94 +1807,239 @@ export default function App() {
           margin-top: 8px;
         }
 
-        /* Hero Section */
-        .mu-hero-section {
-          padding: 48px 0 88px 0;
-          background-color: var(--paper);
-        }
-        .mu-hero-grid {
-          display: grid;
-          grid-template-columns: 1.05fr 0.95fr;
-          gap: 56px;
-          align-items: center;
-        }
-        .mu-hero-headline {
-          font-size: clamp(36px, 5vw, 56px);
-          font-weight: 500;
-          color: var(--teal);
-          line-height: 1.14;
-          margin-bottom: 20px;
-        }
-        .mu-hero-subtext {
-          font-size: 17px;
-          line-height: 1.6;
-          color: var(--ink-soft);
-          margin-bottom: 32px;
-          max-width: 520px;
-        }
-        .mu-hero-actions {
-          display: flex;
-          gap: 16px;
-          flex-wrap: wrap;
-        }
-        .mu-hero-media-wrapper {
+        /* Hero Section (Full Viewport Length 100vh, Lower-Left Aligned with Full-Screen Carousel) */
+        .mu-hero-fullscreen {
           position: relative;
+          width: 100%;
+          min-height: 100vh;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          overflow: hidden;
+          background-color: var(--teal-deep);
+          padding-top: 110px;
+          padding-bottom: 0;
         }
-        .mu-hero-frame-border {
+        .mu-hero-carousel-bg {
           position: absolute;
-          top: -12px;
-          right: -12px;
-          bottom: 12px;
-          left: 12px;
-          border: 1px solid var(--gold);
-          border-radius: var(--radius);
+          inset: 0;
+          width: 100%;
+          height: 100%;
           z-index: 1;
         }
-        .mu-hero-image-card {
+        .mu-hero-carousel-slide {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+          transform: scale(1.03);
+          transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 6s ease-out;
+          pointer-events: none;
+        }
+        .mu-hero-carousel-slide.mu-hero-slide-active {
+          opacity: 1;
+          transform: scale(1);
+          pointer-events: auto;
+        }
+        .mu-hero-carousel-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 36%;
+          display: block;
+        }
+        /* Refined Readability Gradient: Left & Bottom dark navy for high text contrast */
+        .mu-hero-fullscreen-overlay {
+          position: absolute;
+          inset: 0;
+          background: 
+            /* Top subtle vignette for lightweight transparent navbar */
+            linear-gradient(
+              to bottom,
+              rgba(7, 29, 51, 0.72) 0%,
+              rgba(7, 29, 51, 0.35) 15%,
+              transparent 35%
+            ),
+            /* Left editorial text readability backdrop */
+            linear-gradient(
+              to right,
+              rgba(7, 29, 51, 0.94) 0%,
+              rgba(7, 29, 51, 0.85) 35%,
+              rgba(7, 29, 51, 0.5) 58%,
+              rgba(7, 29, 51, 0.12) 80%,
+              transparent 100%
+            ),
+            /* Soft continuous bottom dissolve into the Flash News background (#071D33) */
+            linear-gradient(
+              to bottom,
+              transparent 0%,
+              transparent 50%,
+              rgba(7, 29, 51, 0.45) 72%,
+              rgba(7, 29, 51, 0.88) 90%,
+              #071D33 100%
+            );
+        }
+        .mu-hero-fullscreen-content {
           position: relative;
           z-index: 2;
-          border-radius: var(--radius);
-          overflow: hidden;
-          background-color: #E2E8F0;
-        }
-        .mu-hero-img {
           width: 100%;
-          height: 440px;
-          object-fit: cover;
-          display: block;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding-bottom: 32px;
         }
-        .mu-hero-badge {
-          position: absolute;
-          bottom: 20px;
-          left: 20px;
-          background-color: rgba(11, 42, 74, 0.92);
+        .mu-hero-text-panel {
+          max-width: 600px;
+          margin-bottom: 0;
+        }
+        .mu-hero-badge-row {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 4px 12px;
+          background: rgba(7, 29, 51, 0.75);
           backdrop-filter: blur(8px);
-          border: 1px solid rgba(232, 163, 23, 0.4);
+          -webkit-backdrop-filter: blur(8px);
+          border: 1px solid rgba(232, 163, 23, 0.35);
+          border-radius: 20px;
+          margin-bottom: 14px;
+        }
+        .mu-hero-pill-tag {
+          font-family: var(--font-heading);
+          font-size: 11px;
+          font-weight: 700;
+          color: var(--gold);
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        .mu-hero-pill-divider {
+          color: rgba(255, 255, 255, 0.35);
+          font-size: 10px;
+        }
+        .mu-hero-pill-estd {
+          font-family: var(--font-heading);
+          font-size: 11px;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.85);
+          letter-spacing: 0.06em;
+        }
+        .mu-hero-fullscreen-headline {
+          font-family: var(--font-heading);
+          font-size: clamp(30px, 3.4vw, 44px);
+          font-weight: 700;
           color: #FFFFFF;
-          padding: 12px 18px;
-          border-radius: var(--radius);
+          line-height: 1.18;
+          margin-bottom: 12px;
+          letter-spacing: -0.02em;
+          max-width: 580px;
+          text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+        }
+        .mu-hero-fullscreen-subtext {
+          font-size: 15px;
+          line-height: 1.55;
+          color: rgba(255, 255, 255, 0.92);
+          margin-bottom: 0;
+          max-width: 520px;
+          text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Flash News Ticker — Emerging seamlessly from the Hero Dissolve */
+        .mu-ticker-band {
+          width: 100%;
+          height: 54px;
+          background-color: #071D33;
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
           display: flex;
           align-items: center;
-          gap: 12px;
+          position: relative;
+          z-index: 10;
+          overflow: hidden;
         }
-        .mu-badge-icon {
+        .mu-ticker-container {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          gap: 20px;
+        }
+        .mu-ticker-badge {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background-color: #D92525;
+          color: #FFFFFF;
+          padding: 6px 14px;
+          border-radius: var(--radius);
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          flex-shrink: 0;
+          z-index: 2;
+        }
+        .mu-ticker-dot {
+          width: 7px;
+          height: 7px;
+          background-color: #FFFFFF;
+          border-radius: 50%;
+          animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(0.8); }
+        }
+        .mu-ticker-track {
+          flex: 1;
+          overflow: hidden;
+          white-space: nowrap;
+          position: relative;
+        }
+        .mu-ticker-content {
+          display: inline-flex;
+          align-items: center;
+          gap: 24px;
+          animation: tickerScroll 32s linear infinite;
+        }
+        .mu-ticker-track:hover .mu-ticker-content {
+          animation-play-state: paused;
+        }
+        @keyframes tickerScroll {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .mu-ticker-item {
+          color: rgba(255, 255, 255, 0.9);
+          text-decoration: none;
+          font-size: 14px;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: color 0.2s;
+        }
+        .mu-ticker-item:hover {
           color: var(--gold);
         }
-        .mu-hero-badge strong {
-          display: block;
-          font-size: 13.5px;
+        .mu-ticker-date {
+          background-color: rgba(255, 255, 255, 0.12);
+          color: var(--gold);
+          font-size: 10.5px;
+          font-weight: 700;
+          padding: 2px 6px;
+          border-radius: 2px;
+          letter-spacing: 0.04em;
         }
-        .mu-hero-badge span {
-          display: block;
-          font-size: 11.5px;
-          color: rgba(255, 255, 255, 0.75);
+        .mu-ticker-sep {
+          color: rgba(255, 255, 255, 0.3);
+          font-size: 14px;
         }
 
         /* About Section */
         .mu-about-grid {
           display: grid;
           grid-template-columns: 1.15fr 0.85fr;
-          gap: 64px;
+          gap: 72px;
           align-items: center;
         }
         .mu-about-image-wrapper {
@@ -1163,78 +2047,180 @@ export default function App() {
         }
         .mu-about-img {
           width: 100%;
-          height: 440px;
+          height: 480px;
           object-fit: cover;
           border-radius: var(--radius);
           border: 1px solid var(--line);
         }
         .mu-about-milestone {
           position: absolute;
-          bottom: -16px;
-          right: -16px;
+          bottom: -20px;
+          right: -20px;
           background-color: var(--teal);
           color: #FFFFFF;
-          padding: 16px 20px;
+          padding: 18px 24px;
           border-radius: var(--radius);
-          border-left: 3px solid var(--gold);
-          box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+          border-left: 3.5px solid var(--gold);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.12);
         }
         .mu-milestone-year {
           display: block;
           font-family: var(--font-serif);
-          font-size: 26px;
+          font-size: 28px;
           font-weight: 600;
           color: var(--gold);
         }
         .mu-milestone-text {
-          font-size: 12px;
+          font-size: 12.5px;
           color: rgba(255, 255, 255, 0.85);
         }
         .mu-about-p {
-          font-size: 16px;
+          font-size: 16.5px;
           color: var(--ink-soft);
-          margin-bottom: 16px;
-          line-height: 1.6;
+          margin-bottom: 18px;
+          line-height: 1.65;
+          max-width: 660px;
         }
-        .mu-about-vc-card {
-          margin: 20px 0;
-          padding: 20px 24px;
-          background-color: var(--mist);
-          border-left: 3px solid var(--teal);
-          border-radius: var(--radius);
+        /* =========================================================================
+           SECTION 04B: Vice-Chancellor's Message (Minimalist Editorial Layout)
+           ========================================================================= */
+        .mu-vc-editorial-section {
+          padding: 68px 0 76px 0;
+          background-color: var(--paper);
+          border-top: 1px solid var(--line-soft);
+          width: 100%;
         }
-        .mu-vc-header {
-          display: flex;
+        .mu-vc-editorial-grid {
+          display: grid;
+          grid-template-columns: 280px 1fr;
+          gap: 64px;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 10px;
+          max-width: 1120px;
+          margin: 0 auto;
         }
-        .mu-vc-avatar {
-          width: 38px;
-          height: 38px;
-          background-color: var(--teal);
-          border-radius: 50%;
+
+        /* Left Portrait Cutout Column */
+        .mu-vc-portrait-col {
           display: flex;
+          flex-direction: column;
           align-items: center;
+          text-align: center;
+        }
+        .mu-vc-cutout-frame {
+          position: relative;
+          width: 220px;
+          height: 250px;
+          display: flex;
           justify-content: center;
+          align-items: flex-end;
+          margin-bottom: 16px;
         }
-        .mu-vc-title {
-          font-family: var(--font-serif);
-          font-size: 16px;
+        .mu-vc-cutout-img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: bottom center;
+          display: block;
+          filter: drop-shadow(0 10px 20px rgba(11, 42, 74, 0.12));
+          /* Mask image for seamless bottom dissolve blend into background */
+          -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+          mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+        }
+        .mu-vc-cutout-bottom-fade {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 36px;
+          background: linear-gradient(to bottom, transparent, var(--paper));
+          pointer-events: none;
+        }
+        .mu-vc-signoff-block {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .mu-vc-signoff-name {
+          font-family: var(--font-heading);
+          font-size: 17px;
+          font-weight: 700;
           color: var(--teal);
-          margin-bottom: 2px;
+          margin: 0 0 3px 0;
+          line-height: 1.25;
         }
-        .mu-vc-sub {
-          font-size: 12.5px;
-          color: var(--blue);
+        .mu-vc-signoff-title {
+          font-family: var(--font-body);
+          font-size: 13px;
           font-weight: 600;
+          color: var(--gold-deep);
+          margin-bottom: 1px;
         }
-        .mu-vc-quote {
-          font-family: var(--font-serif);
-          font-size: 15.5px;
+        .mu-vc-signoff-inst {
+          font-family: var(--font-body);
+          font-size: 12px;
+          color: var(--ink-soft);
+        }
+
+        /* Right Message Content Column */
+        .mu-vc-message-col {
+          display: flex;
+          flex-direction: column;
+        }
+        .mu-vc-header-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 14px;
+        }
+        .mu-vc-eyebrow-accent {
+          margin-bottom: 0 !important;
+          color: var(--blue) !important;
+        }
+        .mu-vc-editorial-quote-mark {
+          color: var(--gold);
+          opacity: 0.9;
+          stroke-width: 1.5;
+        }
+        .mu-vc-editorial-lead {
+          font-family: var(--font-quote, 'Fraunces', Georgia, serif);
+          font-size: clamp(20px, 2.1vw, 25px);
           font-style: italic;
-          color: var(--ink);
-          line-height: 1.5;
+          font-weight: 400;
+          color: var(--teal);
+          line-height: 1.45;
+          margin: 0 0 18px 0;
+          letter-spacing: -0.01em;
+        }
+        .mu-vc-editorial-body {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          max-width: 680px;
+        }
+        .mu-vc-editorial-body p {
+          font-family: var(--font-body);
+          font-size: 14.5px;
+          line-height: 1.7;
+          color: var(--ink-soft);
+          margin: 0;
+        }
+
+        @media (max-width: 860px) {
+          .mu-vc-editorial-grid {
+            grid-template-columns: 1fr;
+            gap: 36px;
+            text-align: center;
+          }
+          .mu-vc-portrait-col {
+            margin: 0 auto;
+          }
+          .mu-vc-header-row {
+            justify-content: center;
+            gap: 16px;
+          }
+          .mu-vc-editorial-body {
+            margin: 0 auto;
+          }
         }
         .mu-link-arrow {
           display: inline-flex;
@@ -1242,7 +2228,7 @@ export default function App() {
           gap: 6px;
           color: var(--blue);
           font-weight: 600;
-          font-size: 14.5px;
+          font-size: 15px;
           text-decoration: none;
           transition: gap 0.2s ease;
         }
@@ -1256,7 +2242,7 @@ export default function App() {
           grid-template-columns: repeat(5, 1fr);
         }
         .mu-stat-card {
-          padding: 16px 24px;
+          padding: 24px 28px;
           border-right: 1px solid var(--line);
           text-align: center;
         }
@@ -1265,503 +2251,1733 @@ export default function App() {
         }
         .mu-stat-number {
           font-family: var(--font-serif);
-          font-size: clamp(34px, 4vw, 48px);
+          font-size: clamp(38px, 3.8vw, 54px);
           font-weight: 500;
           color: var(--teal);
-          margin-bottom: 6px;
+          margin-bottom: 8px;
           line-height: 1;
+          font-variant-numeric: tabular-nums;
         }
         .mu-stat-label {
-          font-size: 13.5px;
+          font-size: 14px;
           color: var(--ink-soft);
           font-weight: 500;
+          line-height: 1.4;
         }
 
-        /* Pillars Section */
+        /* Why Study Section (Asymmetrical Editorial Visual Grid) */
         .mu-section-header-center {
           text-align: center;
-          margin-bottom: 56px;
-        }
-        .mu-pillars-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 44px;
-        }
-        .mu-pillar-card {
-          background-color: #FFFFFF;
-          padding: 36px 30px;
-          border: 1px solid var(--line);
-          border-radius: var(--radius);
-        }
-        .mu-pillar-icon-badge {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          background-color: var(--mist);
-          color: var(--blue);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 20px;
-        }
-        .mu-pillar-title {
-          font-size: 20px;
-          margin-bottom: 12px;
-          color: var(--teal);
-        }
-        .mu-pillar-desc {
-          font-size: 15px;
-          color: var(--ink-soft);
-          line-height: 1.6;
+          margin-bottom: 48px;
         }
 
-        /* Faculties Section */
-        .mu-section-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-          margin-bottom: 48px;
-          gap: 24px;
-        }
-        .mu-faculties-grid {
+        .mu-why-asym-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
+          grid-template-columns: 1fr 1fr;
+          gap: 28px;
+          align-items: stretch;
+          width: 100%;
         }
-        .mu-faculty-card {
-          background-color: #FFFFFF;
-          padding: 32px 26px;
-          border: 1px solid var(--line);
+
+        /* Base Card Styling */
+        .mu-why-card {
+          position: relative;
+          background: #FFFFFF;
           border-radius: var(--radius);
+          border: 1px solid var(--line);
+          overflow: hidden;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
-          transition: transform 0.2s ease, border-color 0.2s ease;
+          box-shadow: 0 4px 20px rgba(7, 29, 51, 0.04);
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+          cursor: pointer;
         }
-        .mu-faculty-card:hover {
+        .mu-why-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 16px 36px rgba(7, 29, 51, 0.12);
           border-color: var(--blue);
-          transform: translateY(-2px);
         }
-        .mu-faculty-count {
-          font-size: 12px;
-          font-weight: 600;
+
+        /* Left Hero Card (Tall Portrait Structure) */
+        .mu-why-card-tall {
+          height: 560px;
+        }
+        .mu-why-card-tall .mu-why-image-wrapper {
+          height: 380px;
+        }
+        .mu-why-card-tall .mu-why-content-panel {
+          padding: 24px 28px 26px;
+        }
+
+        /* Right Column (Stacked Rhythm) */
+        .mu-why-right-stack {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          height: 560px;
+        }
+        .mu-why-card-wide {
+          flex: 1;
+          display: grid;
+          grid-template-columns: 0.95fr 1.05fr;
+          overflow: hidden;
+        }
+        .mu-why-card-wide .mu-why-image-wrapper {
+          height: 100%;
+          min-height: 100%;
+        }
+        .mu-why-card-wide .mu-why-content-panel {
+          padding: 22px 24px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        /* Image & Overlays */
+        .mu-why-image-wrapper {
+          position: relative;
+          width: 100%;
+          overflow: hidden;
+          background-color: var(--navy);
+        }
+        .mu-why-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+        }
+        .mu-why-card:hover .mu-why-img {
+          transform: scale(1.05);
+          filter: brightness(0.6);
+        }
+        .mu-why-gradient {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(7, 29, 51, 0.1) 0%, rgba(7, 29, 51, 0.4) 100%);
+          pointer-events: none;
+        }
+
+        /* Content Panels */
+        .mu-why-content-panel {
+          background: #FFFFFF;
+          border-top: 2px solid rgba(11, 42, 74, 0.08);
+        }
+        .mu-why-card-wide .mu-why-content-panel {
+          border-top: none;
+          border-left: 2px solid rgba(11, 42, 74, 0.08);
+        }
+        .mu-why-eyebrow {
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
-          letter-spacing: 0.06em;
           color: var(--blue);
           display: block;
           margin-bottom: 6px;
         }
-        .mu-faculty-title {
+        .mu-why-title {
+          font-family: var(--font-serif);
           font-size: 20px;
-          margin-bottom: 18px;
-        }
-        .mu-dept-list {
-          list-style: none;
-          margin-bottom: 24px;
-        }
-        .mu-dept-list li {
-          font-size: 14px;
-          color: var(--ink-soft);
-          padding: 6px 0;
-          border-bottom: 1px solid var(--line-soft);
-        }
-        .mu-faculty-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 13.5px;
           font-weight: 600;
           color: var(--teal);
-          text-decoration: none;
-          margin-top: auto;
+          margin-bottom: 8px;
+          line-height: 1.3;
         }
-        .mu-faculty-link:hover {
-          color: var(--blue);
-        }
-
-        /* Infrastructure Section */
-        .mu-infra-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 28px;
-        }
-        .mu-infra-card {
-          background-color: #FFFFFF;
-          border: 1px solid var(--line);
-          border-radius: var(--radius);
-          padding: 30px 26px;
-          transition: border-color 0.2s;
-        }
-        .mu-infra-card:hover {
-          border-color: var(--teal);
-        }
-        .mu-infra-icon-box {
-          width: 44px;
-          height: 44px;
-          border-radius: var(--radius);
-          background-color: var(--mist);
-          color: var(--teal);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 18px;
-        }
-        .mu-infra-title {
-          font-size: 18px;
-          margin-bottom: 10px;
-          color: var(--teal);
-        }
-        .mu-infra-desc {
-          font-size: 14.5px;
+        .mu-why-desc {
+          font-size: 13.5px;
           color: var(--ink-soft);
           line-height: 1.55;
+          margin: 0;
         }
 
-        /* Research Centres Section */
-        .mu-research-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 32px;
-        }
-        .mu-research-card {
-          background-color: #FFFFFF;
-          border: 1px solid var(--line);
-          border-radius: var(--radius);
-          padding: 36px 30px;
+        /* Hover Reveal State */
+        .mu-why-hover-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(160deg, rgba(7, 29, 51, 0.96) 0%, rgba(11, 42, 74, 0.98) 100%);
+          color: #FFFFFF;
+          padding: 28px 26px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+          z-index: 10;
+          border-top: 4px solid var(--gold);
         }
-        .mu-research-header {
+        .mu-why-card:hover .mu-why-hover-overlay {
+          opacity: 1;
+          visibility: visible;
+        }
+        .mu-why-hover-badge {
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--gold);
+          display: block;
+          margin-bottom: 6px;
+        }
+        .mu-why-hover-title {
+          font-family: var(--font-serif);
+          font-size: 21px;
+          font-weight: 600;
+          color: #FFFFFF;
+          margin: 0 0 10px 0;
+          line-height: 1.25;
+        }
+        .mu-why-hover-desc {
+          font-size: 13.5px;
+          color: rgba(255, 255, 255, 0.88);
+          line-height: 1.55;
+          margin: 0 0 16px 0;
+          flex: 1;
+        }
+        .mu-why-hover-metric {
+          border-top: 1px solid rgba(255, 255, 255, 0.14);
+          padding-top: 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .mu-why-metric-val {
+          font-family: var(--font-serif);
+          font-size: 18px;
+          font-weight: 600;
+          color: var(--gold);
+        }
+        .mu-why-metric-lbl {
+          font-size: 12px;
+          color: rgba(255, 255, 255, 0.7);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        /* Faculties Section (Horizontal Scrollable Card Showcase) */
+        .mu-section-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
+          align-items: flex-end;
+          margin-bottom: 44px;
+          gap: 32px;
         }
-        .mu-research-icon {
-          width: 46px;
-          height: 46px;
-          background-color: var(--teal);
-          color: var(--gold);
+        .mu-faculty-header-right {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 16px;
+          max-width: 520px;
+        }
+        .mu-faculty-header-right .mu-body-lead {
+          margin-bottom: 0;
+          text-align: right;
+        }
+        /* Faculties Section (Screen-Fit Modern Card Grid) */
+        .mu-faculty-grid {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 20px;
+          padding: 8px 0 16px 0;
+          width: 100%;
+        }
+
+        .mu-faculty-hcard {
+          width: 100%;
+          position: relative;
+          background: #FFFFFF;
           border-radius: var(--radius);
+          border: 1px solid var(--line);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          height: 440px;
+          box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+          cursor: pointer;
+        }
+        .mu-faculty-hcard:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 14px 34px rgba(7, 29, 51, 0.16);
+          border-color: var(--accent-color, var(--blue));
+        }
+
+        /* Default Image Section */
+        .mu-hcard-image-wrap {
+          position: relative;
+          width: 100%;
+          height: 200px;
+          overflow: hidden;
+          background-color: var(--navy);
+        }
+        .mu-hcard-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.5s ease, filter 0.5s ease;
+        }
+        .mu-faculty-hcard:hover .mu-hcard-img {
+          transform: scale(1.06);
+          filter: brightness(0.65);
+        }
+        .mu-hcard-top-gradient {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 40%, rgba(0,0,0,0.5) 100%);
+          pointer-events: none;
+        }
+        .mu-hcard-badge {
+          position: absolute;
+          top: 14px;
+          left: 14px;
+          color: #FFFFFF;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          padding: 4px 10px;
+          border-radius: 3px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+          backdrop-filter: blur(4px);
+        }
+
+        /* Default Content Section */
+        .mu-hcard-content {
+          padding: 22px 20px 24px;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          background: #FFFFFF;
+          border-top: 3px solid var(--accent-color, var(--blue));
+        }
+        .mu-hcard-category {
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--accent-color, var(--blue));
+          margin-bottom: 6px;
+          display: block;
+        }
+        .mu-hcard-title {
+          font-family: var(--font-serif);
+          font-size: 20px;
+          font-weight: 600;
+          color: var(--teal);
+          margin-bottom: 10px;
+          line-height: 1.3;
+        }
+        .mu-hcard-desc {
+          font-size: 13.5px;
+          color: var(--ink-soft);
+          line-height: 1.55;
+          margin: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        /* Hover Overlay State: Deep Navy Smooth Transition */
+        .mu-hcard-hover-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(160deg, rgba(7, 29, 51, 0.96) 0%, rgba(11, 42, 74, 0.98) 100%);
+          color: #FFFFFF;
+          padding: 26px 22px 22px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+          z-index: 10;
+          border-top: 4px solid var(--gold);
+        }
+        .mu-faculty-hcard:hover .mu-hcard-hover-overlay {
+          opacity: 1;
+          visibility: visible;
+        }
+        .mu-hcard-hover-category {
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--gold);
+          display: block;
+          margin-bottom: 6px;
+        }
+        .mu-hcard-hover-title {
+          font-family: var(--font-serif);
+          font-size: 21px;
+          font-weight: 600;
+          color: #FFFFFF;
+          margin: 0 0 10px 0;
+          line-height: 1.25;
+        }
+        .mu-hcard-hover-desc {
+          font-size: 13px;
+          color: rgba(255, 255, 255, 0.85);
+          line-height: 1.5;
+          margin: 0 0 14px 0;
+        }
+        .mu-hcard-hover-progs {
+          flex: 1;
+          border-top: 1px solid rgba(255, 255, 255, 0.12);
+          padding-top: 12px;
+          margin-bottom: 14px;
+        }
+        .mu-hcard-prog-label {
+          font-size: 11.5px;
+          font-weight: 600;
+          color: var(--gold);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          display: block;
+          margin-bottom: 8px;
+        }
+        .mu-hcard-prog-list {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+        .mu-hcard-prog-list li {
+          font-size: 12.5px;
+          color: rgba(255, 255, 255, 0.92);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          line-height: 1.35;
+        }
+        .mu-hcard-prog-bullet {
+          color: var(--gold);
+          font-size: 14px;
+        }
+        .mu-hcard-hover-link {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          width: 100%;
+          background-color: var(--gold);
+          color: var(--teal);
+          font-size: 13px;
+          font-weight: 700;
+          padding: 10px 16px;
+          border-radius: 3px;
+          text-decoration: none;
+          transition: background-color 0.2s, transform 0.2s;
+        }
+        .mu-hcard-hover-link:hover {
+          background-color: #FFC038;
+          transform: translateY(-1px);
+        }
+
+        /* =========================================================================
+           SECTION 08: Campus & Infrastructure (Single-Screen Editorial Bento Grid)
+           ========================================================================= */
+        .mu-infra-editorial-section {
+          padding: 56px 0 64px 0;
+          background-color: var(--paper);
+        }
+        .mu-infra-header-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          margin-bottom: 24px;
+          gap: 24px;
+        }
+        .mu-heading-tight {
+          font-family: var(--font-heading);
+          font-size: clamp(26px, 2.8vw, 36px);
+          font-weight: 700;
+          color: var(--teal);
+          line-height: 1.2;
+          margin: 0;
+        }
+        .mu-infra-tagline {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 14px;
+          color: var(--ink-soft);
+          max-width: 520px;
+          text-align: right;
+          line-height: 1.45;
+        }
+
+        /* Bento Grid: 40% Hero on Left, 60% 5-Tile Mosaic on Right */
+        .mu-infra-bento-grid {
+          display: grid;
+          grid-template-columns: 42% 58%;
+          gap: 16px;
+          height: 520px;
+        }
+
+        /* Generic Bento Card */
+        .mu-infra-bento-card {
+          position: relative;
+          border-radius: 6px;
+          overflow: hidden;
+          background-color: var(--teal-deep);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          cursor: pointer;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          box-shadow: 0 4px 14px rgba(11, 42, 74, 0.08);
+        }
+        .mu-infra-bento-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 24px rgba(11, 42, 74, 0.16);
+        }
+
+        /* Left Hero Card: Spans full 520px height */
+        .mu-infra-bento-hero {
+          height: 100%;
+        }
+
+        /* Right 5-Tile Nested Container */
+        .mu-infra-bento-right {
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          grid-template-rows: 1fr 1fr;
+          gap: 16px;
+          height: 100%;
+        }
+
+        /* Row 1 Tiles */
+        .mu-infra-card-sports {
+          grid-column: span 4;
+        }
+        .mu-infra-card-hostels {
+          grid-column: span 2;
+        }
+
+        /* Row 2 Tiles (3 equal 2-col cards) */
+        .mu-infra-card-ict {
+          grid-column: span 2;
+        }
+        .mu-infra-card-health {
+          grid-column: span 2;
+        }
+        .mu-infra-card-botanical {
+          grid-column: span 2;
+        }
+
+        /* Image & Gradients */
+        .mu-infra-img-wrap {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+        .mu-infra-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .mu-infra-bento-card:hover .mu-infra-img {
+          transform: scale(1.05);
+        }
+        .mu-infra-gradient-base {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(7, 29, 51, 0.04) 0%,
+            rgba(7, 29, 51, 0.35) 40%,
+            rgba(7, 29, 51, 0.82) 72%,
+            rgba(7, 29, 51, 0.96) 100%
+          );
+        }
+
+        /* Default Content State */
+        .mu-infra-content {
+          position: relative;
+          z-index: 2;
+          padding: 16px 20px 18px 20px;
+          color: #FFFFFF;
+          pointer-events: none;
+        }
+        .mu-infra-bento-hero .mu-infra-content {
+          padding: 24px 26px 26px 26px;
+        }
+        .mu-infra-tag-row {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          margin-bottom: 6px;
+        }
+        .mu-infra-badge {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          background-color: var(--gold);
+          color: var(--teal-deep);
+          padding: 2px 7px;
+          border-radius: 3px;
+        }
+        .mu-infra-badge-icon {
+          color: var(--gold);
+        }
+        .mu-infra-title {
+          font-family: var(--font-heading);
+          font-size: clamp(15px, 1.4vw, 18px);
+          font-weight: 700;
+          color: #FFFFFF;
+          margin: 0 0 4px 0;
+          line-height: 1.25;
+          letter-spacing: -0.01em;
+        }
+        .mu-infra-bento-hero .mu-infra-title {
+          font-size: clamp(19px, 1.9vw, 24px);
+          margin-bottom: 8px;
+        }
+        .mu-infra-desc {
+          font-family: var(--font-body);
+          font-size: 12.5px;
+          line-height: 1.45;
+          color: rgba(255, 255, 255, 0.88);
+          margin: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .mu-infra-bento-hero .mu-infra-desc {
+          font-size: 14px;
+          line-height: 1.55;
+          -webkit-line-clamp: 3;
+        }
+
+        /* Hover Reveal Panel */
+        .mu-infra-hover-panel {
+          position: absolute;
+          inset: 0;
+          z-index: 4;
+          background: rgba(7, 29, 51, 0.95);
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .mu-infra-bento-hero .mu-infra-hover-panel {
+          padding: 32px 28px;
+        }
+        .mu-infra-bento-card:hover .mu-infra-hover-panel {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .mu-infra-hover-badge {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 9.5px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--gold);
+          display: inline-block;
+          margin-bottom: 6px;
+        }
+        .mu-infra-hover-title {
+          font-family: var(--font-heading);
+          font-size: clamp(15px, 1.5vw, 19px);
+          font-weight: 700;
+          color: #FFFFFF;
+          margin: 0 0 6px 0;
+          line-height: 1.25;
+        }
+        .mu-infra-bento-hero .mu-infra-hover-title {
+          font-size: clamp(20px, 2vw, 24px);
+          margin-bottom: 10px;
+        }
+        .mu-infra-hover-desc {
+          font-family: var(--font-body);
+          font-size: 12.5px;
+          line-height: 1.45;
+          color: rgba(255, 255, 255, 0.9);
+          margin: 0 0 10px 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .mu-infra-bento-hero .mu-infra-hover-desc {
+          font-size: 14px;
+          line-height: 1.55;
+          -webkit-line-clamp: 4;
+          margin-bottom: 16px;
+        }
+        .mu-infra-hover-metric {
+          display: flex;
+          align-items: baseline;
+          gap: 8px;
+          padding-top: 8px;
+          border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .mu-infra-metric-val {
+          font-family: var(--font-heading);
+          font-size: 15px;
+          font-weight: 700;
+          color: var(--gold);
+        }
+        .mu-infra-metric-lbl {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.75);
+          font-weight: 500;
+        }
+
+        /* =========================================================================
+           SECTION 09: Nationally Recognized Research Centres (Image-Led Editorial)
+           ========================================================================= */
+        .mu-research-section {
+          padding: 88px 0;
+        }
+        .mu-research-scroll-wrapper {
+          width: 100%;
+        }
+        .mu-research-card-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+        .mu-research-image-card {
+          position: relative;
+          height: 420px;
+          border-radius: 6px;
+          overflow: hidden;
+          background-color: var(--teal-deep);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          cursor: pointer;
+          transition: transform 0.35s ease, box-shadow 0.35s ease;
+          box-shadow: 0 4px 18px rgba(11, 42, 74, 0.09);
+        }
+        .mu-research-image-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 32px rgba(11, 42, 74, 0.2);
+        }
+
+        /* Image & Gradients */
+        .mu-res-img-wrap {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+        .mu-res-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .mu-research-image-card:hover .mu-res-img {
+          transform: scale(1.06);
+        }
+        .mu-res-gradient-base {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(7, 29, 51, 0.08) 0%,
+            rgba(7, 29, 51, 0.4) 40%,
+            rgba(7, 29, 51, 0.85) 72%,
+            rgba(7, 29, 51, 0.98) 100%
+          );
+        }
+
+        /* Default Content State */
+        .mu-res-content {
+          position: relative;
+          z-index: 2;
+          padding: 24px 24px 26px 24px;
+          color: #FFFFFF;
+          pointer-events: none;
+        }
+        .mu-res-meta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 8px;
+        }
+        .mu-res-badge {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 10.5px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          background-color: var(--gold);
+          color: var(--teal-deep);
+          padding: 3px 8px;
+          border-radius: 3px;
+        }
+        .mu-res-icon-pill {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.16);
+          color: var(--gold);
           display: flex;
           align-items: center;
           justify-content: center;
         }
-        .mu-research-badge {
-          font-size: 11.5px;
-          font-weight: 600;
+        .mu-res-title {
+          font-family: var(--font-heading);
+          font-size: clamp(19px, 1.8vw, 23px);
+          font-weight: 700;
+          color: #FFFFFF;
+          margin: 0 0 6px 0;
+          line-height: 1.25;
+        }
+        .mu-res-desc {
+          font-family: var(--font-body);
+          font-size: 13.5px;
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.88);
+          margin: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        /* Hover Reveal Panel */
+        .mu-res-hover-panel {
+          position: absolute;
+          inset: 0;
+          z-index: 4;
+          background: rgba(7, 29, 51, 0.95);
+          padding: 30px 24px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .mu-research-image-card:hover .mu-res-hover-panel {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .mu-res-hover-badge {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
-          background-color: var(--mist);
-          color: var(--blue);
-          padding: 4px 10px;
-          border-radius: var(--radius);
+          color: var(--gold);
+          display: inline-block;
+          margin-bottom: 8px;
         }
-        .mu-research-title {
-          font-size: 20px;
-          color: var(--teal);
-          margin-bottom: 14px;
+        .mu-res-hover-title {
+          font-family: var(--font-heading);
+          font-size: clamp(19px, 1.9vw, 23px);
+          font-weight: 700;
+          color: #FFFFFF;
+          margin: 0 0 10px 0;
+          line-height: 1.25;
         }
-        .mu-research-desc {
-          font-size: 14.5px;
-          color: var(--ink-soft);
-          line-height: 1.6;
-          margin-bottom: 24px;
+        .mu-res-hover-desc {
+          font-family: var(--font-body);
+          font-size: 13.5px;
+          line-height: 1.55;
+          color: rgba(255, 255, 255, 0.9);
+          margin: 0 0 16px 0;
         }
-        .mu-research-footer {
+        .mu-res-hover-footer {
+          border-top: 1px solid rgba(255, 255, 255, 0.15);
+          padding-top: 12px;
+        }
+        .mu-res-footer-label {
+          display: block;
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 11px;
+          font-weight: 700;
+          color: var(--gold);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 4px;
+        }
+        .mu-res-footer-tags {
+          font-family: var(--font-body);
           font-size: 12.5px;
-          color: var(--blue);
-          font-weight: 600;
-          border-top: 1px solid var(--line-soft);
-          padding-top: 14px;
+          color: rgba(255, 255, 255, 0.85);
+          line-height: 1.4;
         }
 
         /* Campus Full-Bleed Section */
         .mu-campus-break {
           position: relative;
-          min-height: 540px;
-          background: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+          min-height: 580px;
+          background: #071D33 url('/coastal-campus.jpg') center/cover no-repeat;
           display: flex;
           align-items: flex-end;
-          padding: 80px 0;
+          padding: 96px 0;
+          width: 100%;
         }
         .mu-campus-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to right, rgba(7, 29, 51, 0.92) 0%, rgba(7, 29, 51, 0.65) 50%, rgba(7, 29, 51, 0.2) 100%);
+          background: linear-gradient(to right, rgba(7, 29, 51, 0.94) 0%, rgba(7, 29, 51, 0.65) 50%, rgba(7, 29, 51, 0.2) 100%);
         }
         .mu-campus-content {
           position: relative;
           z-index: 2;
         }
         .mu-campus-text-card {
-          max-width: 620px;
+          max-width: 720px;
         }
         .mu-campus-heading {
           color: #FFFFFF;
-          font-size: clamp(30px, 3.8vw, 44px);
-          margin-bottom: 16px;
+          font-size: clamp(32px, 4vw, 48px);
+          margin-bottom: 18px;
         }
         .mu-campus-desc {
-          color: rgba(255, 255, 255, 0.85);
-          font-size: 16.5px;
-          line-height: 1.6;
-          margin-bottom: 28px;
+          color: rgba(255, 255, 255, 0.88);
+          font-size: 17px;
+          line-height: 1.65;
+          margin-bottom: 32px;
         }
 
-        /* Careers & Placement Section */
-        .mu-careers-grid {
+        /* =========================================================================
+           SECTION 11: Placement & Career Ecosystem (Split Editorial Visual Layout)
+           ========================================================================= */
+        .mu-placement-editorial-section {
+          padding: 84px 0;
+          background-color: var(--paper);
+        }
+        .mu-placement-split-grid {
           display: grid;
-          grid-template-columns: 1.05fr 0.95fr;
-          gap: 56px;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 60px;
           align-items: center;
         }
-        .mu-careers-p {
-          font-size: 16px;
-          color: var(--ink-soft);
-          line-height: 1.6;
-          margin-bottom: 24px;
-        }
-        .mu-placement-stats-mini {
-          display: flex;
-          gap: 24px;
-          margin-bottom: 24px;
-          padding: 16px 0;
-          border-top: 1px solid var(--line);
-          border-bottom: 1px solid var(--line);
-        }
-        .mu-mini-stat strong {
-          display: block;
-          font-family: var(--font-serif);
-          font-size: 24px;
-          color: var(--teal);
-        }
-        .mu-mini-stat span {
-          font-size: 12px;
-          color: var(--ink-soft);
-        }
-        .mu-careers-services {
+        .mu-placement-content-left {
           display: flex;
           flex-direction: column;
         }
-        .mu-service-item {
-          display: flex;
-          gap: 16px;
-          padding: 18px 0;
-          border-bottom: 1px solid var(--line);
-        }
-        .mu-service-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background-color: var(--gold);
-          margin-top: 8px;
-          flex-shrink: 0;
-        }
-        .mu-service-title {
-          font-family: var(--font-sans);
-          font-size: 16px;
-          font-weight: 600;
-          color: var(--teal);
-          margin-bottom: 4px;
-        }
-        .mu-service-desc {
-          font-size: 14px;
+        .mu-placement-p {
+          font-family: var(--font-body);
+          font-size: 15.5px;
+          line-height: 1.65;
           color: var(--ink-soft);
-          line-height: 1.5;
+          margin-bottom: 28px;
+          max-width: 580px;
         }
 
-        /* News Section */
-        .mu-news-header {
+        /* Compact Career-Service Detail Cards Grid (4 Cards) */
+        .mu-placement-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+          margin-bottom: 24px;
+        }
+        .mu-placement-card {
+          padding: 16px;
+          background: #FFFFFF;
+          border: 1px solid rgba(11, 42, 74, 0.08);
+          border-radius: 6px;
+          box-shadow: 0 2px 8px rgba(11, 42, 74, 0.03);
+          transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .mu-placement-card:hover {
+          transform: translateY(-2px);
+          border-color: rgba(232, 163, 23, 0.4);
+          box-shadow: 0 6px 16px rgba(11, 42, 74, 0.07);
+        }
+        .mu-pcard-body {
+          width: 100%;
+        }
+        .mu-pcard-title {
+          font-family: var(--font-heading);
+          font-size: 14px;
+          font-weight: 700;
+          color: var(--teal);
+          margin: 0 0 4px 0;
+          line-height: 1.3;
+        }
+        .mu-pcard-desc {
+          font-family: var(--font-body);
+          font-size: 12.5px;
+          color: var(--ink-soft);
+          line-height: 1.5;
+          margin: 0;
+        }
+
+        .mu-placement-cta-wrapper {
+          display: flex;
+          align-items: center;
+        }
+
+        /* Right Visual: Soft Geometric Frame with Floating Badges */
+        .mu-placement-visual-right {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .mu-placement-visual-frame {
+          position: relative;
+          width: 100%;
+          max-width: 440px;
+        }
+        .mu-placement-glow-backdrop {
+          position: absolute;
+          inset: -14px;
+          border-radius: 28px;
+          background: linear-gradient(135deg, rgba(232, 163, 23, 0.12) 0%, rgba(11, 42, 74, 0.08) 100%);
+          z-index: 1;
+        }
+        .mu-placement-img-container {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+          height: 380px;
+          border-radius: 22px;
+          overflow: hidden;
+          box-shadow: 0 12px 36px rgba(11, 42, 74, 0.14);
+          border: 2px solid #FFFFFF;
+        }
+        .mu-placement-main-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 25%;
+          transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .mu-placement-visual-frame:hover .mu-placement-main-img {
+          transform: scale(1.04);
+        }
+        .mu-placement-img-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, transparent 60%, rgba(7, 29, 51, 0.45) 100%);
+          pointer-events: none;
+        }
+
+        @media (max-width: 991px) {
+          .mu-placement-split-grid {
+            grid-template-columns: 1fr;
+            gap: 48px;
+          }
+          .mu-placement-visual-frame {
+            max-width: 480px;
+          }
+          .mu-placement-img-container {
+            height: 340px;
+          }
+        }
+        @media (max-width: 640px) {
+          .mu-placement-cards-grid {
+            grid-template-columns: 1fr;
+            gap: 10px;
+          }
+          .mu-placement-img-container {
+            height: 280px;
+          }
+        }
+
+        /* =========================================================================
+           SECTION 12: News, Events & Official Circulars (Editorial 2-Column Split)
+           ========================================================================= */
+        .mu-news-editorial-section {
+          padding: 88px 0;
+        }
+        .mu-news-top-bar {
           display: flex;
           justify-content: space-between;
           align-items: flex-end;
-          margin-bottom: 40px;
+          margin-bottom: 36px;
         }
-        .mu-news-list {
-          border-top: 1px solid var(--line);
-        }
-        .mu-news-row {
-          display: grid;
-          grid-template-columns: 160px 1fr 40px;
-          align-items: center;
-          padding: 22px 12px;
-          border-bottom: 1px solid var(--line);
-          text-decoration: none;
-          transition: background-color 0.2s ease;
-        }
-        .mu-news-row:hover {
-          background-color: rgba(255, 255, 255, 0.6);
-        }
-        .mu-news-row:hover .mu-news-arrow {
-          transform: translate(3px, -3px);
-          color: var(--blue);
-        }
-        .mu-news-date {
-          display: block;
-          font-size: 13px;
-          font-weight: 600;
-          color: var(--teal);
-        }
-        .mu-news-category {
-          display: inline-block;
-          font-size: 11.5px;
-          font-weight: 600;
-          text-transform: uppercase;
-          color: var(--blue);
-          margin-top: 4px;
-        }
-        .mu-news-title {
-          font-family: var(--font-serif);
-          font-size: 18px;
-          color: var(--teal);
-          margin-bottom: 4px;
-        }
-        .mu-news-desc {
+        .mu-news-view-all {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
           font-size: 14px;
-          color: var(--ink-soft);
-        }
-        .mu-news-arrow {
-          color: var(--ink-soft);
+          font-weight: 600;
+          color: var(--blue);
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          letter-spacing: 0.02em;
           transition: all 0.2s ease;
+          padding: 6px 12px;
+          border-radius: 4px;
+          background: rgba(30, 78, 121, 0.06);
+        }
+        .mu-news-view-all:hover {
+          color: var(--teal);
+          background: rgba(30, 78, 121, 0.12);
+          transform: translateX(3px);
         }
 
-        /* Testimonials Section */
-        .mu-testimonial-wrapper {
-          max-width: 820px;
-          margin: 0 auto;
-          text-align: center;
+        /* 2-Column Grid: 58% Featured / 42% Scrollable List */
+        .mu-news-editorial-grid {
+          display: grid;
+          grid-template-columns: 58% 42%;
+          gap: 32px;
+          align-items: stretch;
+        }
+
+        /* Left Column: Featured Card */
+        .mu-news-featured-col {
+          display: flex;
+        }
+        .mu-news-featured-card {
           position: relative;
+          width: 100%;
+          min-height: 520px;
+          border-radius: 6px;
+          overflow: hidden;
+          background-color: var(--teal-deep);
+          text-decoration: none;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          box-shadow: 0 4px 20px rgba(11, 42, 74, 0.08);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .mu-quote-glyph {
-          font-family: var(--font-serif);
-          font-size: 84px;
-          color: var(--gold);
-          line-height: 0.6;
-          margin-bottom: 24px;
-          opacity: 0.8;
+        .mu-news-featured-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 12px 32px rgba(11, 42, 74, 0.16);
         }
-        .mu-testimonial-text {
-          font-family: var(--font-serif);
-          font-size: clamp(20px, 2.6vw, 26px);
-          font-style: italic;
+        .mu-featured-img-wrap {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+        .mu-featured-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .mu-news-featured-card:hover .mu-featured-img {
+          transform: scale(1.03);
+        }
+        .mu-featured-gradient-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(7, 29, 51, 0.1) 0%,
+            rgba(7, 29, 51, 0.45) 45%,
+            rgba(7, 29, 51, 0.88) 75%,
+            rgba(7, 29, 51, 0.98) 100%
+          );
+        }
+        .mu-featured-content {
+          position: relative;
+          z-index: 2;
+          padding: 32px 36px 36px 36px;
           color: #FFFFFF;
-          line-height: 1.5;
-          margin-bottom: 28px;
         }
-        .mu-author-name {
-          display: block;
-          font-family: var(--font-sans);
-          font-weight: 600;
-          font-size: 16px;
-          color: #FFFFFF;
-        }
-        .mu-author-role {
-          display: block;
-          font-size: 13.5px;
-          color: var(--gold);
-          margin-top: 4px;
-        }
-        .mu-carousel-controls {
+        .mu-featured-meta {
           display: flex;
           align-items: center;
-          justify-content: center;
-          gap: 20px;
-          margin-top: 40px;
+          gap: 14px;
+          margin-bottom: 12px;
+          flex-wrap: wrap;
         }
-        .mu-carousel-btn {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          background: none;
-          color: #FFFFFF;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-        .mu-carousel-btn:hover {
-          border-color: var(--gold);
-          color: var(--gold);
-        }
-        .mu-carousel-dots {
-          display: flex;
-          gap: 8px;
-        }
-        .mu-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background-color: rgba(255, 255, 255, 0.25);
-          border: none;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .mu-dot-active {
+        .mu-featured-badge {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
           background-color: var(--gold);
-          width: 20px;
+          color: var(--teal-deep);
+          padding: 4px 10px;
+          border-radius: 3px;
+        }
+        .mu-featured-date {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 12.5px;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 0.8);
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+        }
+        .mu-featured-title {
+          font-family: var(--font-quote, 'Fraunces', Georgia, serif);
+          font-size: clamp(22px, 2.2vw, 29px);
+          font-weight: 500;
+          line-height: 1.3;
+          color: #FFFFFF;
+          margin-bottom: 12px;
+          letter-spacing: -0.01em;
+        }
+        .mu-featured-desc {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 14.5px;
+          line-height: 1.55;
+          color: rgba(255, 255, 255, 0.85);
+          margin-bottom: 16px;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .mu-featured-link-action {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 13.5px;
+          font-weight: 600;
+          color: var(--gold);
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          letter-spacing: 0.02em;
+          transition: gap 0.2s ease;
+        }
+        .mu-news-featured-card:hover .mu-featured-link-action {
+          gap: 10px;
+        }
+
+        /* Right Column: Vertically Scrollable List */
+        .mu-news-list-col {
+          display: flex;
+          flex-direction: column;
+        }
+        .mu-news-scroll-container {
+          height: 520px;
+          overflow-y: auto;
+          padding-right: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(11, 42, 74, 0.25) transparent;
+        }
+        .mu-news-scroll-container::-webkit-scrollbar {
+          width: 5px;
+        }
+        .mu-news-scroll-container::-webkit-scrollbar-track {
+          background: rgba(11, 42, 74, 0.04);
           border-radius: 4px;
         }
-
-        /* Admissions CTA Banner */
-        .mu-cta-banner {
-          background-color: var(--teal-deep);
-          color: #FFFFFF;
-          padding: 84px 32px;
-          text-align: center;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
+        .mu-news-scroll-container::-webkit-scrollbar-thumb {
+          background-color: rgba(11, 42, 74, 0.25);
+          border-radius: 4px;
         }
-        .mu-cta-content {
-          max-width: 680px;
+        .mu-news-scroll-container::-webkit-scrollbar-thumb:hover {
+          background-color: var(--blue);
+        }
+
+        /* Compact Item */
+        .mu-news-compact-item {
+          display: grid;
+          grid-template-columns: 110px 1fr;
+          gap: 16px;
+          background: #FFFFFF;
+          border: 1px solid rgba(11, 42, 74, 0.08);
+          border-radius: 5px;
+          padding: 12px;
+          text-decoration: none;
+          transition: all 0.25s ease;
+          flex-shrink: 0;
+        }
+        .mu-news-compact-item:hover {
+          border-color: rgba(11, 42, 74, 0.22);
+          box-shadow: 0 4px 14px rgba(11, 42, 74, 0.07);
+          transform: translateX(4px);
+        }
+        .mu-item-thumb-wrap {
+          width: 110px;
+          height: 88px;
+          border-radius: 4px;
+          overflow: hidden;
+          background-color: var(--mist);
+          flex-shrink: 0;
+        }
+        .mu-item-thumb {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.4s ease;
+        }
+        .mu-news-compact-item:hover .mu-item-thumb {
+          transform: scale(1.06);
+        }
+        .mu-item-details {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          min-width: 0;
+        }
+        .mu-item-meta-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+          margin-bottom: 4px;
+        }
+        .mu-item-category {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 11px;
+          font-weight: 700;
+          text-transform: uppercase;
+          color: var(--blue);
+          letter-spacing: 0.04em;
+        }
+        .mu-item-date {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 11px;
+          font-weight: 500;
+          color: var(--ink-soft);
+        }
+        .mu-item-title {
+          font-family: var(--font-quote, 'Fraunces', Georgia, serif);
+          font-size: 15px;
+          font-weight: 500;
+          line-height: 1.35;
+          color: var(--teal);
+          margin: 0 0 4px 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .mu-news-compact-item:hover .mu-item-title {
+          color: var(--blue);
+        }
+        .mu-item-desc {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 12.5px;
+          line-height: 1.45;
+          color: var(--ink-soft);
+          margin: 0 0 6px 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .mu-item-readmore {
+          font-family: var(--font-author, 'Libre Franklin', sans-serif);
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--teal);
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          transition: all 0.2s ease;
+        }
+        .mu-news-compact-item:hover .mu-item-readmore {
+          color: var(--gold-deep);
+          gap: 6px;
+        }
+        .mu-item-arrow {
+          transition: transform 0.2s ease;
+        }
+        .mu-news-compact-item:hover .mu-item-arrow {
+          transform: translate(2px, -2px);
+        }
+
+        /* =========================================================================
+           SECTION 13: Student & Alumni Testimonials (Compact 3-Card Carousel)
+           ========================================================================= */
+        .mu-testimonial-section {
+          padding: 72px 0;
+          background-color: var(--mist);
+          border-top: 1px solid var(--line-soft);
+          border-bottom: 1px solid var(--line-soft);
+          width: 100%;
+        }
+        .mu-t-carousel-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+          max-width: 1180px;
           margin: 0 auto;
         }
-        .mu-cta-heading {
-          color: #FFFFFF;
-          font-size: clamp(30px, 4vw, 44px);
-          margin-bottom: 16px;
-        }
-        .mu-cta-desc {
-          font-size: 16.5px;
-          color: rgba(255, 255, 255, 0.8);
+        .mu-t-cards-row {
+          display: grid;
+          grid-template-columns: 1fr 1.15fr 1fr;
+          gap: 22px;
+          align-items: center;
+          width: 100%;
           margin-bottom: 32px;
-          line-height: 1.6;
         }
-        .mu-cta-actions {
+
+        /* Testimonial Card Base */
+        .mu-t-card {
+          border-radius: 8px;
+          padding: 24px 22px;
           display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          min-height: 220px;
+          transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.35s ease;
+          cursor: pointer;
+        }
+
+        /* Center Card: Deep Navy Highlight */
+        .mu-t-card-center {
+          background-color: #071D33;
+          color: #FFFFFF;
+          border: 1px solid rgba(232, 163, 23, 0.35);
+          box-shadow: 0 12px 36px rgba(7, 29, 51, 0.22);
+          transform: scale(1.04);
+          z-index: 2;
+        }
+        .mu-t-card-center:hover {
+          transform: scale(1.06) translateY(-2px);
+          box-shadow: 0 16px 42px rgba(7, 29, 51, 0.28);
+        }
+
+        /* Side Cards: White / Soft Light-Blue */
+        .mu-t-card-side {
+          background-color: #FFFFFF;
+          color: var(--ink);
+          border: 1px solid rgba(11, 42, 74, 0.08);
+          box-shadow: 0 4px 16px rgba(11, 42, 74, 0.06);
+          opacity: 0.88;
+        }
+        .mu-t-card-side:hover {
+          opacity: 1;
+          transform: translateY(-2px);
+          border-color: rgba(11, 42, 74, 0.18);
+        }
+
+        /* Rating Stars */
+        .mu-t-card-rating {
+          display: flex;
+          align-items: center;
+          gap: 3px;
+          margin-bottom: 12px;
+        }
+        .mu-star-gold {
+          color: var(--gold);
+        }
+        .mu-star-navy {
+          color: var(--teal);
+        }
+
+        /* Quote Text */
+        .mu-t-card-quote {
+          font-family: var(--font-body);
+          font-size: 13.5px;
+          line-height: 1.55;
+          margin: 0 0 18px 0;
+          flex: 1;
+        }
+        .mu-t-card-center .mu-t-card-quote {
+          color: rgba(255, 255, 255, 0.92);
+        }
+        .mu-t-card-side .mu-t-card-quote {
+          color: var(--ink-soft);
+        }
+
+        /* Profile Block */
+        .mu-t-card-profile {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding-top: 12px;
+          border-top: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .mu-t-card-side .mu-t-card-profile {
+          border-top: 1px solid var(--line-soft);
+        }
+        .mu-t-avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: var(--font-heading);
+          font-size: 12px;
+          font-weight: 700;
+          flex-shrink: 0;
+        }
+        .mu-avatar-center {
+          background-color: var(--gold);
+          color: var(--teal-deep);
+        }
+        .mu-avatar-side {
+          background-color: var(--mist);
+          color: var(--teal);
+          border: 1px solid rgba(11, 42, 74, 0.1);
+        }
+        .mu-t-meta {
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+        }
+        .mu-t-name {
+          font-family: var(--font-heading);
+          font-size: 13.5px;
+          font-weight: 700;
+          margin: 0 0 1px 0;
+          line-height: 1.25;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .mu-t-card-center .mu-t-name {
+          color: #FFFFFF;
+        }
+        .mu-t-card-side .mu-t-name {
+          color: var(--teal);
+        }
+        .mu-t-role {
+          font-family: var(--font-body);
+          font-size: 11.5px;
+          font-weight: 500;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .mu-t-card-center .mu-t-role {
+          color: var(--gold);
+        }
+        .mu-t-card-side .mu-t-role {
+          color: var(--blue);
+        }
+        .mu-t-batch {
+          font-family: var(--font-body);
+          font-size: 10.5px;
+          color: rgba(255, 255, 255, 0.6);
+        }
+        .mu-t-card-side .mu-t-batch {
+          color: var(--ink-soft);
+        }
+
+        /* Carousel Controls Bar (Arrows & Dots) */
+        .mu-t-controls-bar {
+          display: flex;
+          align-items: center;
           justify-content: center;
           gap: 16px;
-          flex-wrap: wrap;
+        }
+        .mu-t-arrow-btn {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          border: 1px solid var(--line-soft);
+          background: #FFFFFF;
+          color: var(--teal);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          box-shadow: 0 2px 6px rgba(11, 42, 74, 0.06);
+          transition: all 0.2s ease;
+        }
+        .mu-t-arrow-btn:hover {
+          border-color: var(--gold);
+          background-color: var(--teal);
+          color: #FFFFFF;
+          transform: scale(1.05);
+        }
+        .mu-t-dots-container {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .mu-t-dot-pill {
+          width: 8px;
+          height: 6px;
+          border-radius: 3px;
+          background-color: rgba(11, 42, 74, 0.2);
+          border: none;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          padding: 0;
+        }
+        .mu-t-dot-pill-active {
+          background-color: var(--gold);
+          width: 22px;
+        }
+
+        @media (max-width: 900px) {
+          .mu-t-cards-row {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .mu-t-card-side {
+            display: none;
+          }
+          .mu-t-card-center {
+            transform: none;
+          }
+          .mu-t-card-center:hover {
+            transform: none;
+          }
+        }
+
+        /* =========================================================================
+           SECTION 14: Admissions CTA Strip (Compact Horizontal Promotional Banner)
+           ========================================================================= */
+        .mu-cta-banner-strip {
+          padding: 36px 0;
+          background-color: var(--paper);
+          width: 100%;
+        }
+        .mu-cta-card-wrapper {
+          position: relative;
+          width: 100%;
+          min-height: 128px;
+          border-radius: 10px;
+          overflow: hidden;
+          background-color: #071D33;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow: 0 8px 30px rgba(7, 29, 51, 0.16);
+          display: flex;
+          align-items: center;
+        }
+        .mu-cta-bg-layer {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+        }
+        .mu-cta-bg-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 30%;
+          opacity: 0.18;
+          filter: grayscale(40%);
+        }
+        .mu-cta-bg-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            90deg,
+            rgba(7, 29, 51, 0.98) 0%,
+            rgba(7, 29, 51, 0.94) 50%,
+            rgba(7, 29, 51, 0.78) 100%
+          );
+        }
+        .mu-cta-inner {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+          padding: 24px 36px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 32px;
+        }
+        .mu-cta-left {
+          display: flex;
+          align-items: center;
+          flex: 1;
+        }
+        .mu-cta-text-group {
+          display: flex;
+          flex-direction: column;
+        }
+        .mu-cta-eyebrow {
+          font-family: var(--font-heading);
+          font-size: 11px;
+          font-weight: 700;
+          color: var(--gold);
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          margin-bottom: 3px;
+        }
+        .mu-cta-title {
+          font-family: var(--font-heading);
+          font-size: clamp(18px, 1.8vw, 22px);
+          font-weight: 700;
+          color: #FFFFFF;
+          margin: 0 0 3px 0;
+          line-height: 1.25;
+        }
+        .mu-cta-subtitle {
+          font-family: var(--font-body);
+          font-size: 13px;
+          color: rgba(255, 255, 255, 0.8);
+          margin: 0;
+          line-height: 1.4;
+        }
+        .mu-cta-actions-right {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-shrink: 0;
+        }
+        .mu-btn-cta-compact {
+          padding: 9px 18px !important;
+          font-size: 13px !important;
+          font-weight: 600 !important;
+          border-radius: 4px !important;
+        }
+
+        @media (max-width: 900px) {
+          .mu-cta-inner {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 24px;
+          }
+          .mu-cta-actions-right {
+            width: 100%;
+            justify-content: flex-start;
+          }
+        }
+        @media (max-width: 560px) {
+          .mu-cta-left {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+          .mu-cta-actions-right {
+            flex-direction: column;
+            width: 100%;
+          }
+          .mu-cta-actions-right .mu-btn {
+            width: 100%;
+            justify-content: center;
+          }
         }
 
         /* Footer */
         .mu-footer {
           background-color: var(--teal-deep);
           color: rgba(255, 255, 255, 0.7);
-          padding: 72px 0 32px 0;
+          padding: 80px 0 36px 0;
           border-top: 1px solid rgba(255, 255, 255, 0.1);
+          width: 100%;
         }
         .mu-footer-grid {
           display: grid;
-          grid-template-columns: 1.3fr 1fr 1fr 1fr;
-          gap: 48px;
-          margin-bottom: 56px;
+          grid-template-columns: 1.4fr 1fr 1fr 1fr;
+          gap: 56px;
+          margin-bottom: 60px;
         }
-        .mu-footer-brand {
-          margin-bottom: 16px;
+        .mu-footer-brand-wrapper {
+          margin-bottom: 20px;
         }
         .mu-footer-address {
-          font-size: 14px;
-          line-height: 1.6;
-          margin-bottom: 16px;
+          font-size: 14.5px;
+          line-height: 1.65;
+          margin-bottom: 18px;
+          max-width: 320px;
         }
         .mu-footer-contact p {
           display: flex;
           align-items: center;
           gap: 8px;
           font-size: 13.5px;
-          margin-bottom: 6px;
+          margin-bottom: 8px;
         }
         .mu-footer-col-title {
           font-family: var(--font-sans);
@@ -1770,18 +3986,18 @@ export default function App() {
           text-transform: uppercase;
           letter-spacing: 0.08em;
           color: #FFFFFF;
-          margin-bottom: 20px;
+          margin-bottom: 22px;
         }
         .mu-footer-links {
           list-style: none;
         }
         .mu-footer-links li {
-          margin-bottom: 10px;
+          margin-bottom: 12px;
         }
         .mu-footer-links a {
           color: rgba(255, 255, 255, 0.75);
           text-decoration: none;
-          font-size: 14px;
+          font-size: 14.5px;
           transition: color 0.2s;
         }
         .mu-footer-links a:hover {
@@ -1791,14 +4007,14 @@ export default function App() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding-top: 24px;
+          padding-top: 28px;
           border-top: 1px solid rgba(255, 255, 255, 0.08);
-          font-size: 13px;
+          font-size: 13.5px;
         }
         .mu-footer-legal {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 14px;
         }
         .mu-footer-legal a {
           color: rgba(255, 255, 255, 0.7);
@@ -1811,29 +4027,33 @@ export default function App() {
         /* =========================================================================
            Responsive Breakpoints
            ========================================================================= */
-        @media (max-width: 920px) {
+        @media (max-width: 1200px) {
+          .mu-faculty-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+          .mu-infra-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 960px) {
+          .mu-header {
+            top: 36px;
+          }
           .mu-nav-desktop {
             display: none;
           }
           .mu-mobile-toggle {
             display: block;
           }
-          .mu-hero-grid {
-            grid-template-columns: 1fr;
-            gap: 40px;
+          .mu-hero-fullscreen {
+            min-height: 80vh;
+            padding-top: 100px;
           }
-          .mu-faculties-grid {
+          .mu-faculty-grid {
             grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
           }
-          .mu-infra-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-          .mu-research-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        @media (max-width: 860px) {
           .mu-about-grid {
             grid-template-columns: 1fr;
             gap: 40px;
@@ -1842,14 +4062,93 @@ export default function App() {
             right: 12px;
             bottom: -12px;
           }
-          .mu-pillars-grid {
+          .mu-why-asym-grid {
             grid-template-columns: 1fr;
             gap: 24px;
+          }
+          .mu-why-card-tall {
+            height: auto;
+          }
+          .mu-why-card-tall .mu-why-image-wrapper {
+            height: 280px;
+          }
+          .mu-why-right-stack {
+            height: auto;
+            gap: 24px;
+          }
+          .mu-why-card-wide {
+            grid-template-columns: 1fr;
+            height: auto;
+          }
+          .mu-why-card-wide .mu-why-image-wrapper {
+            height: 220px;
+          }
+          .mu-why-card-wide .mu-why-content-panel {
+            border-left: none;
+            border-top: 2px solid rgba(11, 42, 74, 0.08);
           }
           .mu-careers-grid {
             grid-template-columns: 1fr;
             gap: 36px;
           }
+          .mu-infra-bento-grid {
+            grid-template-columns: 1fr;
+            height: auto;
+            gap: 16px;
+          }
+          .mu-infra-bento-hero {
+            height: 320px;
+          }
+          .mu-infra-bento-right {
+            height: auto;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+            gap: 16px;
+          }
+          .mu-infra-card-sports {
+            grid-column: span 2;
+            height: 220px;
+          }
+          .mu-infra-card-hostels,
+          .mu-infra-card-ict,
+          .mu-infra-card-health,
+          .mu-infra-card-botanical {
+            grid-column: span 1;
+            height: 200px;
+          }
+          .mu-news-editorial-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+          }
+          .mu-news-featured-card {
+            min-height: 440px;
+          }
+          .mu-news-scroll-container {
+            height: auto;
+            max-height: 520px;
+          }
+          .mu-research-scroll-wrapper {
+            overflow-x: auto;
+            padding-bottom: 16px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(11, 42, 74, 0.25) transparent;
+          }
+          .mu-research-card-grid {
+            grid-template-columns: repeat(3, 310px);
+            gap: 18px;
+            width: max-content;
+          }
+          .mu-research-image-card {
+            height: 380px;
+          }
+          .mu-footer-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 36px;
+          }
+        }
+
+        @media (max-width: 860px) {
           .mu-stats-grid {
             grid-template-columns: repeat(2, 1fr);
           }
@@ -1858,29 +4157,95 @@ export default function App() {
             border-bottom: 1px solid var(--line);
             padding: 20px 12px;
           }
-          .mu-footer-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 36px;
-          }
         }
 
         @media (max-width: 720px) {
-          .mu-utility-links {
+          .mu-utility-bar {
             display: none;
           }
-          .mu-utility-content {
-            justify-content: flex-end;
+          .mu-header {
+            top: 0;
+            padding: 10px 0;
+          }
+          .mu-brand-logo-img {
+            height: 48px;
+          }
+          .mu-hero-fullscreen {
+            min-height: 75vh;
+            padding-top: 80px;
+            padding-bottom: 40px;
+          }
+          .mu-ticker-band {
+            height: 48px;
+          }
+          .mu-ticker-badge {
+            padding: 4px 10px;
+            font-size: 11px;
+          }
+          .mu-ticker-item {
+            font-size: 13px;
           }
           .mu-section-header {
             flex-direction: column;
             align-items: flex-start;
           }
-          .mu-news-row {
-            grid-template-columns: 1fr;
-            gap: 8px;
+          .mu-infra-header-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
           }
-          .mu-news-action-col {
-            display: none;
+          .mu-infra-tagline {
+            text-align: left;
+            font-size: 13px;
+          }
+          .mu-infra-bento-hero {
+            height: 260px;
+          }
+          .mu-infra-bento-right {
+            grid-template-columns: 1fr;
+            gap: 14px;
+          }
+          .mu-infra-card-sports,
+          .mu-infra-card-hostels,
+          .mu-infra-card-ict,
+          .mu-infra-card-health,
+          .mu-infra-card-botanical {
+            grid-column: span 1;
+            height: 180px;
+          }
+          .mu-research-scroll-wrapper {
+            overflow-x: auto;
+            padding-bottom: 12px;
+            margin: 0 -20px;
+            padding-left: 20px;
+            padding-right: 20px;
+          }
+          .mu-research-card-grid {
+            grid-template-columns: repeat(3, 275px);
+            gap: 14px;
+          }
+          .mu-research-image-card {
+            height: 350px;
+          }
+          .mu-news-top-bar {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+          .mu-news-featured-card {
+            min-height: 380px;
+          }
+          .mu-featured-content {
+            padding: 24px 20px 24px 20px;
+          }
+          .mu-news-compact-item {
+            grid-template-columns: 90px 1fr;
+            gap: 12px;
+            padding: 10px;
+          }
+          .mu-item-thumb-wrap {
+            width: 90px;
+            height: 80px;
           }
           .mu-footer-bottom {
             flex-direction: column;
@@ -1890,10 +4255,7 @@ export default function App() {
         }
 
         @media (max-width: 560px) {
-          .mu-faculties-grid {
-            grid-template-columns: 1fr;
-          }
-          .mu-infra-grid {
+          .mu-faculty-grid {
             grid-template-columns: 1fr;
           }
           .mu-footer-grid {

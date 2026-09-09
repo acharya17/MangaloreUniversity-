@@ -1,0 +1,239 @@
+/* ==========================================================================
+   Mangalore University — Global Design System & Tokens
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..500&family=Libre+Franklin:ital,wght@0,300..700;1,400&display=swap');
+
+:root {
+  /* Color System */
+  --teal: #0B2A4A;             /* Primary Navy */
+  --teal-deep: #071D33;        /* Utility Bar & Footer Navy Deep */
+  --blue: #1E4E79;             /* University Blue (eyebrows, links, accents on light) */
+  --gold: #E8A317;             /* Gold accent (buttons, highlights, active indicators) */
+  --gold-deep: #C1860A;        /* Gold hover state */
+  --paper: #F7F8FA;            /* Main canvas background */
+  --mist: #EAF2F8;             /* Alternate light blue section background */
+  --ink: #1F2937;              /* Body text */
+  --ink-soft: #5B6472;         /* Supporting muted text */
+  --line: rgba(31, 41, 55, 0.14); /* Hairline dividers */
+  --line-soft: rgba(31, 41, 55, 0.08); /* Faint borders */
+
+  /* Typography */
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Layout */
+  --max-width: 1220px;
+  --radius: 3px;
+}
+
+/* Reset & Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Classes */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  color: var(--teal);
+  line-height: 1.2;
+}
+
+.mu-heading {
+  font-size: clamp(28px, 3.4vw, 40px);
+  margin-bottom: 16px;
+}
+
+.mu-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--blue);
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.mu-eyebrow-gold {
+  color: var(--gold);
+}
+
+.mu-body-lead {
+  font-size: 17px;
+  color: var(--ink-soft);
+  max-width: 560px;
+}
+
+/* Layout Utilities */
+.mu-container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.mu-section {
+  padding: 88px 0;
+}
+
+.mu-section-tight {
+  padding: 64px 0;
+}
+
+.mu-bg-paper {
+  background-color: var(--paper);
+}
+
+.mu-bg-mist {
+  background-color: var(--mist);
+}
+
+.mu-bg-navy {
+  background-color: var(--teal);
+  color: #FFFFFF;
+}
+
+.mu-bg-navy-deep {
+  background-color: var(--teal-deep);
+  color: #FFFFFF;
+}
+
+/* Button & Action Styles */
+.mu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+/* Primary Gold Button (ALWAYS navy text for high contrast) */
+.mu-btn-gold {
+  background-color: var(--gold);
+  color: var(--teal);
+  padding: 14px 26px;
+}
+
+.mu-btn-gold:hover {
+  background-color: var(--gold-deep);
+  transform: translateY(-1px);
+}
+
+/* Outlined Ghost Navy Button */
+.mu-btn-outline {
+  background-color: transparent;
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  padding: 14px 22px;
+}
+
+.mu-btn-outline:hover {
+  background-color: rgba(11, 42, 74, 0.05);
+  transform: translateY(-1px);
+}
+
+/* Outlined Ghost White Button (for dark backgrounds) */
+.mu-btn-outline-white {
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 14px 24px;
+}
+
+.mu-btn-outline-white:hover {
+  border-color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Compact Nav Button */
+.mu-btn-nav {
+  background-color: var(--gold);
+  color: var(--teal);
+  padding: 9px 18px;
+  font-size: 13.5px;
+}
+
+.mu-btn-nav:hover {
+  background-color: var(--gold-deep);
+}
+
+/* Accessibility Focus States */
+a:focus-visible, button:focus-visible, .mu-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Animations & Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mu-fade-in-1 {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.mu-fade-in-2 {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  opacity: 0;
+}
+
+.mu-fade-in-3 {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  opacity: 0;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Responsive Containers */
+@media (max-width: 720px) {
+  .mu-container {
+    padding: 0 20px;
+  }
+  .mu-section {
+    padding: 64px 0;
+  }
+  .mu-section-tight {
+    padding: 48px 0;
+  }
+}

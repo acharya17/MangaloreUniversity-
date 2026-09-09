@@ -353,36 +353,30 @@ Error generating stack: `+i.message+`
           text-decoration: none;
           font-size: 16px;
           padding: 6px 0;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .mu-mobile-drawer-actions {
-          margin-top: 8px;
-        }
-
-        /* Hero Section */
+          border-bottom: 1px soli        /* Hero Section */
         .mu-hero-section {
-          padding: 48px 0 88px 0;
+          padding: 56px 0 96px 0;
           background-color: var(--paper);
         }
         .mu-hero-grid {
           display: grid;
-          grid-template-columns: 1.05fr 0.95fr;
-          gap: 56px;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 64px;
           align-items: center;
         }
         .mu-hero-headline {
-          font-size: clamp(36px, 5vw, 56px);
+          font-size: clamp(38px, 4.8vw, 62px);
           font-weight: 500;
           color: var(--teal);
-          line-height: 1.14;
-          margin-bottom: 20px;
+          line-height: 1.12;
+          margin-bottom: 24px;
         }
         .mu-hero-subtext {
-          font-size: 17px;
-          line-height: 1.6;
+          font-size: 18px;
+          line-height: 1.65;
           color: var(--ink-soft);
-          margin-bottom: 32px;
-          max-width: 520px;
+          margin-bottom: 36px;
+          max-width: 660px;
         }
         .mu-hero-actions {
           display: flex;
@@ -391,6 +385,7 @@ Error generating stack: `+i.message+`
         }
         .mu-hero-media-wrapper {
           position: relative;
+          width: 100%;
         }
         .mu-hero-frame-border {
           position: absolute;
@@ -398,7 +393,7 @@ Error generating stack: `+i.message+`
           right: -12px;
           bottom: 12px;
           left: 12px;
-          border: 1px solid var(--gold);
+          border: 1.5px solid var(--gold);
           border-radius: var(--radius);
           z-index: 1;
         }
@@ -411,42 +406,42 @@ Error generating stack: `+i.message+`
         }
         .mu-hero-img {
           width: 100%;
-          height: 440px;
+          height: 480px;
           object-fit: cover;
           display: block;
         }
         .mu-hero-badge {
           position: absolute;
-          bottom: 20px;
-          left: 20px;
-          background-color: rgba(11, 42, 74, 0.92);
-          backdrop-filter: blur(8px);
-          border: 1px solid rgba(232, 163, 23, 0.4);
+          bottom: 24px;
+          left: 24px;
+          background-color: rgba(7, 29, 51, 0.94);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(232, 163, 23, 0.5);
           color: #FFFFFF;
-          padding: 12px 18px;
+          padding: 14px 20px;
           border-radius: var(--radius);
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 14px;
         }
         .mu-badge-icon {
           color: var(--gold);
         }
         .mu-hero-badge strong {
           display: block;
-          font-size: 13.5px;
+          font-size: 14px;
         }
         .mu-hero-badge span {
           display: block;
-          font-size: 11.5px;
-          color: rgba(255, 255, 255, 0.75);
+          font-size: 12px;
+          color: rgba(255, 255, 255, 0.8);
         }
 
         /* About Section */
         .mu-about-grid {
           display: grid;
           grid-template-columns: 1.15fr 0.85fr;
-          gap: 64px;
+          gap: 72px;
           align-items: center;
         }
         .mu-about-image-wrapper {
@@ -454,7 +449,7 @@ Error generating stack: `+i.message+`
         }
         .mu-about-img {
           width: 100%;
-          height: 440px;
+          height: 480px;
           object-fit: cover;
           border-radius: var(--radius);
           border: 1px solid var(--line);
@@ -465,31 +460,31 @@ Error generating stack: `+i.message+`
           right: -16px;
           background-color: var(--teal);
           color: #FFFFFF;
-          padding: 16px 20px;
+          padding: 18px 24px;
           border-radius: var(--radius);
           border-left: 3px solid var(--gold);
-          box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.14);
         }
         .mu-milestone-year {
           display: block;
           font-family: var(--font-serif);
-          font-size: 26px;
+          font-size: 28px;
           font-weight: 600;
           color: var(--gold);
         }
         .mu-milestone-text {
-          font-size: 12px;
-          color: rgba(255, 255, 255, 0.85);
+          font-size: 12.5px;
+          color: rgba(255, 255, 255, 0.9);
         }
         .mu-about-p {
-          font-size: 16px;
+          font-size: 16.5px;
           color: var(--ink-soft);
-          margin-bottom: 16px;
-          line-height: 1.6;
+          margin-bottom: 18px;
+          line-height: 1.65;
         }
         .mu-about-vc-card {
-          margin: 20px 0;
-          padding: 20px 24px;
+          margin: 24px 0;
+          padding: 22px 28px;
           background-color: var(--mist);
           border-left: 3px solid var(--teal);
           border-radius: var(--radius);
@@ -497,12 +492,12 @@ Error generating stack: `+i.message+`
         .mu-vc-header {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 10px;
+          gap: 14px;
+          margin-bottom: 12px;
         }
         .mu-vc-avatar {
-          width: 38px;
-          height: 38px;
+          width: 42px;
+          height: 42px;
           background-color: var(--teal);
           border-radius: 50%;
           display: flex;
@@ -511,34 +506,34 @@ Error generating stack: `+i.message+`
         }
         .mu-vc-title {
           font-family: var(--font-serif);
-          font-size: 16px;
+          font-size: 17px;
           color: var(--teal);
           margin-bottom: 2px;
         }
         .mu-vc-sub {
-          font-size: 12.5px;
+          font-size: 13px;
           color: var(--blue);
           font-weight: 600;
         }
         .mu-vc-quote {
           font-family: var(--font-serif);
-          font-size: 15.5px;
+          font-size: 16px;
           font-style: italic;
           color: var(--ink);
-          line-height: 1.5;
+          line-height: 1.55;
         }
         .mu-link-arrow {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          gap: 8px;
           color: var(--blue);
           font-weight: 600;
-          font-size: 14.5px;
+          font-size: 15px;
           text-decoration: none;
           transition: gap 0.2s ease;
         }
         .mu-link-arrow:hover {
-          gap: 10px;
+          gap: 12px;
         }
 
         /* Stats Section */
@@ -547,7 +542,7 @@ Error generating stack: `+i.message+`
           grid-template-columns: repeat(5, 1fr);
         }
         .mu-stat-card {
-          padding: 16px 24px;
+          padding: 18px 28px;
           border-right: 1px solid var(--line);
           text-align: center;
         }
@@ -556,14 +551,14 @@ Error generating stack: `+i.message+`
         }
         .mu-stat-number {
           font-family: var(--font-serif);
-          font-size: clamp(34px, 4vw, 48px);
+          font-size: clamp(38px, 4.2vw, 54px);
           font-weight: 500;
           color: var(--teal);
           margin-bottom: 6px;
           line-height: 1;
         }
         .mu-stat-label {
-          font-size: 13.5px;
+          font-size: 14px;
           color: var(--ink-soft);
           font-weight: 500;
         }
@@ -571,39 +566,44 @@ Error generating stack: `+i.message+`
         /* Pillars Section */
         .mu-section-header-center {
           text-align: center;
-          margin-bottom: 56px;
+          margin-bottom: 60px;
         }
         .mu-pillars-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 44px;
+          gap: 36px;
         }
         .mu-pillar-card {
           background-color: #FFFFFF;
-          padding: 36px 30px;
+          padding: 40px 32px;
           border: 1px solid var(--line);
           border-radius: var(--radius);
+          transition: border-color 0.2s, transform 0.2s;
+        }
+        .mu-pillar-card:hover {
+          border-color: var(--blue);
+          transform: translateY(-2px);
         }
         .mu-pillar-icon-badge {
-          width: 48px;
-          height: 48px;
+          width: 52px;
+          height: 52px;
           border-radius: 50%;
           background-color: var(--mist);
           color: var(--blue);
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-bottom: 20px;
+          margin-bottom: 24px;
         }
         .mu-pillar-title {
-          font-size: 20px;
-          margin-bottom: 12px;
+          font-size: 21px;
+          margin-bottom: 14px;
           color: var(--teal);
         }
         .mu-pillar-desc {
-          font-size: 15px;
+          font-size: 15.5px;
           color: var(--ink-soft);
-          line-height: 1.6;
+          line-height: 1.65;
         }
 
         /* Faculties Section */
@@ -612,16 +612,16 @@ Error generating stack: `+i.message+`
           justify-content: space-between;
           align-items: flex-end;
           margin-bottom: 48px;
-          gap: 24px;
+          gap: 32px;
         }
         .mu-faculties-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
+          gap: 28px;
         }
         .mu-faculty-card {
           background-color: #FFFFFF;
-          padding: 32px 26px;
+          padding: 36px 30px;
           border: 1px solid var(--line);
           border-radius: var(--radius);
           display: flex;
@@ -640,27 +640,27 @@ Error generating stack: `+i.message+`
           letter-spacing: 0.06em;
           color: var(--blue);
           display: block;
-          margin-bottom: 6px;
+          margin-bottom: 8px;
         }
         .mu-faculty-title {
-          font-size: 20px;
-          margin-bottom: 18px;
+          font-size: 22px;
+          margin-bottom: 20px;
         }
         .mu-dept-list {
           list-style: none;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
         }
         .mu-dept-list li {
-          font-size: 14px;
+          font-size: 14.5px;
           color: var(--ink-soft);
-          padding: 6px 0;
+          padding: 7px 0;
           border-bottom: 1px solid var(--line-soft);
         }
         .mu-faculty-link {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          font-size: 13.5px;
+          font-size: 14px;
           font-weight: 600;
           color: var(--teal);
           text-decoration: none;
@@ -674,38 +674,39 @@ Error generating stack: `+i.message+`
         .mu-infra-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 28px;
+          gap: 30px;
         }
         .mu-infra-card {
           background-color: #FFFFFF;
           border: 1px solid var(--line);
           border-radius: var(--radius);
-          padding: 30px 26px;
-          transition: border-color 0.2s;
+          padding: 34px 30px;
+          transition: border-color 0.2s, transform 0.2s;
         }
         .mu-infra-card:hover {
           border-color: var(--teal);
+          transform: translateY(-2px);
         }
         .mu-infra-icon-box {
-          width: 44px;
-          height: 44px;
+          width: 48px;
+          height: 48px;
           border-radius: var(--radius);
           background-color: var(--mist);
           color: var(--teal);
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-bottom: 18px;
+          margin-bottom: 20px;
         }
         .mu-infra-title {
-          font-size: 18px;
-          margin-bottom: 10px;
+          font-size: 19px;
+          margin-bottom: 12px;
           color: var(--teal);
         }
         .mu-infra-desc {
-          font-size: 14.5px;
+          font-size: 15px;
           color: var(--ink-soft);
-          line-height: 1.55;
+          line-height: 1.6;
         }
 
         /* Research Centres Section */
@@ -718,20 +719,25 @@ Error generating stack: `+i.message+`
           background-color: #FFFFFF;
           border: 1px solid var(--line);
           border-radius: var(--radius);
-          padding: 36px 30px;
+          padding: 40px 32px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          transition: border-color 0.2s, transform 0.2s;
+        }
+        .mu-research-card:hover {
+          border-color: var(--blue);
+          transform: translateY(-2px);
         }
         .mu-research-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 20px;
+          margin-bottom: 22px;
         }
         .mu-research-icon {
-          width: 46px;
-          height: 46px;
+          width: 48px;
+          height: 48px;
           background-color: var(--teal);
           color: var(--gold);
           border-radius: var(--radius);
@@ -745,90 +751,90 @@ Error generating stack: `+i.message+`
           text-transform: uppercase;
           background-color: var(--mist);
           color: var(--blue);
-          padding: 4px 10px;
+          padding: 5px 12px;
           border-radius: var(--radius);
         }
         .mu-research-title {
-          font-size: 20px;
+          font-size: 21px;
           color: var(--teal);
           margin-bottom: 14px;
         }
         .mu-research-desc {
-          font-size: 14.5px;
+          font-size: 15px;
           color: var(--ink-soft);
-          line-height: 1.6;
-          margin-bottom: 24px;
+          line-height: 1.65;
+          margin-bottom: 28px;
         }
         .mu-research-footer {
-          font-size: 12.5px;
+          font-size: 13px;
           color: var(--blue);
           font-weight: 600;
           border-top: 1px solid var(--line-soft);
-          padding-top: 14px;
+          padding-top: 16px;
         }
 
         /* Campus Full-Bleed Section */
         .mu-campus-break {
           position: relative;
-          min-height: 540px;
-          background: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+          min-height: 560px;
+          background: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
           display: flex;
           align-items: flex-end;
-          padding: 80px 0;
+          padding: 96px 0;
         }
         .mu-campus-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to right, rgba(7, 29, 51, 0.92) 0%, rgba(7, 29, 51, 0.65) 50%, rgba(7, 29, 51, 0.2) 100%);
+          background: linear-gradient(to right, rgba(7, 29, 51, 0.94) 0%, rgba(7, 29, 51, 0.7) 50%, rgba(7, 29, 51, 0.25) 100%);
         }
         .mu-campus-content {
           position: relative;
           z-index: 2;
         }
         .mu-campus-text-card {
-          max-width: 620px;
+          max-width: 720px;
         }
         .mu-campus-heading {
           color: #FFFFFF;
-          font-size: clamp(30px, 3.8vw, 44px);
-          margin-bottom: 16px;
+          font-size: clamp(32px, 4vw, 48px);
+          margin-bottom: 18px;
         }
         .mu-campus-desc {
-          color: rgba(255, 255, 255, 0.85);
-          font-size: 16.5px;
-          line-height: 1.6;
-          margin-bottom: 28px;
+          color: rgba(255, 255, 255, 0.9);
+          font-size: 17.5px;
+          line-height: 1.65;
+          margin-bottom: 32px;
         }
 
         /* Careers & Placement Section */
         .mu-careers-grid {
           display: grid;
-          grid-template-columns: 1.05fr 0.95fr;
-          gap: 56px;
+          grid-template-columns: 1fr 1fr;
+          gap: 64px;
           align-items: center;
         }
         .mu-careers-p {
-          font-size: 16px;
+          font-size: 16.5px;
           color: var(--ink-soft);
-          line-height: 1.6;
-          margin-bottom: 24px;
+          line-height: 1.65;
+          margin-bottom: 28px;
         }
         .mu-placement-stats-mini {
           display: flex;
-          gap: 24px;
-          margin-bottom: 24px;
-          padding: 16px 0;
+          gap: 32px;
+          margin-bottom: 28px;
+          padding: 20px 0;
           border-top: 1px solid var(--line);
           border-bottom: 1px solid var(--line);
         }
         .mu-mini-stat strong {
           display: block;
           font-family: var(--font-serif);
-          font-size: 24px;
+          font-size: 26px;
           color: var(--teal);
         }
         .mu-mini-stat span {
-          font-size: 12px;
+          font-size: 13px;
           color: var(--ink-soft);
         }
         .mu-careers-services {
@@ -837,8 +843,8 @@ Error generating stack: `+i.message+`
         }
         .mu-service-item {
           display: flex;
-          gap: 16px;
-          padding: 18px 0;
+          gap: 18px;
+          padding: 20px 0;
           border-bottom: 1px solid var(--line);
         }
         .mu-service-dot {
@@ -851,15 +857,15 @@ Error generating stack: `+i.message+`
         }
         .mu-service-title {
           font-family: var(--font-sans);
-          font-size: 16px;
+          font-size: 16.5px;
           font-weight: 600;
           color: var(--teal);
-          margin-bottom: 4px;
+          margin-bottom: 6px;
         }
         .mu-service-desc {
-          font-size: 14px;
+          font-size: 14.5px;
           color: var(--ink-soft);
-          line-height: 1.5;
+          line-height: 1.55;
         }
 
         /* News Section */
@@ -867,30 +873,30 @@ Error generating stack: `+i.message+`
           display: flex;
           justify-content: space-between;
           align-items: flex-end;
-          margin-bottom: 40px;
+          margin-bottom: 44px;
         }
         .mu-news-list {
           border-top: 1px solid var(--line);
         }
         .mu-news-row {
           display: grid;
-          grid-template-columns: 160px 1fr 40px;
+          grid-template-columns: 180px 1fr 40px;
           align-items: center;
-          padding: 22px 12px;
+          padding: 24px 16px;
           border-bottom: 1px solid var(--line);
           text-decoration: none;
           transition: background-color 0.2s ease;
         }
         .mu-news-row:hover {
-          background-color: rgba(255, 255, 255, 0.6);
+          background-color: rgba(255, 255, 255, 0.7);
         }
         .mu-news-row:hover .mu-news-arrow {
-          transform: translate(3px, -3px);
+          transform: translate(4px, -4px);
           color: var(--blue);
         }
         .mu-news-date {
           display: block;
-          font-size: 13px;
+          font-size: 13.5px;
           font-weight: 600;
           color: var(--teal);
         }
@@ -904,12 +910,12 @@ Error generating stack: `+i.message+`
         }
         .mu-news-title {
           font-family: var(--font-serif);
-          font-size: 18px;
+          font-size: 19px;
           color: var(--teal);
           margin-bottom: 4px;
         }
         .mu-news-desc {
-          font-size: 14px;
+          font-size: 14.5px;
           color: var(--ink-soft);
         }
         .mu-news-arrow {
@@ -919,37 +925,37 @@ Error generating stack: `+i.message+`
 
         /* Testimonials Section */
         .mu-testimonial-wrapper {
-          max-width: 820px;
+          max-width: 960px;
           margin: 0 auto;
           text-align: center;
           position: relative;
         }
         .mu-quote-glyph {
           font-family: var(--font-serif);
-          font-size: 84px;
+          font-size: 96px;
           color: var(--gold);
-          line-height: 0.6;
-          margin-bottom: 24px;
-          opacity: 0.8;
+          line-height: 0.5;
+          margin-bottom: 28px;
+          opacity: 0.85;
         }
         .mu-testimonial-text {
           font-family: var(--font-serif);
-          font-size: clamp(20px, 2.6vw, 26px);
+          font-size: clamp(22px, 2.6vw, 29px);
           font-style: italic;
           color: #FFFFFF;
-          line-height: 1.5;
-          margin-bottom: 28px;
+          line-height: 1.55;
+          margin-bottom: 32px;
         }
         .mu-author-name {
           display: block;
           font-family: var(--font-sans);
           font-weight: 600;
-          font-size: 16px;
+          font-size: 17px;
           color: #FFFFFF;
         }
         .mu-author-role {
           display: block;
-          font-size: 13.5px;
+          font-size: 14px;
           color: var(--gold);
           margin-top: 4px;
         }
@@ -957,12 +963,12 @@ Error generating stack: `+i.message+`
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 20px;
-          margin-top: 40px;
+          gap: 24px;
+          margin-top: 48px;
         }
         .mu-carousel-btn {
-          width: 40px;
-          height: 40px;
+          width: 44px;
+          height: 44px;
           border-radius: 50%;
           border: 1px solid rgba(255, 255, 255, 0.3);
           background: none;
@@ -992,7 +998,7 @@ Error generating stack: `+i.message+`
         }
         .mu-dot-active {
           background-color: var(--gold);
-          width: 20px;
+          width: 22px;
           border-radius: 4px;
         }
 
@@ -1000,29 +1006,29 @@ Error generating stack: `+i.message+`
         .mu-cta-banner {
           background-color: var(--teal-deep);
           color: #FFFFFF;
-          padding: 84px 32px;
+          padding: 96px 40px;
           text-align: center;
           border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
         .mu-cta-content {
-          max-width: 680px;
+          max-width: 800px;
           margin: 0 auto;
         }
         .mu-cta-heading {
           color: #FFFFFF;
-          font-size: clamp(30px, 4vw, 44px);
-          margin-bottom: 16px;
+          font-size: clamp(32px, 4.2vw, 48px);
+          margin-bottom: 18px;
         }
         .mu-cta-desc {
-          font-size: 16.5px;
-          color: rgba(255, 255, 255, 0.8);
-          margin-bottom: 32px;
-          line-height: 1.6;
+          font-size: 17.5px;
+          color: rgba(255, 255, 255, 0.85);
+          margin-bottom: 36px;
+          line-height: 1.65;
         }
         .mu-cta-actions {
           display: flex;
           justify-content: center;
-          gap: 16px;
+          gap: 20px;
           flex-wrap: wrap;
         }
 
@@ -1030,29 +1036,29 @@ Error generating stack: `+i.message+`
         .mu-footer {
           background-color: var(--teal-deep);
           color: rgba(255, 255, 255, 0.7);
-          padding: 72px 0 32px 0;
+          padding: 80px 0 36px 0;
           border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         .mu-footer-grid {
           display: grid;
-          grid-template-columns: 1.3fr 1fr 1fr 1fr;
-          gap: 48px;
-          margin-bottom: 56px;
+          grid-template-columns: 1.35fr 1fr 1fr 1fr;
+          gap: 56px;
+          margin-bottom: 64px;
         }
-        .mu-footer-brand {
-          margin-bottom: 16px;
+        .mu-footer-brand-wrapper {
+          margin-bottom: 20px;
         }
         .mu-footer-address {
-          font-size: 14px;
-          line-height: 1.6;
-          margin-bottom: 16px;
+          font-size: 14.5px;
+          line-height: 1.65;
+          margin-bottom: 18px;
         }
         .mu-footer-contact p {
           display: flex;
           align-items: center;
-          gap: 8px;
-          font-size: 13.5px;
-          margin-bottom: 6px;
+          gap: 10px;
+          font-size: 14px;
+          margin-bottom: 8px;
         }
         .mu-footer-col-title {
           font-family: var(--font-sans);
@@ -1061,18 +1067,18 @@ Error generating stack: `+i.message+`
           text-transform: uppercase;
           letter-spacing: 0.08em;
           color: #FFFFFF;
-          margin-bottom: 20px;
+          margin-bottom: 22px;
         }
         .mu-footer-links {
           list-style: none;
         }
         .mu-footer-links li {
-          margin-bottom: 10px;
+          margin-bottom: 12px;
         }
         .mu-footer-links a {
           color: rgba(255, 255, 255, 0.75);
           text-decoration: none;
-          font-size: 14px;
+          font-size: 14.5px;
           transition: color 0.2s;
         }
         .mu-footer-links a:hover {
@@ -1082,14 +1088,14 @@ Error generating stack: `+i.message+`
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding-top: 24px;
+          padding-top: 28px;
           border-top: 1px solid rgba(255, 255, 255, 0.08);
-          font-size: 13px;
+          font-size: 13.5px;
         }
         .mu-footer-legal {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 14px;
         }
         .mu-footer-legal a {
           color: rgba(255, 255, 255, 0.7);
@@ -1102,7 +1108,16 @@ Error generating stack: `+i.message+`
         /* =========================================================================
            Responsive Breakpoints
            ========================================================================= */
-        @media (max-width: 920px) {
+        @media (max-width: 1100px) {
+          .mu-faculties-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .mu-infra-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 960px) {
           .mu-nav-desktop {
             display: none;
           }
@@ -1113,21 +1128,12 @@ Error generating stack: `+i.message+`
             grid-template-columns: 1fr;
             gap: 40px;
           }
-          .mu-faculties-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-          .mu-infra-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
           .mu-research-grid {
             grid-template-columns: 1fr;
           }
-        }
-
-        @media (max-width: 860px) {
           .mu-about-grid {
             grid-template-columns: 1fr;
-            gap: 40px;
+            gap: 48px;
           }
           .mu-about-milestone {
             right: 12px;
@@ -1139,7 +1145,7 @@ Error generating stack: `+i.message+`
           }
           .mu-careers-grid {
             grid-template-columns: 1fr;
-            gap: 36px;
+            gap: 40px;
           }
           .mu-stats-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -1151,11 +1157,11 @@ Error generating stack: `+i.message+`
           }
           .mu-footer-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 36px;
+            gap: 40px;
           }
         }
 
-        @media (max-width: 720px) {
+        @media (max-width: 768px) {
           .mu-utility-links {
             display: none;
           }
@@ -1175,17 +1181,25 @@ Error generating stack: `+i.message+`
           }
           .mu-footer-bottom {
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
             text-align: center;
           }
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 600px) {
           .mu-faculties-grid {
             grid-template-columns: 1fr;
           }
           .mu-infra-grid {
             grid-template-columns: 1fr;
+          }
+          .mu-footer-grid {
+            grid-template-columns: 1fr;
+          }
+          .mu-stats-grid {
+            grid-template-columns: 1fr;
+          }
+        }olumns: 1fr;
           }
           .mu-footer-grid {
             grid-template-columns: 1fr;

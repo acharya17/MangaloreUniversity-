@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  GraduationCap,
-  BookOpen,
-  Microscope,
-  Compass,
-  Award,
-  Trees,
   ArrowRight,
   ArrowUpRight,
   Download,
@@ -13,35 +7,15 @@ import {
   ChevronRight,
   Menu,
   X,
-  MapPin,
   Phone,
   Mail,
-  Calendar,
-  ExternalLink,
   Facebook,
   Twitter,
   Linkedin,
   Youtube,
   Instagram,
-  FileText,
-  Building2,
-  CheckCircle2,
-  Atom,
-  Radiation,
-  Dna,
-  Library,
-  Trophy,
-  Home,
-  HeartPulse,
-  Laptop,
-  Briefcase,
-  Users,
-  Target,
   Sparkles,
-  Search,
-  Globe2,
-  Quote,
-  Star
+  Quote
 } from 'lucide-react';
 
 export default function App() {
@@ -49,45 +23,32 @@ export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Hero Background Carousel State & Slide Data
+  // Hero Background Carousel State & Slide Data (High Clarity 8K Campus Visuals)
   const [heroSlide, setHeroSlide] = useState(0);
   const heroSlides = [
     {
-      image: "/hero-campus.jpg",
-      title: "Verdant 353-Acre Mangalagangothri Hilltop Campus",
-      subtitle: "Scenic coastal hilltops fostering frontier multidisciplinary education since 1980"
+      id: "campus-tower",
+      tag: "Mangalagangothri",
+      image: "/hero-campus-hd.jpg",
+      title: "Majestic Clock Tower & Heritage Campus",
+      subtitle: "Four decades of academic distinction and cultural heritage in coastal Karnataka"
     },
     {
-      image: "/news-thumb-4.jpg",
-      title: "Central Library & Digital Research Learning Resource Centre",
-      subtitle: "Over 2.5 lakh volumes, e-journals, and high-speed digital research archives"
+      id: "campus-faculties",
+      tag: "Verdant Campus",
+      image: "/hero-campus-2-hd.jpg",
+      title: "Interdisciplinary Research & Academic Complexes",
+      subtitle: "State-of-the-art research laboratories, modern lecture halls, and academic departments"
     },
     {
-      image: "/news-thumb-2.jpg",
-      title: "Advanced Laboratories & Microtron Atomic Research Facility",
-      subtitle: "Nationally recognized collaborative radiation physics and materials research"
-    },
-    {
-      image: "/news-featured.jpg",
-      title: "Annual Convocation, Academic Honours & Cultural Heritage",
-      subtitle: "Celebrating four decades of scholarly achievement and regional leadership"
-    },
-    {
-      image: "/news-thumb-3.jpg",
-      title: "Mangala Stadium, Sports Complex & Athletic Excellence",
-      subtitle: "400m international synthetic track, indoor arenas, and championship sports"
-    },
-    {
-      image: "/why-campus.jpg",
-      title: "Vibrant Student Community & Residential Campus Life",
-      subtitle: "Spacious modern hostels, active student societies, and inclusive campus life"
-    },
-    {
-      image: "/coastal-campus.jpg",
-      title: "CAREER Marine Research & Coastal Ecological Sanctuaries",
-      subtitle: "Direct Arabian Sea field stations, estuarine biodiversity, and coastal science"
+      id: "campus-aerial",
+      tag: "Coastal Sanctuary",
+      image: "/mangalagangothri-aerial.jpg",
+      title: "353-Acre Hilltop Sanctuary Overlooking the Arabian Sea",
+      subtitle: "Where the Western Ghats biodiversity meets the coastal Nethravathi river basin"
     }
   ];
+  // Auto-play hero image carousel with subtle smooth crossfade
 
   // Auto-play hero image carousel with subtle smooth crossfade
   useEffect(() => {
@@ -444,10 +405,10 @@ export default function App() {
           ========================================================================= */}
       <header className={`mu-header ${isScrolled ? 'mu-header-scrolled' : ''}`}>
         <div className="mu-container mu-header-content">
-          {/* Exact Official Mangalore University Bilingual Logo */}
+          {/* Crisp Vector Bilingual Mangalore University Logo (Dynamic Light/Dark Theme) */}
           <a href="#" className="mu-brand" aria-label="Mangalore University Home">
             <img
-              src="/mu-logo.png"
+              src={isScrolled ? "/mu-logo-white.svg" : "/mu-logo.svg"}
               alt="Mangalore University — ಮಂಗಳೂರು ವಿಶ್ವವಿದ್ಯಾನಿಲಯ"
               className="mu-brand-logo-img"
             />
@@ -497,50 +458,55 @@ export default function App() {
       </header>
 
       {/* =========================================================================
-          SECTION 03: Hero / Introduction (Refined Compact Carousel with Lower-Left Alignment)
+          SECTION 03: Hero / Introduction (Clean Centered Modern University Hero)
           ========================================================================= */}
-      <section className="mu-hero-fullscreen" aria-label="Mangalore University Campus Showcase">
-        {/* Full-Screen Photographic Carousel Background with Smooth Crossfade */}
-        <div className="mu-hero-carousel-bg">
-          {heroSlides.map((slide, idx) => (
-            <div
-              key={slide.image}
-              className={`mu-hero-carousel-slide ${idx === heroSlide ? 'mu-hero-slide-active' : ''}`}
-              aria-hidden={idx !== heroSlide}
-            >
-              <img
-                src={slide.image}
-                alt={slide.title}
-                className="mu-hero-carousel-img"
-              />
-            </div>
-          ))}
-          {/* Refined Gradient Overlay: Left & Bottom dark navy for crystal-clear readability */}
-          <div className="mu-hero-fullscreen-overlay"></div>
-        </div>
-
-        {/* Compact, Refined Text Block Vertically Aligned Toward Lower-Left Bottom */}
-        <div className="mu-container mu-hero-fullscreen-content">
-          <div className="mu-hero-text-panel">
-            <div className="mu-hero-badge-row">
-              <span className="mu-hero-pill-tag">ACCREDITED GRADE 'A' BY NAAC</span>
-              <span className="mu-hero-pill-divider">•</span>
-              <span className="mu-hero-pill-estd">ESTD. 1980</span>
+      <section className="mu-hero-modern" aria-label="Mangalore University Campus Showcase">
+        {/* Upper Centered Content Section (Soft Light / Crisp White Backdrop) */}
+        <div className="mu-container mu-hero-modern-container">
+          <div className="mu-hero-modern-content">
+            {/* University Eyebrow */}
+            <div className="mu-hero-modern-eyebrow-wrap mu-fade-in-1">
+              <span className="mu-hero-modern-eyebrow">
+                MANGALORE UNIVERSITY • ESTD. 1980
+              </span>
             </div>
 
-            <h1 className="mu-hero-fullscreen-headline">
-              Excellence in Higher Learning &amp; Coastal Research
+            {/* Short, Powerful Headline */}
+            <h1 className="mu-hero-modern-headline mu-fade-in-2">
+              Empowering Minds, <span className="mu-hero-headline-accent">Inspiring Futures.</span>
             </h1>
 
-            <p className="mu-hero-fullscreen-subtext">
-              Chartered across 353 hilltop acres, fostering 26 postgraduate departments and frontier atomic research facilities.
+            {/* Concise Supporting Description */}
+            <p className="mu-hero-modern-desc mu-fade-in-2">
+              A 353-acre hilltop research campus fostering four decades of interdisciplinary excellence, NAAC 'A' grade accreditation, and coastal scientific innovation.
             </p>
           </div>
         </div>
 
-        {/* =========================================================================
-            FLASH NEWS TICKER (Embedded at the Bottom of Hero Section)
-            ========================================================================= */}
+        {/* Lower Portion: Full-Width Real University Campus Imagery Carousel with Smooth Light Top Transition */}
+        <div className="mu-hero-modern-media-stage">
+          {/* Smooth Fade Transition from Light Canvas into Photograph */}
+          <div className="mu-hero-stage-top-gradient" aria-hidden="true"></div>
+
+          {/* Crossfading Slide Images */}
+          <div className="mu-hero-modern-slides-frame">
+            {heroSlides.map((slide, idx) => (
+              <div
+                key={slide.id}
+                className={`mu-hero-modern-slide ${idx === heroSlide ? 'mu-hero-modern-slide-active' : ''}`}
+                aria-hidden={idx !== heroSlide}
+              >
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  className="mu-hero-modern-img"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Flash News Ticker Embedded at Bottom */}
         <div className="mu-ticker-band">
           <div className="mu-container mu-ticker-container">
             <div className="mu-ticker-badge">
@@ -878,9 +844,6 @@ export default function App() {
               <span className="mu-eyebrow">WORLD-CLASS AMENITIES</span>
               <h2 className="mu-heading-tight">Campus & Infrastructure</h2>
             </div>
-            <span className="mu-infra-tagline">
-              State-of-the-art facilities designed for academic excellence, athletics, and vibrant student living.
-            </span>
           </div>
 
           <div className="mu-infra-bento-grid">
@@ -899,7 +862,6 @@ export default function App() {
               <div className="mu-infra-content">
                 <div className="mu-infra-tag-row">
                   <span className="mu-infra-badge">CAMPUS HEART</span>
-                  <Library size={16} className="mu-infra-badge-icon" />
                 </div>
                 <h3 className="mu-infra-title">Central Library & Knowledge Hub</h3>
                 <p className="mu-infra-desc">
@@ -937,7 +899,6 @@ export default function App() {
                 <div className="mu-infra-content">
                   <div className="mu-infra-tag-row">
                     <span className="mu-infra-badge">ATHLETICS</span>
-                    <Trophy size={15} className="mu-infra-badge-icon" />
                   </div>
                   <h3 className="mu-infra-title">Sports Complex & Stadium</h3>
                   <p className="mu-infra-desc">
@@ -971,7 +932,6 @@ export default function App() {
                 <div className="mu-infra-content">
                   <div className="mu-infra-tag-row">
                     <span className="mu-infra-badge">RESIDENTIAL</span>
-                    <Home size={15} className="mu-infra-badge-icon" />
                   </div>
                   <h3 className="mu-infra-title">Hostels & Living</h3>
                   <p className="mu-infra-desc">
@@ -1006,7 +966,6 @@ export default function App() {
                 <div className="mu-infra-content">
                   <div className="mu-infra-tag-row">
                     <span className="mu-infra-badge">TECH</span>
-                    <Laptop size={15} className="mu-infra-badge-icon" />
                   </div>
                   <h3 className="mu-infra-title">ICT Centre</h3>
                   <p className="mu-infra-desc">
@@ -1040,7 +999,6 @@ export default function App() {
                 <div className="mu-infra-content">
                   <div className="mu-infra-tag-row">
                     <span className="mu-infra-badge">WELLNESS</span>
-                    <HeartPulse size={15} className="mu-infra-badge-icon" />
                   </div>
                   <h3 className="mu-infra-title">Health Centre</h3>
                   <p className="mu-infra-desc">
@@ -1074,7 +1032,6 @@ export default function App() {
                 <div className="mu-infra-content">
                   <div className="mu-infra-tag-row">
                     <span className="mu-infra-badge">FLORA</span>
-                    <Compass size={15} className="mu-infra-badge-icon" />
                   </div>
                   <h3 className="mu-infra-title">Botanical Garden</h3>
                   <p className="mu-infra-desc">
@@ -1128,7 +1085,6 @@ export default function App() {
                 <div className="mu-res-content">
                   <div className="mu-res-meta">
                     <span className="mu-res-badge">DAE / BRNS RECOGNIZED</span>
-                    <div className="mu-res-icon-pill"><Radiation size={15} /></div>
                   </div>
                   <h3 className="mu-res-title">Microtron Centre</h3>
                   <p className="mu-res-desc">
@@ -1164,7 +1120,6 @@ export default function App() {
                 <div className="mu-res-content">
                   <div className="mu-res-meta">
                     <span className="mu-res-badge">CENTRE OF EXCELLENCE</span>
-                    <div className="mu-res-icon-pill"><Atom size={15} /></div>
                   </div>
                   <h3 className="mu-res-title">CARRT</h3>
                   <p className="mu-res-desc">
@@ -1199,7 +1154,6 @@ export default function App() {
                 <div className="mu-res-content">
                   <div className="mu-res-meta">
                     <span className="mu-res-badge">COASTAL & OCEANOGRAPHIC</span>
-                    <div className="mu-res-icon-pill"><Dna size={15} /></div>
                   </div>
                   <h3 className="mu-res-title">CAREER & Marine Station</h3>
                   <p className="mu-res-desc">
@@ -1225,22 +1179,61 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          SECTION 10: Campus / Coastal Identity (Full-Bleed Visual Break)
+          SECTION 10: Campus / Coastal Identity (Premium Framed Showcase)
           ========================================================================= */}
-      <section id="coastal" className="mu-campus-break">
-        <div className="mu-campus-overlay"></div>
-        <div className="mu-container mu-campus-content">
-          <div className="mu-campus-text-card">
-            <span className="mu-eyebrow mu-eyebrow-gold">MANGALAGANGOTHRI • COASTAL SANCTUARY</span>
-            <h2 className="mu-campus-heading">
-              Where the Western Ghats meet the Arabian Sea
-            </h2>
-            <p className="mu-campus-desc">
-              Perched atop a scenic hillock overlooking the Nethravathi river basin, our 353-acre verdant campus provides an inspiring sanctuary for scholarly inquiry, artistic expression, and athletic achievement.
-            </p>
-            <a href="#campus-tour" className="mu-btn mu-btn-outline-white">
-              Discover Campus Facilities <ArrowRight size={16} />
-            </a>
+      <section id="coastal" className="mu-section mu-sanctuary-section">
+        <div className="mu-container">
+          <div className="mu-sanctuary-frame">
+            {/* Background Aerial Landscape Image */}
+            <div className="mu-sanctuary-backdrop">
+              <img 
+                src="/mangalagangothri-aerial.jpg" 
+                alt="Mangalagangothri Coastal Campus Panoramic View" 
+                className="mu-sanctuary-img"
+              />
+              <div className="mu-sanctuary-gradient"></div>
+            </div>
+
+            {/* Inner Content Layer */}
+            <div className="mu-sanctuary-inner">
+              {/* Upper Editorial Text */}
+              <div className="mu-sanctuary-header">
+                <span className="mu-eyebrow mu-eyebrow-gold">MANGALAGANGOTHRI • COASTAL SANCTUARY</span>
+                <h2 className="mu-sanctuary-title">
+                  Where the Western Ghats meet the Arabian Sea
+                </h2>
+                <p className="mu-sanctuary-lead">
+                  Perched atop a 353-acre verdant hillock overlooking the Nethravathi river basin, Mangalore University provides an inspiring coastal sanctuary blending biodiversity, state-of-the-art facilities, and scholarly heritage.
+                </p>
+              </div>
+
+              {/* Lower Highlights Interactive Grid (4 Cards) */}
+              <div className="mu-sanctuary-grid">
+                <div className="mu-sanctuary-card">
+                  <div className="mu-scard-num">353 ACRES</div>
+                  <h4 className="mu-scard-title">Verdant Hilltop Campus</h4>
+                  <p className="mu-scard-desc">Panoramic vistas of the Nethravathi valley and coastal estuary breeze.</p>
+                </div>
+
+                <div className="mu-sanctuary-card">
+                  <div className="mu-scard-num">ECO-BIOME</div>
+                  <h4 className="mu-scard-title">Western Ghats Biodiversity</h4>
+                  <p className="mu-scard-desc">Home to endemic flora, arboretum, medicinal plant gardens, and nature trails.</p>
+                </div>
+
+                <div className="mu-sanctuary-card">
+                  <div className="mu-scard-num">WORLD-CLASS</div>
+                  <h4 className="mu-scard-title">Sports & Athletics Complex</h4>
+                  <p className="mu-scard-desc">400m synthetic track, Olympic-sized gymnasium, and multi-sport pavilions.</p>
+                </div>
+
+                <div className="mu-sanctuary-card">
+                  <div className="mu-scard-num">HERITAGE</div>
+                  <h4 className="mu-scard-title">Sambhrama Cultural Amphitheatre</h4>
+                  <p className="mu-scard-desc">Open-air acoustic performance arena celebrating Yakshagana & coastal arts.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1259,41 +1252,46 @@ export default function App() {
                 The University Employment Information & Guidance Bureau serves as a career catalyst—coordinating corporate recruitments, competitive examination coaching, industry internships, and international academic fellowships.
               </p>
 
-              {/* Compact Career-Service Detail Cards Grid (4 Cards) */}
+              {/* Compact Career-Service Detail Cards Grid (4 Cards with hover arrow) */}
               <div className="mu-placement-cards-grid">
-                <div className="mu-placement-card">
+                <a href="#campus-recruitment" className="mu-placement-card">
                   <div className="mu-pcard-body">
-                    <h4 className="mu-pcard-title">Campus Recruitment</h4>
+                    <div className="mu-pcard-header-row">
+                      <h4 className="mu-pcard-title">Campus Recruitment</h4>
+                      <ArrowRight size={16} className="mu-pcard-arrow" />
+                    </div>
                     <p className="mu-pcard-desc">Industry-led hiring drives, corporate interfaces, and active recruiter engagement.</p>
                   </div>
-                </div>
+                </a>
 
-                <div className="mu-placement-card">
+                <a href="#career-guidance" className="mu-placement-card">
                   <div className="mu-pcard-body">
-                    <h4 className="mu-pcard-title">Career Guidance</h4>
+                    <div className="mu-pcard-header-row">
+                      <h4 className="mu-pcard-title">Career Guidance</h4>
+                      <ArrowRight size={16} className="mu-pcard-arrow" />
+                    </div>
                     <p className="mu-pcard-desc">Individual counselling, alumni mentorship, and competitive-exam preparation.</p>
                   </div>
-                </div>
+                </a>
 
-                <div className="mu-placement-card">
+                <a href="#internships" className="mu-placement-card">
                   <div className="mu-pcard-body">
-                    <h4 className="mu-pcard-title">Internships & Industry Exposure</h4>
+                    <div className="mu-pcard-header-row">
+                      <h4 className="mu-pcard-title">Internships & Industry Exposure</h4>
+                      <ArrowRight size={16} className="mu-pcard-arrow" />
+                    </div>
                     <p className="mu-pcard-desc">Practical learning through summer internships and research-corporate partnerships.</p>
                   </div>
-                </div>
+                </a>
 
-                <div className="mu-placement-card">
+                <a href="#higher-studies" className="mu-placement-card">
                   <div className="mu-pcard-body">
-                    <h4 className="mu-pcard-title">Higher Studies & Fellowships</h4>
+                    <div className="mu-pcard-header-row">
+                      <h4 className="mu-pcard-title">Higher Studies & Fellowships</h4>
+                      <ArrowRight size={16} className="mu-pcard-arrow" />
+                    </div>
                     <p className="mu-pcard-desc">Guidance for doctoral admissions, international fellowships, and national grants.</p>
                   </div>
-                </div>
-              </div>
-
-              {/* Single Primary CTA */}
-              <div className="mu-placement-cta-wrapper">
-                <a href="#placement-cell" className="mu-btn mu-btn-gold">
-                  Explore Career Services <ArrowRight size={15} />
                 </a>
               </div>
             </div>
@@ -1348,7 +1346,7 @@ export default function App() {
                   <div className="mu-featured-meta">
                     <span className="mu-featured-badge">{featuredStory.category}</span>
                     <span className="mu-featured-date">
-                      <Calendar size={13} /> {featuredStory.date}
+                      {featuredStory.date}
                     </span>
                   </div>
 
@@ -1395,14 +1393,38 @@ export default function App() {
       </section>
 
       {/* =========================================================================
-          SECTION 13: Student & Alumni Testimonials (Compact 3-Card Carousel)
+          SECTION 13: Student & Alumni Testimonials (Clean Editorial Carousel)
           ========================================================================= */}
-      <section id="testimonials" className="mu-section-compact mu-bg-paper mu-testimonial-section">
+      <section id="testimonials" className="mu-section mu-bg-paper mu-testimonial-section">
         <div className="mu-container">
-          {/* Section Header */}
-          <div className="mu-section-header mu-text-center" style={{ marginBottom: '32px' }}>
-            <span className="mu-eyebrow">VOICES OF MANGALAGANGOTHRI</span>
-            <h2 className="mu-heading">Student & Alumni Perspectives</h2>
+          {/* Standard Left-Aligned Section Header with Top-Right Nav Arrows */}
+          <div className="mu-section-header">
+            <div>
+              <span className="mu-eyebrow">VOICES OF MANGALAGANGOTHRI</span>
+              <h2 className="mu-heading">Student & Alumni Perspectives</h2>
+            </div>
+            <div className="mu-t-header-nav">
+              <button
+                type="button"
+                className="mu-t-arrow-btn"
+                onClick={() =>
+                  setActiveTestimonial((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
+                }
+                aria-label="Previous Testimonial"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                type="button"
+                className="mu-t-arrow-btn"
+                onClick={() =>
+                  setActiveTestimonial((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
+                }
+                aria-label="Next Testimonial"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
 
           {/* 3-Card Interactive Carousel Container */}
@@ -1427,18 +1449,6 @@ export default function App() {
                     role="group"
                     aria-label={`Testimonial by ${item.name}`}
                   >
-                    {/* Star Rating */}
-                    <div className="mu-t-card-rating">
-                      {[...Array(item.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={13}
-                          className={isCenter ? 'mu-star-gold' : 'mu-star-navy'}
-                          fill={isCenter ? '#E8A317' : '#0B2A4A'}
-                        />
-                      ))}
-                    </div>
-
                     {/* Short Testimonial Quote */}
                     <p className="mu-t-card-quote">“{item.quote}”</p>
 
@@ -1458,41 +1468,17 @@ export default function App() {
               })}
             </div>
 
-            {/* Previous/Next Navigation Arrows & Progress Dots */}
-            <div className="mu-t-controls-bar">
-              <button
-                type="button"
-                className="mu-t-arrow-btn"
-                onClick={() =>
-                  setActiveTestimonial((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
-                }
-                aria-label="Previous Testimonial"
-              >
-                <ChevronLeft size={16} />
-              </button>
-
-              <div className="mu-t-dots-container">
-                {testimonials.map((_, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    className={`mu-t-dot-pill ${activeTestimonial === idx ? 'mu-t-dot-pill-active' : ''}`}
-                    onClick={() => setActiveTestimonial(idx)}
-                    aria-label={`Go to testimonial ${idx + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button
-                type="button"
-                className="mu-t-arrow-btn"
-                onClick={() =>
-                  setActiveTestimonial((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
-                }
-                aria-label="Next Testimonial"
-              >
-                <ChevronRight size={16} />
-              </button>
+            {/* Clean Centered Progress Indicator Dots */}
+            <div className="mu-t-dots-container">
+              {testimonials.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  className={`mu-t-dot-pill ${activeTestimonial === idx ? 'mu-t-dot-pill-active' : ''}`}
+                  onClick={() => setActiveTestimonial(idx)}
+                  aria-label={`Go to testimonial ${idx + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -1682,27 +1668,29 @@ export default function App() {
           color: var(--gold);
         }
 
-        /* Main Header — Fully Seamless Transparent Overlay at Top, Soft Sticky Deep-Navy on Scroll */
+        /* Main Header — Seamless Transparent Overlay on Light Hero, Soft Sticky Deep-Navy on Scroll */
         .mu-header {
           position: fixed;
           top: 36px;
           left: 0;
           width: 100%;
           z-index: 1000;
-          background-color: transparent;
-          border: none;
+          background-color: rgba(247, 248, 250, 0.92);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-bottom: none;
           box-shadow: none;
           transition: top 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
-          padding: 12px 0;
+          padding: 8px 0;
         }
         .mu-header-scrolled {
           top: 0;
-          background-color: rgba(7, 29, 51, 0.95);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-          padding: 12px 0;
+          background-color: rgba(7, 29, 51, 0.98);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+          border-bottom: none;
+          padding: 8px 0;
         }
         .mu-header-content {
           display: flex;
@@ -1718,16 +1706,17 @@ export default function App() {
           margin-right: 24px;
         }
         .mu-brand-logo-img {
-          height: 60px;
+          height: 58px;
           width: auto;
-          max-width: 420px;
+          max-width: 440px;
           object-fit: contain;
           display: block;
-          filter: none;
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.06));
           transition: height 0.3s ease;
         }
         .mu-header-scrolled .mu-brand-logo-img {
-          height: 52px;
+          height: 48px;
+          filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.4));
         }
         .mu-footer-brand-wrapper {
           margin-bottom: 24px;
@@ -1748,15 +1737,22 @@ export default function App() {
           gap: 26px;
         }
         .mu-nav-link {
-          font-size: 14.5px;
-          font-weight: 500;
-          color: rgba(255, 255, 255, 0.92);
+          font-family: var(--font-heading);
+          font-size: 13.5px;
+          font-weight: 600;
+          color: var(--teal);
           text-decoration: none;
           position: relative;
           padding: 4px 0;
           transition: color 0.2s;
         }
+        .mu-header-scrolled .mu-nav-link {
+          color: rgba(255, 255, 255, 0.92);
+        }
         .mu-nav-link:hover {
+          color: var(--blue);
+        }
+        .mu-header-scrolled .mu-nav-link:hover {
           color: #FFFFFF;
         }
         .mu-nav-link::after {
@@ -1776,8 +1772,11 @@ export default function App() {
           display: none;
           background: none;
           border: none;
-          color: #FFFFFF;
+          color: var(--teal);
           cursor: pointer;
+        }
+        .mu-header-scrolled .mu-mobile-toggle {
+          color: #FFFFFF;
         }
 
         /* Mobile Drawer */
@@ -1807,143 +1806,218 @@ export default function App() {
           margin-top: 8px;
         }
 
-        /* Hero Section (Full Viewport Length 100vh, Lower-Left Aligned with Full-Screen Carousel) */
-        .mu-hero-fullscreen {
+        /* =========================================================================
+           Hero Section (One Screen Viewport Fit with Integrated Campus Carousel)
+           ========================================================================= */
+        .mu-hero-modern {
           position: relative;
           width: 100%;
-          min-height: 100vh;
           height: 100vh;
+          min-height: 600px;
+          max-height: 1080px;
+          background-color: var(--paper);
           display: flex;
           flex-direction: column;
+          align-items: center;
           justify-content: space-between;
           overflow: hidden;
-          background-color: var(--teal-deep);
           padding-top: 110px;
           padding-bottom: 0;
+          box-sizing: border-box;
         }
-        .mu-hero-carousel-bg {
+
+        .mu-hero-modern-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding-top: clamp(8px, 1.8vh, 24px);
+          padding-bottom: clamp(10px, 2vh, 24px);
+          position: relative;
+          z-index: 5;
+          flex-shrink: 0;
+        }
+
+        .mu-hero-modern-content {
+          max-width: 860px;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+
+        /* Eyebrow badge (Pure text, no box or background) */
+        .mu-hero-modern-eyebrow-wrap {
+          margin-bottom: clamp(10px, 1.6vh, 18px);
+        }
+
+        .mu-hero-modern-eyebrow {
+          display: inline-block;
+          font-family: var(--font-heading);
+          font-size: clamp(11.5px, 0.95vw, 13px);
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--blue);
+          background: none;
+          border: none;
+          padding: 0;
+        }
+
+        /* Short, Powerful Headline (Montserrat) */
+        .mu-hero-modern-headline {
+          font-family: var(--font-heading);
+          font-size: clamp(28px, 3.4vw, 48px);
+          font-weight: 800;
+          color: var(--teal);
+          line-height: 1.14;
+          letter-spacing: -0.03em;
+          margin-bottom: clamp(8px, 1.4vh, 14px);
+          max-width: 840px;
+        }
+
+        .mu-hero-headline-accent {
+          color: var(--blue);
+          position: relative;
+        }
+
+        /* Concise Supporting Description */
+        .mu-hero-modern-desc {
+          font-family: var(--font-body);
+          font-size: clamp(14px, 1.1vw, 16px);
+          line-height: 1.5;
+          color: var(--ink-soft);
+          max-width: 660px;
+          margin: 0 auto;
+        }
+
+        /* Lower Media Stage: Campus Photography Frame Filling Viewport Bottom */
+        .mu-hero-modern-media-stage {
+          position: relative;
+          width: 100%;
+          flex: 1;
+          min-height: clamp(220px, 35vh, 460px);
+          overflow: hidden;
+          background-color: var(--teal-deep);
+        }
+
+        /* Seamless Fade from Light Canvas into Lower Photograph */
+        .mu-hero-stage-top-gradient {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: clamp(60px, 12vh, 100px);
+          z-index: 3;
+          pointer-events: none;
+          background: linear-gradient(
+            to bottom,
+            var(--paper) 0%,
+            rgba(247, 248, 250, 0.85) 35%,
+            rgba(247, 248, 250, 0.4) 65%,
+            transparent 100%
+          );
+        }
+
+        /* Slides Frame */
+        .mu-hero-modern-slides-frame {
           position: absolute;
           inset: 0;
           width: 100%;
           height: 100%;
-          z-index: 1;
         }
-        .mu-hero-carousel-slide {
+
+        .mu-hero-modern-slide {
           position: absolute;
           inset: 0;
           width: 100%;
           height: 100%;
           opacity: 0;
-          transform: scale(1.03);
-          transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 6s ease-out;
+          transform: scale(1.02);
+          transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1), transform 5s ease-out;
           pointer-events: none;
         }
-        .mu-hero-carousel-slide.mu-hero-slide-active {
+
+        .mu-hero-modern-slide.mu-hero-modern-slide-active {
           opacity: 1;
           transform: scale(1);
           pointer-events: auto;
         }
-        .mu-hero-carousel-img {
+
+        .mu-hero-modern-img {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          object-position: center 36%;
+          object-position: center 38%;
           display: block;
         }
-        /* Refined Readability Gradient: Left & Bottom dark navy for high text contrast */
-        .mu-hero-fullscreen-overlay {
+
+        /* Subtle Bottom Vignette for Campus Image Caption */
+        .mu-hero-slide-caption-bar {
           position: absolute;
-          inset: 0;
-          background: 
-            /* Top subtle vignette for lightweight transparent navbar */
-            linear-gradient(
-              to bottom,
-              rgba(7, 29, 51, 0.72) 0%,
-              rgba(7, 29, 51, 0.35) 15%,
-              transparent 35%
-            ),
-            /* Left editorial text readability backdrop */
-            linear-gradient(
-              to right,
-              rgba(7, 29, 51, 0.94) 0%,
-              rgba(7, 29, 51, 0.85) 35%,
-              rgba(7, 29, 51, 0.5) 58%,
-              rgba(7, 29, 51, 0.12) 80%,
-              transparent 100%
-            ),
-            /* Soft continuous bottom dissolve into the Flash News background (#071D33) */
-            linear-gradient(
-              to bottom,
-              transparent 0%,
-              transparent 50%,
-              rgba(7, 29, 51, 0.45) 72%,
-              rgba(7, 29, 51, 0.88) 90%,
-              #071D33 100%
-            );
-        }
-        .mu-hero-fullscreen-content {
-          position: relative;
+          bottom: 0;
+          left: 0;
+          right: 0;
           z-index: 2;
-          width: 100%;
-          flex: 1;
+          padding: 24px 0 12px;
+          background: linear-gradient(to top, rgba(7, 29, 51, 0.9) 0%, rgba(7, 29, 51, 0.45) 60%, transparent 100%);
+        }
+
+        .mu-hero-caption-container {
           display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          padding-bottom: 32px;
-        }
-        .mu-hero-text-panel {
-          max-width: 600px;
-          margin-bottom: 0;
-        }
-        .mu-hero-badge-row {
-          display: inline-flex;
           align-items: center;
-          gap: 8px;
-          padding: 4px 12px;
-          background: rgba(7, 29, 51, 0.75);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-          border: 1px solid rgba(232, 163, 23, 0.35);
-          border-radius: 20px;
-          margin-bottom: 14px;
+          gap: 12px;
         }
-        .mu-hero-pill-tag {
+
+        .mu-hero-slide-badge {
           font-family: var(--font-heading);
           font-size: 11px;
           font-weight: 700;
-          color: var(--gold);
           letter-spacing: 0.08em;
           text-transform: uppercase;
+          background: var(--gold);
+          color: var(--teal-deep);
+          padding: 3px 8px;
+          border-radius: var(--radius-sm);
         }
-        .mu-hero-pill-divider {
-          color: rgba(255, 255, 255, 0.35);
-          font-size: 10px;
-        }
-        .mu-hero-pill-estd {
+
+        .mu-hero-slide-title {
           font-family: var(--font-heading);
-          font-size: 11px;
+          font-size: 13.5px;
           font-weight: 600;
-          color: rgba(255, 255, 255, 0.85);
-          letter-spacing: 0.06em;
-        }
-        .mu-hero-fullscreen-headline {
-          font-family: var(--font-heading);
-          font-size: clamp(30px, 3.4vw, 44px);
-          font-weight: 700;
           color: #FFFFFF;
-          line-height: 1.18;
-          margin-bottom: 12px;
-          letter-spacing: -0.02em;
-          max-width: 580px;
-          text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+          letter-spacing: -0.01em;
+          text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
         }
-        .mu-hero-fullscreen-subtext {
-          font-size: 15px;
-          line-height: 1.55;
-          color: rgba(255, 255, 255, 0.92);
-          margin-bottom: 0;
-          max-width: 520px;
-          text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+
+        /* Slide Progress Dots */
+        .mu-hero-progress-dots {
+          position: absolute;
+          bottom: 12px;
+          right: 48px;
+          z-index: 4;
+          display: flex;
+          align-items: center;
+          gap: 7px;
+        }
+
+        .mu-hero-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.4);
+          border: none;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          padding: 0;
+        }
+
+        .mu-hero-dot.mu-hero-dot-active {
+          width: 22px;
+          border-radius: var(--radius-md);
+          background: var(--gold);
+          box-shadow: 0 0 8px rgba(232, 163, 23, 0.6);
         }
 
         /* Flash News Ticker — Emerging seamlessly from the Hero Dissolve */
@@ -1972,7 +2046,7 @@ export default function App() {
           background-color: #D92525;
           color: #FFFFFF;
           padding: 6px 14px;
-          border-radius: var(--radius);
+          border-radius: var(--radius-md);
           font-size: 12px;
           font-weight: 700;
           letter-spacing: 0.08em;
@@ -2027,7 +2101,7 @@ export default function App() {
           font-size: 10.5px;
           font-weight: 700;
           padding: 2px 6px;
-          border-radius: 2px;
+          border-radius: var(--radius-sm);
           letter-spacing: 0.04em;
         }
         .mu-ticker-sep {
@@ -2044,12 +2118,14 @@ export default function App() {
         }
         .mu-about-image-wrapper {
           position: relative;
+          border-radius: var(--radius-lg);
+          overflow: visible;
         }
         .mu-about-img {
           width: 100%;
           height: 480px;
           object-fit: cover;
-          border-radius: var(--radius);
+          border-radius: var(--radius-lg);
           border: 1px solid var(--line);
         }
         .mu-about-milestone {
@@ -2059,7 +2135,7 @@ export default function App() {
           background-color: var(--teal);
           color: #FFFFFF;
           padding: 18px 24px;
-          border-radius: var(--radius);
+          border-radius: var(--radius-md);
           border-left: 3.5px solid var(--gold);
           box-shadow: 0 10px 30px rgba(0,0,0,0.12);
         }
@@ -2114,13 +2190,16 @@ export default function App() {
           justify-content: center;
           align-items: flex-end;
           margin-bottom: 16px;
+          border-radius: 12px 12px 0 0;
+          overflow: hidden;
         }
         .mu-vc-cutout-img {
           width: 100%;
           height: 100%;
-          object-fit: contain;
-          object-position: bottom center;
+          object-fit: cover;
+          object-position: top center;
           display: block;
+          border-radius: 12px 12px 0 0;
           filter: drop-shadow(0 10px 20px rgba(11, 42, 74, 0.12));
           /* Mask image for seamless bottom dissolve blend into background */
           -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
@@ -2283,7 +2362,7 @@ export default function App() {
         .mu-why-card {
           position: relative;
           background: #FFFFFF;
-          border-radius: var(--radius);
+          border-radius: var(--radius-lg);
           border: 1px solid var(--line);
           overflow: hidden;
           display: flex;
@@ -2487,7 +2566,7 @@ export default function App() {
           width: 100%;
           position: relative;
           background: #FFFFFF;
-          border-radius: var(--radius);
+          border-radius: var(--radius-lg);
           border: 1px solid var(--line);
           overflow: hidden;
           display: flex;
@@ -2538,7 +2617,7 @@ export default function App() {
           letter-spacing: 0.05em;
           text-transform: uppercase;
           padding: 4px 10px;
-          border-radius: 3px;
+          border-radius: var(--radius-sm);
           box-shadow: 0 2px 8px rgba(0,0,0,0.25);
           backdrop-filter: blur(4px);
         }
@@ -2669,7 +2748,7 @@ export default function App() {
           font-size: 13px;
           font-weight: 700;
           padding: 10px 16px;
-          border-radius: 3px;
+          border-radius: var(--radius-btn);
           text-decoration: none;
           transition: background-color 0.2s, transform 0.2s;
         }
@@ -2720,7 +2799,7 @@ export default function App() {
         /* Generic Bento Card */
         .mu-infra-bento-card {
           position: relative;
-          border-radius: 6px;
+          border-radius: var(--radius-lg);
           overflow: hidden;
           background-color: var(--teal-deep);
           display: flex;
@@ -2774,6 +2853,8 @@ export default function App() {
           inset: 0;
           width: 100%;
           height: 100%;
+          border-radius: var(--radius-lg);
+          overflow: hidden;
         }
         .mu-infra-img {
           width: 100%;
@@ -2787,6 +2868,7 @@ export default function App() {
         .mu-infra-gradient-base {
           position: absolute;
           inset: 0;
+          border-radius: var(--radius-lg);
           background: linear-gradient(
             180deg,
             rgba(7, 29, 51, 0.04) 0%,
@@ -2822,7 +2904,7 @@ export default function App() {
           background-color: var(--gold);
           color: var(--teal-deep);
           padding: 2px 7px;
-          border-radius: 3px;
+          border-radius: var(--radius-sm);
         }
         .mu-infra-badge-icon {
           color: var(--gold);
@@ -2864,6 +2946,7 @@ export default function App() {
           z-index: 4;
           background: rgba(7, 29, 51, 0.95);
           padding: 20px;
+          border-radius: var(--radius-lg);
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -2954,7 +3037,7 @@ export default function App() {
         .mu-research-image-card {
           position: relative;
           height: 420px;
-          border-radius: 6px;
+          border-radius: var(--radius-lg);
           overflow: hidden;
           background-color: var(--teal-deep);
           display: flex;
@@ -2975,6 +3058,8 @@ export default function App() {
           inset: 0;
           width: 100%;
           height: 100%;
+          border-radius: var(--radius-lg);
+          overflow: hidden;
         }
         .mu-res-img {
           width: 100%;
@@ -2988,6 +3073,7 @@ export default function App() {
         .mu-res-gradient-base {
           position: absolute;
           inset: 0;
+          border-radius: var(--radius-lg);
           background: linear-gradient(
             180deg,
             rgba(7, 29, 51, 0.08) 0%,
@@ -3020,7 +3106,7 @@ export default function App() {
           background-color: var(--gold);
           color: var(--teal-deep);
           padding: 3px 8px;
-          border-radius: 3px;
+          border-radius: var(--radius-sm);
         }
         .mu-res-icon-pill {
           width: 28px;
@@ -3059,6 +3145,7 @@ export default function App() {
           z-index: 4;
           background: rgba(7, 29, 51, 0.95);
           padding: 30px 24px;
+          border-radius: var(--radius-lg);
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -3116,38 +3203,142 @@ export default function App() {
           line-height: 1.4;
         }
 
-        /* Campus Full-Bleed Section */
-        .mu-campus-break {
-          position: relative;
-          min-height: 580px;
-          background: #071D33 url('/coastal-campus.jpg') center/cover no-repeat;
-          display: flex;
-          align-items: flex-end;
-          padding: 96px 0;
-          width: 100%;
+        /* =========================================================================
+           SECTION 10: Campus / Coastal Identity (Premium Framed Showcase)
+           ========================================================================= */
+        .mu-sanctuary-section {
+          padding: 60px 0 80px 0;
+          background: #FAF8F5;
         }
-        .mu-campus-overlay {
+        .mu-sanctuary-frame {
+          position: relative;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 20px 48px rgba(11, 42, 74, 0.12), 0 4px 12px rgba(11, 42, 74, 0.04);
+          border: 1px solid rgba(11, 42, 74, 0.08);
+          background: #0B2A4A;
+        }
+        .mu-sanctuary-backdrop {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to right, rgba(7, 29, 51, 0.94) 0%, rgba(7, 29, 51, 0.65) 50%, rgba(7, 29, 51, 0.2) 100%);
+          width: 100%;
+          height: 100%;
+          z-index: 1;
         }
-        .mu-campus-content {
+        .mu-sanctuary-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          filter: brightness(0.92) contrast(1.05);
+          transform: scale(1.02);
+          transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mu-sanctuary-frame:hover .mu-sanctuary-img {
+          transform: scale(1.05);
+        }
+        .mu-sanctuary-gradient {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(7, 26, 46, 0.88) 0%,
+            rgba(7, 26, 46, 0.65) 45%,
+            rgba(7, 26, 46, 0.95) 100%
+          );
+        }
+        .mu-sanctuary-inner {
           position: relative;
           z-index: 2;
+          padding: 64px 54px 54px 54px;
+          display: flex;
+          flex-direction: column;
+          gap: 48px;
         }
-        .mu-campus-text-card {
-          max-width: 720px;
+        .mu-sanctuary-header {
+          max-width: 820px;
         }
-        .mu-campus-heading {
+        .mu-sanctuary-title {
+          font-family: var(--font-heading);
+          font-size: clamp(28px, 3.8vw, 44px);
+          font-weight: 800;
           color: #FFFFFF;
-          font-size: clamp(32px, 4vw, 48px);
-          margin-bottom: 18px;
+          line-height: 1.15;
+          margin: 12px 0 16px 0;
+          letter-spacing: -0.02em;
         }
-        .mu-campus-desc {
-          color: rgba(255, 255, 255, 0.88);
-          font-size: 17px;
+        .mu-sanctuary-lead {
+          font-family: var(--font-body);
+          font-size: 16px;
           line-height: 1.65;
-          margin-bottom: 32px;
+          color: rgba(255, 255, 255, 0.86);
+          margin: 0;
+          max-width: 740px;
+        }
+        .mu-sanctuary-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+        }
+        .mu-sanctuary-card {
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          border-radius: 12px;
+          padding: 22px 20px;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          display: flex;
+          flex-direction: column;
+        }
+        .mu-sanctuary-card:hover {
+          background: rgba(255, 255, 255, 0.18);
+          border-color: rgba(212, 160, 23, 0.6);
+          transform: translateY(-4px);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+        }
+        .mu-scard-num {
+          font-family: var(--font-heading);
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          color: var(--gold);
+          margin-bottom: 8px;
+          text-transform: uppercase;
+        }
+        .mu-scard-title {
+          font-family: var(--font-heading);
+          font-size: 15px;
+          font-weight: 700;
+          color: #FFFFFF;
+          margin: 0 0 6px 0;
+          line-height: 1.3;
+        }
+        .mu-scard-desc {
+          font-family: var(--font-body);
+          font-size: 12.5px;
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.78);
+          margin: 0;
+        }
+
+        @media (max-width: 1024px) {
+          .mu-sanctuary-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .mu-sanctuary-inner {
+            padding: 44px 32px 36px 32px;
+            gap: 36px;
+          }
+        }
+        @media (max-width: 640px) {
+          .mu-sanctuary-grid {
+            grid-template-columns: 1fr;
+          }
+          .mu-sanctuary-inner {
+            padding: 36px 20px 24px 20px;
+            gap: 28px;
+          }
         }
 
         /* =========================================================================
@@ -3160,94 +3351,111 @@ export default function App() {
         .mu-placement-split-grid {
           display: grid;
           grid-template-columns: 1.15fr 0.85fr;
-          gap: 60px;
-          align-items: center;
+          gap: 52px;
+          align-items: stretch;
         }
         .mu-placement-content-left {
           display: flex;
           flex-direction: column;
+          justify-content: space-between;
         }
         .mu-placement-p {
           font-family: var(--font-body);
           font-size: 15.5px;
           line-height: 1.65;
           color: var(--ink-soft);
-          margin-bottom: 28px;
+          margin-bottom: 24px;
           max-width: 580px;
         }
 
-        /* Compact Career-Service Detail Cards Grid (4 Cards) */
+        /* Compact Career-Service Detail Cards Grid (4 Cards with Right Arrow) */
         .mu-placement-cards-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 16px;
-          margin-bottom: 24px;
         }
         .mu-placement-card {
-          padding: 16px;
+          padding: 20px;
           background: #FFFFFF;
           border: 1px solid rgba(11, 42, 74, 0.08);
-          border-radius: 6px;
+          border-radius: var(--radius-lg);
           box-shadow: 0 2px 8px rgba(11, 42, 74, 0.03);
-          transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+          text-decoration: none;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+          cursor: pointer;
         }
         .mu-placement-card:hover {
-          transform: translateY(-2px);
-          border-color: rgba(232, 163, 23, 0.4);
-          box-shadow: 0 6px 16px rgba(11, 42, 74, 0.07);
+          transform: translateY(-3px);
+          border-color: var(--blue);
+          box-shadow: 0 8px 20px rgba(11, 42, 74, 0.1);
         }
         .mu-pcard-body {
           width: 100%;
         }
+        .mu-pcard-header-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+          margin-bottom: 6px;
+        }
         .mu-pcard-title {
           font-family: var(--font-heading);
-          font-size: 14px;
+          font-size: 15px;
           font-weight: 700;
           color: var(--teal);
-          margin: 0 0 4px 0;
+          margin: 0;
           line-height: 1.3;
+          transition: color 0.2s ease;
+        }
+        .mu-placement-card:hover .mu-pcard-title {
+          color: var(--blue);
+        }
+        .mu-pcard-arrow {
+          color: var(--gold-deep);
+          opacity: 0;
+          transform: translateX(-6px);
+          transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, color 0.25s ease;
+          flex-shrink: 0;
+        }
+        .mu-placement-card:hover .mu-pcard-arrow {
+          opacity: 1;
+          transform: translateX(0);
         }
         .mu-pcard-desc {
           font-family: var(--font-body);
-          font-size: 12.5px;
+          font-size: 13px;
           color: var(--ink-soft);
-          line-height: 1.5;
+          line-height: 1.55;
           margin: 0;
         }
 
-        .mu-placement-cta-wrapper {
-          display: flex;
-          align-items: center;
-        }
-
-        /* Right Visual: Soft Geometric Frame with Floating Badges */
+        /* Right Visual: Perfectly Aligned Framed Container */
         .mu-placement-visual-right {
           position: relative;
           display: flex;
-          justify-content: center;
-          align-items: center;
+          width: 100%;
+          height: 100%;
         }
         .mu-placement-visual-frame {
           position: relative;
           width: 100%;
-          max-width: 440px;
-        }
-        .mu-placement-glow-backdrop {
-          position: absolute;
-          inset: -14px;
-          border-radius: 28px;
-          background: linear-gradient(135deg, rgba(232, 163, 23, 0.12) 0%, rgba(11, 42, 74, 0.08) 100%);
-          z-index: 1;
+          height: 100%;
+          display: flex;
         }
         .mu-placement-img-container {
           position: relative;
           z-index: 2;
           width: 100%;
-          height: 380px;
-          border-radius: 22px;
+          height: 100%;
+          min-height: 380px;
+          border-radius: var(--radius-lg);
           overflow: hidden;
-          box-shadow: 0 12px 36px rgba(11, 42, 74, 0.14);
-          border: 2px solid #FFFFFF;
+          box-shadow: 0 10px 30px rgba(11, 42, 74, 0.08);
+          border: 1px solid rgba(11, 42, 74, 0.08);
         }
         .mu-placement-main-img {
           width: 100%;
@@ -3262,7 +3470,8 @@ export default function App() {
         .mu-placement-img-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(180deg, transparent 60%, rgba(7, 29, 51, 0.45) 100%);
+          border-radius: var(--radius-lg);
+          background: linear-gradient(180deg, transparent 70%, rgba(7, 29, 51, 0.35) 100%);
           pointer-events: none;
         }
 
@@ -3312,7 +3521,7 @@ export default function App() {
           letter-spacing: 0.02em;
           transition: all 0.2s ease;
           padding: 6px 12px;
-          border-radius: 4px;
+          border-radius: var(--radius-md);
           background: rgba(30, 78, 121, 0.06);
         }
         .mu-news-view-all:hover {
@@ -3337,7 +3546,7 @@ export default function App() {
           position: relative;
           width: 100%;
           min-height: 520px;
-          border-radius: 6px;
+          border-radius: var(--radius-lg);
           overflow: hidden;
           background-color: var(--teal-deep);
           text-decoration: none;
@@ -3357,6 +3566,8 @@ export default function App() {
           left: 0;
           width: 100%;
           height: 100%;
+          border-radius: var(--radius-lg);
+          overflow: hidden;
         }
         .mu-featured-img {
           width: 100%;
@@ -3370,6 +3581,7 @@ export default function App() {
         .mu-featured-gradient-overlay {
           position: absolute;
           inset: 0;
+          border-radius: var(--radius-lg);
           background: linear-gradient(
             180deg,
             rgba(7, 29, 51, 0.1) 0%,
@@ -3400,7 +3612,7 @@ export default function App() {
           background-color: var(--gold);
           color: var(--teal-deep);
           padding: 4px 10px;
-          border-radius: 3px;
+          border-radius: var(--radius-sm);
         }
         .mu-featured-date {
           font-family: var(--font-author, 'Libre Franklin', sans-serif);
@@ -3466,11 +3678,11 @@ export default function App() {
         }
         .mu-news-scroll-container::-webkit-scrollbar-track {
           background: rgba(11, 42, 74, 0.04);
-          border-radius: 4px;
+          border-radius: var(--radius-sm);
         }
         .mu-news-scroll-container::-webkit-scrollbar-thumb {
           background-color: rgba(11, 42, 74, 0.25);
-          border-radius: 4px;
+          border-radius: var(--radius-sm);
         }
         .mu-news-scroll-container::-webkit-scrollbar-thumb:hover {
           background-color: var(--blue);
@@ -3483,7 +3695,7 @@ export default function App() {
           gap: 16px;
           background: #FFFFFF;
           border: 1px solid rgba(11, 42, 74, 0.08);
-          border-radius: 5px;
+          border-radius: var(--radius-md);
           padding: 12px;
           text-decoration: none;
           transition: all 0.25s ease;
@@ -3497,7 +3709,7 @@ export default function App() {
         .mu-item-thumb-wrap {
           width: 110px;
           height: 88px;
-          border-radius: 4px;
+          border-radius: var(--radius-sm);
           overflow: hidden;
           background-color: var(--mist);
           flex-shrink: 0;
@@ -3586,36 +3798,41 @@ export default function App() {
         }
 
         /* =========================================================================
-           SECTION 13: Student & Alumni Testimonials (Compact 3-Card Carousel)
+           SECTION 13: Student & Alumni Testimonials (Clean Editorial Carousel)
            ========================================================================= */
         .mu-testimonial-section {
-          padding: 72px 0;
+          padding: 88px 0;
           background-color: var(--mist);
           border-top: 1px solid var(--line-soft);
           border-bottom: 1px solid var(--line-soft);
           width: 100%;
+        }
+        .mu-t-header-nav {
+          display: flex;
+          align-items: center;
+          gap: 10px;
         }
         .mu-t-carousel-wrapper {
           display: flex;
           flex-direction: column;
           align-items: center;
           width: 100%;
-          max-width: 1180px;
+          max-width: 1240px;
           margin: 0 auto;
         }
         .mu-t-cards-row {
           display: grid;
           grid-template-columns: 1fr 1.15fr 1fr;
-          gap: 22px;
-          align-items: center;
+          gap: 24px;
+          align-items: stretch;
           width: 100%;
-          margin-bottom: 32px;
+          margin-bottom: 28px;
         }
 
         /* Testimonial Card Base */
         .mu-t-card {
-          border-radius: 8px;
-          padding: 24px 22px;
+          border-radius: var(--radius-lg);
+          padding: 28px 24px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
@@ -3630,11 +3847,11 @@ export default function App() {
           color: #FFFFFF;
           border: 1px solid rgba(232, 163, 23, 0.35);
           box-shadow: 0 12px 36px rgba(7, 29, 51, 0.22);
-          transform: scale(1.04);
+          transform: scale(1.03);
           z-index: 2;
         }
         .mu-t-card-center:hover {
-          transform: scale(1.06) translateY(-2px);
+          transform: scale(1.05) translateY(-2px);
           box-shadow: 0 16px 42px rgba(7, 29, 51, 0.28);
         }
 
@@ -3644,7 +3861,7 @@ export default function App() {
           color: var(--ink);
           border: 1px solid rgba(11, 42, 74, 0.08);
           box-shadow: 0 4px 16px rgba(11, 42, 74, 0.06);
-          opacity: 0.88;
+          opacity: 0.9;
         }
         .mu-t-card-side:hover {
           opacity: 1;
@@ -3652,30 +3869,16 @@ export default function App() {
           border-color: rgba(11, 42, 74, 0.18);
         }
 
-        /* Rating Stars */
-        .mu-t-card-rating {
-          display: flex;
-          align-items: center;
-          gap: 3px;
-          margin-bottom: 12px;
-        }
-        .mu-star-gold {
-          color: var(--gold);
-        }
-        .mu-star-navy {
-          color: var(--teal);
-        }
-
         /* Quote Text */
         .mu-t-card-quote {
           font-family: var(--font-body);
-          font-size: 13.5px;
-          line-height: 1.55;
-          margin: 0 0 18px 0;
+          font-size: 14px;
+          line-height: 1.6;
+          margin: 0 0 20px 0;
           flex: 1;
         }
         .mu-t-card-center .mu-t-card-quote {
-          color: rgba(255, 255, 255, 0.92);
+          color: rgba(255, 255, 255, 0.94);
         }
         .mu-t-card-side .mu-t-card-quote {
           color: var(--ink-soft);
@@ -3686,21 +3889,21 @@ export default function App() {
           display: flex;
           align-items: center;
           gap: 12px;
-          padding-top: 12px;
+          padding-top: 14px;
           border-top: 1px solid rgba(255, 255, 255, 0.12);
         }
         .mu-t-card-side .mu-t-card-profile {
           border-top: 1px solid var(--line-soft);
         }
         .mu-t-avatar {
-          width: 36px;
-          height: 36px;
+          width: 38px;
+          height: 38px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           font-family: var(--font-heading);
-          font-size: 12px;
+          font-size: 12.5px;
           font-weight: 700;
           flex-shrink: 0;
         }
@@ -3720,9 +3923,9 @@ export default function App() {
         }
         .mu-t-name {
           font-family: var(--font-heading);
-          font-size: 13.5px;
+          font-size: 14px;
           font-weight: 700;
-          margin: 0 0 1px 0;
+          margin: 0 0 2px 0;
           line-height: 1.25;
           white-space: nowrap;
           overflow: hidden;
@@ -3736,7 +3939,7 @@ export default function App() {
         }
         .mu-t-role {
           font-family: var(--font-body);
-          font-size: 11.5px;
+          font-size: 12px;
           font-weight: 500;
           white-space: nowrap;
           overflow: hidden;
@@ -3750,58 +3953,65 @@ export default function App() {
         }
         .mu-t-batch {
           font-family: var(--font-body);
-          font-size: 10.5px;
-          color: rgba(255, 255, 255, 0.6);
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.65);
         }
         .mu-t-card-side .mu-t-batch {
           color: var(--ink-soft);
         }
 
-        /* Carousel Controls Bar (Arrows & Dots) */
-        .mu-t-controls-bar {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 16px;
-        }
+        /* Top-Right Arrow Buttons (Matching other section headers) */
         .mu-t-arrow-btn {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          border: 1px solid var(--line-soft);
+          width: 40px;
+          height: 40px;
+          border-radius: var(--radius-md);
+          border: 1px solid rgba(11, 42, 74, 0.12);
           background: #FFFFFF;
           color: var(--teal);
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          box-shadow: 0 2px 6px rgba(11, 42, 74, 0.06);
+          box-shadow: 0 2px 8px rgba(11, 42, 74, 0.05);
           transition: all 0.2s ease;
         }
         .mu-t-arrow-btn:hover {
-          border-color: var(--gold);
+          border-color: var(--teal);
           background-color: var(--teal);
           color: #FFFFFF;
-          transform: scale(1.05);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(11, 42, 74, 0.15);
         }
+        .mu-t-arrow-btn:active {
+          transform: translateY(0);
+        }
+
+        /* Clean Pagination Dots */
         .mu-t-dots-container {
           display: flex;
           align-items: center;
-          gap: 6px;
+          justify-content: center;
+          gap: 7px;
+          margin-top: 8px;
         }
         .mu-t-dot-pill {
           width: 8px;
-          height: 6px;
-          border-radius: 3px;
+          height: 8px;
+          border-radius: 50%;
           background-color: rgba(11, 42, 74, 0.2);
           border: none;
           cursor: pointer;
           transition: all 0.25s ease;
           padding: 0;
         }
+        .mu-t-dot-pill:hover {
+          background-color: rgba(11, 42, 74, 0.4);
+        }
         .mu-t-dot-pill-active {
           background-color: var(--gold);
-          width: 22px;
+          width: 24px;
+          border-radius: var(--radius-md);
+          box-shadow: 0 0 6px rgba(232, 163, 23, 0.5);
         }
 
         @media (max-width: 900px) {
@@ -3819,6 +4029,26 @@ export default function App() {
             transform: none;
           }
         }
+        @media (max-width: 640px) {
+          .mu-testimonial-section .mu-section-header {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 28px;
+          }
+          .mu-testimonial-section .mu-section-header > div:first-child {
+            flex: 1;
+          }
+          .mu-t-header-nav {
+            margin-top: 4px;
+            flex-shrink: 0;
+          }
+          .mu-t-arrow-btn {
+            width: 36px;
+            height: 36px;
+          }
+        }
 
         /* =========================================================================
            SECTION 14: Admissions CTA Strip (Compact Horizontal Promotional Banner)
@@ -3832,7 +4062,7 @@ export default function App() {
           position: relative;
           width: 100%;
           min-height: 128px;
-          border-radius: 10px;
+          border-radius: var(--radius-lg);
           overflow: hidden;
           background-color: #071D33;
           border: 1px solid rgba(255, 255, 255, 0.08);
@@ -3846,6 +4076,8 @@ export default function App() {
           width: 100%;
           height: 100%;
           z-index: 1;
+          border-radius: var(--radius-lg);
+          overflow: hidden;
         }
         .mu-cta-bg-img {
           width: 100%;
@@ -3858,6 +4090,7 @@ export default function App() {
         .mu-cta-bg-overlay {
           position: absolute;
           inset: 0;
+          border-radius: var(--radius-lg);
           background: linear-gradient(
             90deg,
             rgba(7, 29, 51, 0.98) 0%,
@@ -3918,7 +4151,7 @@ export default function App() {
           padding: 9px 18px !important;
           font-size: 13px !important;
           font-weight: 600 !important;
-          border-radius: 4px !important;
+          border-radius: var(--radius-btn) !important;
         }
 
         @media (max-width: 900px) {

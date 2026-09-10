@@ -28,9 +28,13 @@
   --font-author: 'Libre Franklin', 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-kannada: 'Noto Serif Kannada', 'Tunga', 'Segoe UI', serif;
 
-  /* Layout */
+  /* Layout & Consistent Radius System */
   --max-width: 1480px;
-  --radius: 3px;
+  --radius-lg: 12px;           /* Major surfaces, cards, banners, image blocks */
+  --radius-md: 8px;            /* Buttons, badges, chips, search inputs, tabs */
+  --radius-sm: 6px;            /* Small labels, inner tags */
+  --radius: 12px;              /* Primary default radius */
+  --radius-btn: 8px;           /* Button & interactive element radius */
 }
 
 /* Reset & Base Styles */
@@ -137,7 +141,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
   font-size: 14.5px;
   font-weight: 600;
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   cursor: pointer;
   text-decoration: none;
   transition: all 0.2s ease;

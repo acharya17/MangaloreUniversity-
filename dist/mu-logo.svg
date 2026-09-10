@@ -92,24 +92,24 @@
 
   <!-- Right Typography Group -->
   <g transform="translate(142, 20)">
-    <!-- Kannada Script Header in Golden Yellow (#E8A317 / #D89807) -->
-    <text x="0" y="30" font-family="'Noto Serif Kannada', 'Anek Kannada', 'Tunga', 'Segoe UI', serif" font-size="28" font-weight="700" fill="#E8A317" letter-spacing="0.02em">
+    <!-- Kannada Script Header in Rich Heritage Red (#A81C1C) / Deep Gold Contrast -->
+    <text x="0" y="30" font-family="'Noto Serif Kannada', 'Anek Kannada', 'Tunga', 'Segoe UI', serif" font-size="28" font-weight="700" fill="#B32400" letter-spacing="0.02em">
       ಮಂಗಳೂರು ವಿಶ್ವವಿದ್ಯಾನಿಲಯ
     </text>
 
-    <!-- English Wordmark in High-Contrast Navy (#0B2A4A) / Theme Adapted -->
-    <text x="0" y="66" class="mu-logo-text-en" font-family="'Cinzel', 'Fraunces', 'Times New Roman', Georgia, serif" font-size="29" font-weight="700" fill="#0B2A4A" letter-spacing="0.06em">
+    <!-- English Wordmark in Deep Ultra-High-Contrast Navy (#071D33) -->
+    <text x="0" y="66" class="mu-logo-text-en" font-family="'Cinzel', 'Fraunces', 'Times New Roman', Georgia, serif" font-size="30" font-weight="800" fill="#071D33" letter-spacing="0.06em">
       MANGALORE UNIVERSITY
     </text>
 
     <!-- Tagline / Accreditation Subtitle -->
     <g transform="translate(2, 92)">
-      <!-- Subtitle Kicker -->
-      <text x="0" y="0" class="mu-logo-text-sub" font-family="'Libre Franklin', 'Segoe UI', sans-serif" font-size="11.5" font-weight="600" text-transform="uppercase" letter-spacing="0.16em" fill="#1E4E79">
+      <!-- Subtitle Kicker in Navy -->
+      <text x="0" y="0" class="mu-logo-text-sub" font-family="'Libre Franklin', 'Segoe UI', sans-serif" font-size="12" font-weight="700" text-transform="uppercase" letter-spacing="0.16em" fill="#0B2A4A">
         MANGALAGANGOTHRI - 574 199
       </text>
-      <!-- NAAC Accreditation Pill -->
-      <text x="260" y="0" font-family="'Cinzel', 'Libre Franklin', serif" font-size="12" font-weight="700" fill="#E8A317" letter-spacing="0.25em">
+      <!-- NAAC Accreditation in Rich Gold -->
+      <text x="260" y="0" font-family="'Cinzel', 'Libre Franklin', serif" font-size="12.5" font-weight="800" fill="#C28200" letter-spacing="0.22em">
         NAAC  A++
       </text>
     </g>
